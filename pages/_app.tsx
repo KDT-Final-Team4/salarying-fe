@@ -1,10 +1,11 @@
+import Header from '@/components/Header/Header';
 import SideNav from '@/components/SideNav';
-// import '@/styles/reset.css';
+import '@/styles/reset.css';
 import '@/styles/globals.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,8 +20,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Wrapper>
-        <SideNav />
-        <Component {...pageProps} />
+        <Header />
+        <BodyContent>
+          <SideNav />
+          <Component {...pageProps} />
+        </BodyContent>
       </Wrapper>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
@@ -28,6 +32,9 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 const Wrapper = styled.div`
-  display: flex;
   border: 1px solid red;
+`;
+
+const BodyContent = styled.main`
+  display: flex;
 `;

@@ -16,5 +16,5 @@ const Wrapper = styled.section`
   display: flex;
   height: 100vh;
   width: 200px;
-  border: 1px solid blue;
+  background-color: aliceblue;
 `;

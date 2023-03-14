@@ -1,6 +1,10 @@
-import Main from '@/components/Main';
+import styled from 'styled-components';
 
 export default function Home() {
-  // const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  return <Main>내용</Main>;
+  return <Wrapper>Home</Wrapper>;
 }
+
+const Wrapper = styled.section`
+  width: 100%;
+  background-color: var(--color-sky200);
+`;
