@@ -70,6 +70,7 @@ export default function SideNav() {
 }
 
 const Wrapper = styled.section`
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   height: 150vh;
@@ -100,6 +101,7 @@ const Wrapper = styled.section`
 const DevLinks = styled.div`
   display: flex;
   flex-direction: column;
+
   div {
     margin-top: 20px;
     display: flex;
