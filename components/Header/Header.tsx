@@ -1,10 +1,13 @@
+import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
 const Header = () => {
   return (
     <Wrapper>
-      <Logo>로고</Logo>
+      <Logo>
+        <Link href='/'>로고</Link>
+      </Logo>
       <HeaderNav>
         <ul>
           <li>마이 페이지</li>
