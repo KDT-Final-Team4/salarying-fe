@@ -1,5 +1,8 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
 export default function NoticeId() {
-  return <div>NoticeId</div>;
+  const router = useRouter();
+  const { noticeId } = router.query;
+  return <div>noticeId : {noticeId}</div>;
 }
