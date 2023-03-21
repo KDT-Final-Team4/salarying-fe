@@ -6,5 +6,6 @@ export default function Home() {
 
 const Wrapper = styled.section`
   width: 100%;
+  box-sizing: border-box;
   background-color: var(--color-sky200);
 `;

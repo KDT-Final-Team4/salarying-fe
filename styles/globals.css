@@ -220,3 +220,17 @@
   --color-rose800: #9f1239;
   --color-rose900: #881337;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+a,
+a:link,
+a:visited,
+a:active,
+a:hover {
+  color: #000;
+  text-decoration: none;
+  outline: none;
+}

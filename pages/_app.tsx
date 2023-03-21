@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 const Wrapper = styled.div`
-  border: 1px solid red;
+  border: 1px solid blue;
 `;
 
 const BodyContent = styled.main`
