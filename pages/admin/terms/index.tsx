@@ -17,8 +17,8 @@ const Terms = () => {
       </Title>
       <List>
         {list.map((item) => (
-          <Link href={`/admin/terms/${item.id}`}>
-            <Item key={item.id}>
+          <Link href={`/admin/terms/${item.id}`} key={item.id}>
+            <Item>
               <p>{item.title}</p>
               <p>{item.status}</p>
             </Item>
