@@ -51,14 +51,16 @@ export default function TermsId() {
   const { termsId } = router.query;
   const data = list.find((item: List) => termsId === String(item.id));
 
-  return (
-    <div>
-      <h2>{data.title}</h2>
-      <p>{data.content}</p>
-      <p>{data.writer}</p>
-      <p>{data.date}</p>
-      <button>수정하기</button>
-      <button>삭제하기</button>
-    </div>
-  );
+  if (router?.isFallback) {
+    return (
+      <div>
+        <h2>{data.title}</h2>
+        <p>{data.content}</p>
+        <p>{data.writer}</p>
+        <p>{data.date}</p>
+        <button>수정하기</button>
+        <button>삭제하기</button>
+      </div>
+    );
+  }
 }
