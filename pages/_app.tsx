@@ -1,11 +1,11 @@
-import Header from '@/components/Header/Header';
-import SideNav from '@/components/SideNav';
-import '@/styles/reset.css';
-import '@/styles/globals.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import type { AppProps } from 'next/app';
-import styled, { createGlobalStyle } from 'styled-components';
+import Header from "@/components/Header/Header";
+import SideNav from "@/components/SideNav";
+import "@/styles/reset.css";
+import "@/styles/globals.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { AppProps } from "next/app";
+import styled, { createGlobalStyle } from "styled-components";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,8 +21,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Wrapper>
         <Header />
+        <SideNav />
         <BodyContent>
-          <SideNav />
           <Component {...pageProps} />
         </BodyContent>
       </Wrapper>
@@ -32,9 +32,18 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 const Wrapper = styled.div`
-  border: 1px solid red;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: calc(100vw - 270px - var(--scrollbar-width));
+  align-content: flex-end;
 `;
 
 const BodyContent = styled.main`
+  width: 100%;
   display: flex;
+  width: 100%;
+  height: calc(100vh - 70px);
+  margin-left: 270px;
+  margin-top: 70px;
 `;

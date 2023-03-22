@@ -1,6 +1,7 @@
 # Final Project
 
 채용절차 서비스 개발
+배포 : https://salarying-7jqpcr53x-isaacteam.vercel.app/
 
 ## 기능
 
@@ -90,3 +91,21 @@ BE : 회원/비회원 DB 설계, 기업별 채용절차 설정값 DB 설계, 기
 - axios
 - styled-component
 - jest
+
+## 페이지
+
+- 로그인페이지: /login
+- 회원가입페이지: /signup
+- 공지사항: /notice
+- 관리자페이지: /admin
+  - 약관관리: /admin/terms
+  - 기업회원 관리: /admin/company-membership
+  - 마이페이지: /admin/mypage
+- 기업페이지: /company
+  - 마이페이지: /company/mypage
+  - 공고관리페이지: /company/job-posting
+  - 알림서비스페이지: /company/notification
+  - 지원자관리 페이지: /company/applicant-management
+- 커뮤니티 페이지: /community
+  - FAQ: /community/faq
+  -
