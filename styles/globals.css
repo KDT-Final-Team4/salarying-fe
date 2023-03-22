@@ -219,6 +219,7 @@
   --color-rose700: #be123c;
   --color-rose800: #9f1239;
   --color-rose900: #881337;
+  --scrollbar-width: calc(100vw - 100%);
 }
 
 * {
@@ -230,7 +231,7 @@ a:link,
 a:visited,
 a:active,
 a:hover {
-  color: #000;
+  /* color: #000; */
   text-decoration: none;
   outline: none;
 }
