@@ -7,21 +7,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import styled, { createGlobalStyle } from "styled-components";
 
-if (process.env.NODE_ENV === "development") {
-	const isServer = process.browser ? false : true;
-
-	if (isServer) {
-		async () => {
-			const { server }: any = await import("../mocks/server");
-			server.listen();
-		};
-	} else {
-		async () => {
-			const { worker } = await import("../mocks/browser");
-			worker.start();
-		};
-	}
-}
 
 const queryClient = new QueryClient({
 	defaultOptions: {

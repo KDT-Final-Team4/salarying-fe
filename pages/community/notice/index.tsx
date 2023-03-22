@@ -2,13 +2,15 @@ import Link from "next/link";
 import axios from "axios";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { response } from "msw";
+import noticeArray from "../../../notice.json";
 
 interface Object {
 	id: number;
 	title: string;
-	owner_id: string;
+	edit_id: string;
 	date: string;
 }
+
 const fetchNotice = (): any => {
 	const adminId = "aaa@aaa.com";
 	axios({
@@ -17,33 +19,25 @@ const fetchNotice = (): any => {
 		data: adminId,
 	})
 		.then(response => console.log(response))
-		.catch(error => console.log("axios에러"));
+		.catch(error => {
+			console.log(error);
+			return noticeArray;
+		});
 };
-export default function NoticeList() {
-	const query = useQuery(["notices"], fetchNotice);
-	console.log(query);
 
-	const noticeArray: Array<Object> = [
-		{
-			id: 1,
-			title: "공지사항 제목 1",
-			owner_id: "aaa@aaa.com",
-			date: "YYYY-MM-DD HH-MM-SS",
-		},
-		{
-			id: 2,
-			title: "공지사항 제목 2",
-			owner_id: "aaa@aaa.com",
-			date: "YYYY-MM-DD HH-MM-SS",
-		},
-	];
+export default function NoticeList() {
+	const query = useQuery({
+		queryKey: ["notices"],
+		queryFn: fetchNotice,
+	});
+
 	return (
 		<div>
-			{noticeArray?.map((number, idx) => (
+			{query.data?.map((number, idx) => (
 				<div key={idx}>
 					<Link href={`/community/notice/${number.id}`}>{number.title}</Link>
 					<span>
-						<strong>{number.owner_id}</strong>
+						<strong>{number.edit_id}</strong>
 						<time>{number.date}</time>
 					</span>
 				</div>
