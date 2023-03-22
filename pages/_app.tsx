@@ -20,9 +20,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Wrapper>
-        <Header />
+        <SideNav />
         <BodyContent>
-          <SideNav />
+          <Header />
           <Component {...pageProps} />
         </BodyContent>
       </Wrapper>
@@ -33,8 +33,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
 const Wrapper = styled.div`
   border: 1px solid blue;
+  display: flex;
 `;
 
 const BodyContent = styled.main`
+  width: 100%;
   display: flex;
+  flex-direction: column;
 `;

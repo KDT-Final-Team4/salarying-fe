@@ -21,14 +21,16 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   const { email, password, companyNm, companyTel } = req.body;
+  const { recruiting_id } = req.query;
   switch (req.method) {
     case httpMethod.GET:
       return res.status(200).json({
         stateCode: 0,
         success: true,
         data: {},
-        message: '성공입니다!',
+        message: `성공입니다! ${recruiting_id}`,
       });
+
     default:
       return res.status(200).json({
         stateCode: 200,

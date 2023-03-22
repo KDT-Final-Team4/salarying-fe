@@ -26,6 +26,7 @@ const Wrapper = styled.section`
   align-items: center;
   justify-content: space-between;
   height: 70px;
+  width: 100%;
   padding: 0 50px;
 `;
 
