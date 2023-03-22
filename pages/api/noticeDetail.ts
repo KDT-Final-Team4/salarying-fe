@@ -16,7 +16,6 @@ export default function handler(
 ) {
   switch (req.method) {
     case httpMethod.GET:
-      console.log(req.method);
 			const { noticeId } = req.body;
 			return res.status(200).json({
 				stateCode: 200,
