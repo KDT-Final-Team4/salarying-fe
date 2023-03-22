@@ -26,8 +26,8 @@ export default function handler(
       return res.status(200).json({
         stateCode: 200,
         success: true,
-        data: { email, password, companyNm, companyTel },
-        message: '회원가입 성공',
+        data: null,
+        message: `회원가입 성공 email: ${email}, password: ${password}, companyNm: ${companyNm}, companyTel: ${companyTel}`,
       });
     default:
       return res.status(200).json({
