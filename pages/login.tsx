@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import { BsCheckLg } from 'react-icons/bs';
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
@@ -24,6 +25,9 @@ export default function Login() {
           <div>
             <RememberId>
               <input type='checkbox' id='rememberId' />
+              <FakeCheckbox htmlFor='rememberId'>
+                <BsCheckLg />
+              </FakeCheckbox>
               <label htmlFor='rememberId'>아이디 기억하기</label>
             </RememberId>
             <span>패스워드 찾기</span>
@@ -105,7 +109,34 @@ const RememberId = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 5px;
+  input[type='checkbox'] {
+    display: none;
+
+    & + label {
+      width: 15px;
+      height: 15px;
+      border-radius: 3px;
+      border: 1.5px solid red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+        display: none;
+      }
+    }
+    &:checked + label {
+      background-color: var(--color-red500);
+      position: relative;
+      svg {
+        color: white;
+        display: flex;
+      }
+    }
+  }
 `;
+
+const FakeCheckbox = styled.label``;
+
 const TextInput = styled.input`
   border: 1px solid var(--color-gray300);
   width: 100%;
