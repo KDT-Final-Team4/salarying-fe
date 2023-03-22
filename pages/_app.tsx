@@ -40,6 +40,7 @@ const Wrapper = styled.div`
 `;
 
 const BodyContent = styled.main`
+  width: 100%;
   display: flex;
   width: 100%;
   height: calc(100vh - 70px);

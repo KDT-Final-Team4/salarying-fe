@@ -24,6 +24,11 @@ const Wrapper = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
+<<<<<<< HEAD
+=======
+  height: 70px;
+  width: 100%;
+>>>>>>> f6583b95247108fdc29467b1dc31bc2d5a3b8d56
   padding: 0 50px;
   height: 70px;
   margin-left: 270px;
