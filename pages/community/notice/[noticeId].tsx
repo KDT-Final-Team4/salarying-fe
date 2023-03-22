@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import notice from "../../../mokeup/notice.json";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { response } from "msw";
 
 interface content {
 	noticeId: string;
@@ -17,17 +17,29 @@ interface content {
 
 const getNotice = async noticeId => {
 	const result = await axios
-		.get(`/notice/${noticeId}`)
-		.then(response => response.data)
+		.request({
+			method: "get",
+			url: "/api/noticeDetail",
+			data: noticeId,
+		})
+		.then(response => {
+			console.log(response.data.data.noticeId);
+			return response.data.data;
+		})
 		.catch(error => {
-			return notice;
+			console.log(error);
 		});
 	return result;
 };
 
 export default function NoticeId() {
 	const router = useRouter();
-	const { noticeId } = router.query;
+	const [noticeId, setNoticeId] = useState(1);
+	useEffect(() => {
+		if (!router.isReady) return;
+		const { noticeId }: any = router.query;
+		setNoticeId(noticeId);
+	}, [router.isReady]);
 
 	const { data } = useQuery(["notice", noticeId], () => getNotice(noticeId));
 
@@ -36,7 +48,12 @@ export default function NoticeId() {
 			<h2>{data?.title}</h2>
 			<span>{data?.content}</span>
 			<div>
-				<button>수정</button>
+				<Link
+					href={`/community/notice/new/${noticeId}`}
+					as="/community/notice/new/1"
+				>
+					수정
+				</Link>
 				<button>삭제</button>
 			</div>
 		</div>

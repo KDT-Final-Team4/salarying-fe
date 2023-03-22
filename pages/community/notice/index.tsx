@@ -1,8 +1,6 @@
 import Link from "next/link";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { response } from "msw";
-import noticeArray from "../../../mokeup/notices.json";
 
 interface Object {
 	id: number;
@@ -11,17 +9,21 @@ interface Object {
 	date: string;
 }
 
-const fetchNotice = async () => {
-	const result: any = await axios
-		.get("/notice")
-		.then(response => response.data)
-		.catch(error => {
-			return noticeArray;
-		});
-	return result;
-};
-
 export default function NoticeList() {
+	const fetchNotice = async () => {
+		const result = await axios
+			.request({
+				method: "get",
+				url: "/api/notice",
+			})
+			.then(response => {
+				return response.data.data;
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		return result;
+	};
 	const { data, isLoading } = useQuery(["notices"], fetchNotice);
 
 	console.log(data);
@@ -31,7 +33,12 @@ export default function NoticeList() {
 			{!isLoading &&
 				data?.map((number, idx) => (
 					<div key={idx}>
-						<Link href={`/community/notice/${number.id}`}>{number.title}</Link>
+						<Link
+							href={`/community/notice/${number.id}`}
+							as="/community/notice/1"
+						>
+							{number.title}
+						</Link>
 						<strong>{number.edit_id}</strong>
 						<time>{number.date}</time>
 					</div>
