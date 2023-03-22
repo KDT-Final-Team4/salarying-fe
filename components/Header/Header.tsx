@@ -20,7 +20,8 @@ const Header = () => {
 export default Header;
 
 const Wrapper = styled.section`
-  background-color: var(--color-orange400);
+  background-color: var(--color-gray100);
+  box-shadow: 0px 5px 20px #dedede;
   display: flex;
   align-items: center;
   justify-content: space-between;
