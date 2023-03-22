@@ -1,7 +1,28 @@
+import axios from 'axios';
 import styled from 'styled-components';
+import Avatar, { genConfig } from 'react-nice-avatar';
 
 export default function Home() {
-  return <Wrapper>Home</Wrapper>;
+  const handleClick = async () => {
+    const res = await axios.request({
+      method: 'get',
+      url: '/api/register',
+      data: {
+        email: 'test@test.com',
+        password: 'test@test.com',
+        companyNm: 'fast campus',
+        companyTel: '010-1234-4231',
+      },
+    });
+    console.log(res);
+  };
+  const config = genConfig({ sex: 'man', hairStyle: 'normal' });
+  return (
+    <Wrapper>
+      <span onClick={handleClick}>Home</span>
+      <Avatar style={{ width: '8rem', height: '8rem' }} {...config} />
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.section`

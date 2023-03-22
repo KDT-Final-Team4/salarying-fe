@@ -45,15 +45,18 @@ export default function SideNav() {
         </div>
 
         <div>
-          <Link href="/company">/company</Link>
-          <Link href="/company/mypage">/company/mypage</Link>
-          <Link href="/company/job-posting">/company/job-posting</Link>
-          <Link href="/company/job-posting/1">/company/job-posting/1</Link>
-          <Link href="/company/job-posting/new">/company/job-posting/new</Link>
-          <Link href="/company/notification">/company/notification</Link>
-          <Link href="/company/notice">/company/notice</Link>
-          <Link href="/company/notice/1">/company/notice/1</Link>
-          <Link href="/company/notice/new">/company/notice/new</Link>
+          <Link href='/company'>/company</Link>
+          <Link href='/company/mypage'>/company/mypage</Link>
+          <Link href='/company/job-posting'>/company/job-posting</Link>
+          <Link href='/company/job-posting/1'>/company/job-posting/1</Link>
+          <Link href='/company/job-posting/new'>/company/job-posting/new</Link>
+          <Link href='/company/applicant-management'>
+            /company/applicant-management
+          </Link>
+          <Link href='/company/notification'>/company/notification</Link>
+          <Link href='/company/notice'>/company/notice</Link>
+          <Link href='/company/notice/1'>/company/notice/1</Link>
+          <Link href='/company/notice/new'>/company/notice/new</Link>
         </div>
         <div>
           <Link href="/community/faq">/community/faq</Link>
@@ -70,6 +73,7 @@ export default function SideNav() {
 }
 
 const Wrapper = styled.section`
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   height: 150vh;
@@ -100,6 +104,7 @@ const Wrapper = styled.section`
 const DevLinks = styled.div`
   display: flex;
   flex-direction: column;
+
   div {
     margin-top: 20px;
     display: flex;
