@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import notice from "../../../mokeup/notice.json";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -34,11 +33,10 @@ const getNotice = async noticeId => {
 
 export default function NoticeId() {
 	const router = useRouter();
-	const [noticeId, setNoticeId] = useState(1);
+	const { noticeId }: any = router.query;
+
 	useEffect(() => {
 		if (!router.isReady) return;
-		const { noticeId }: any = router.query;
-		setNoticeId(noticeId);
 	}, [router.isReady]);
 
 	const { data } = useQuery(["notice", noticeId], () => getNotice(noticeId));
