@@ -30,7 +30,6 @@ const CompanyMembership = () => {
 const Container = styled.section`
   display: flex;
   flex-direction: column;
-  height: 150vh;
   width: 100%;
   align-items: center;
   padding-top: 50px;

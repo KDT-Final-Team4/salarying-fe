@@ -26,7 +26,7 @@ const Terms = () => {
         ))}
       </List>
       <button>
-        <Link href="admin/terms/new">약관 추가하기</Link>
+        <Link href="/admin/terms/new">약관 추가하기</Link>
       </button>
     </Container>
   );
@@ -35,7 +35,6 @@ const Terms = () => {
 const Container = styled.section`
   display: flex;
   flex-direction: column;
-  height: 150vh;
   width: 100%;
   align-items: center;
   padding-top: 50px;
@@ -59,6 +58,9 @@ const List = styled.section`
   border: 1px solid lightgray;
   border-radius: 10px;
   padding: 20px;
+  a {
+    color: #0072fd;
+  }
 `;
 
 const Item = styled.div`
