@@ -30,7 +30,7 @@ const getNotice = async (noticeId: string | string[]) => {
 	return result;
 };
 
-export default function NoticeId() {
+export default function NoticeDetail() {
 	const router = useRouter();
 	const noticeId = router.isReady ? router.query.noticeId : null;
 	console.log(noticeId);
@@ -43,8 +43,8 @@ export default function NoticeId() {
 			<span>{data?.content}</span>
 			<div>
 				<Link
-					href={`/community/notice/new/${noticeId}`}
-					as="/community/notice/new/1"
+					href="/community/notice/edit/[noticeId]"
+					as={`/community/notice/edit/${noticeId}`}
 				>
 					수정
 				</Link>

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export default function New() {
+export default function NoticeNew() {
 	const router = useRouter();
 	const { noticeId } = router.query;
 

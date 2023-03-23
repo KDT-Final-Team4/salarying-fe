@@ -25,27 +25,14 @@ const getNotices = async () => {
 	return result;
 };
 
-const getNotice = async () => {
-	const result = await axios
-		.request({
-			method: "get",
-			url: `/api/notice/detail`,
-		})
-		.then(response => {
-			console.log(response.data.data.noticeId);
-			return response.data.data;
-		})
-		.catch(error => {
-			console.log(error);
-		});
-	return result;
-};
-
 export default function NoticeList() {
 	const { data: notices, isLoading } = useQuery(["notices"], getNotices);
 
 	return (
 		<div>
+			<div>
+				<Link href={"/community/notice/new"}>등록</Link>
+			</div>
 			{!isLoading &&
 				notices?.map((notice, idx) => (
 					<div key={idx}>
