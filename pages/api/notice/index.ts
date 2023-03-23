@@ -25,12 +25,14 @@ export default function handler(
 						title: "공지사항 제목 1",
 						edit_id: "aaa@aaa.com",
 						date: "YYYY-MM-DD HH-MM-SS",
+						state: true,
 					},
 					{
 						id: 2,
 						title: "공지사항 제목 2",
 						edit_id: "aaa@aaa.com",
 						date: "YYYY-MM-DD HH-MM-SS",
+						state: false,
 					},
 				],
 			});
