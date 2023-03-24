@@ -14,15 +14,14 @@ export default function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>,
 ) {
-  switch (req.method) {
-    case httpMethod.GET:
-			const { noticeId } = req.body;
+	switch (req.method) {
+		case httpMethod.GET:
 			return res.status(200).json({
 				stateCode: 200,
 				success: true,
 				data: {
-					noticeId: `${noticeId}`,
-					title: `공지사항 제목 ${noticeId}`,
+					noticeId: 1,
+					title: "공지사항 제목 1",
 					adminId: "aaa@aaa.com",
 					date: "YYYY-MM-DD HH-MM-SS",
 					edit_date: "YYYY-MM-DD-HH-MM-SS",

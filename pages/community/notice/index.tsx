@@ -7,40 +7,43 @@ interface Object {
 	title: string;
 	edit_id: string;
 	date: string;
+	state: boolean;
 }
 
-export default function NoticeList() {
-	const fetchNotice = async () => {
-		const result = await axios
-			.request({
-				method: "get",
-				url: "/api/notice",
-			})
-			.then(response => {
-				return response.data.data;
-			})
-			.catch(error => {
-				console.log(error);
-			});
-		return result;
-	};
-	const { data, isLoading } = useQuery(["notices"], fetchNotice);
+const getNotices = async () => {
+	const result = await axios
+		.request({
+			method: "get",
+			url: "/api/notice",
+		})
+		.then(response => {
+			return response.data.data;
+		})
+		.catch(error => {
+			console.log(error);
+		});
+	return result;
+};
 
-	console.log(data);
+export default function NoticeList() {
+	const { data: notices, isLoading } = useQuery(["notices"], getNotices);
 
 	return (
 		<div>
+			<div>
+				<Link href={"/community/notice/new"}>등록</Link>
+			</div>
 			{!isLoading &&
-				data?.map((number, idx) => (
+				notices?.map((notice, idx) => (
 					<div key={idx}>
 						<Link
-							href={`/community/notice/${number.id}`}
-							as="/community/notice/1"
+							href="/community/notice/[noticeId]"
+							as={`/community/notice/${notice.id}`}
 						>
-							{number.title}
+							{notice.title}
 						</Link>
-						<strong>{number.edit_id}</strong>
-						<time>{number.date}</time>
+						<strong>{notice.edit_id}</strong>
+						<time>{notice.date}</time>
 					</div>
 				))}
 		</div>
