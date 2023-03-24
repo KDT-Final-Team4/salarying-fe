@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
+import HeadLayout from '@/components/layout/HeadLayout';
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
@@ -38,6 +39,8 @@ export default function Login() {
     </Wrapper>
   );
 }
+
+Login.layout = (page) => <HeadLayout>{page}</HeadLayout>;
 
 const Wrapper = styled.section`
   width: 100%;
