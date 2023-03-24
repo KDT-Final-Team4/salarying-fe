@@ -1,17 +1,17 @@
-import axios from "axios";
-import styled from "styled-components";
-import Avatar, { genConfig } from "react-nice-avatar";
+import axios from 'axios';
+import styled from 'styled-components';
+import Avatar, { genConfig } from 'react-nice-avatar';
 
 export default function Home() {
   const handleClick = async () => {
     const res = await axios.request({
-      method: "post",
-      url: "/api/users/login",
+      method: 'post',
+      url: '/api/users/login',
       data: {
-        email: "test@test.com",
-        password: "test@test.com",
-        companyNm: "fast campus",
-        companyTel: "010-1234-4231",
+        email: 'test@test.com',
+        password: 'test@test.com',
+        companyNm: 'fast campus',
+        companyTel: '010-1234-4231',
       },
     });
     console.log(res.data);
