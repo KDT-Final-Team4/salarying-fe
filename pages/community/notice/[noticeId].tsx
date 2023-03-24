@@ -14,12 +14,11 @@ interface content {
 	state: boolean;
 }
 
-const getNotice = async noticeId => {
+const getNotice = async (noticeId: string | string[]) => {
 	const result = await axios
 		.request({
 			method: "get",
-			url: "/api/noticeDetail",
-			data: noticeId,
+			url: `/api/notice/${noticeId}`,
 		})
 		.then(response => {
 			console.log(response.data.data.noticeId);
@@ -31,13 +30,10 @@ const getNotice = async noticeId => {
 	return result;
 };
 
-export default function NoticeId() {
+export default function NoticeDetail() {
 	const router = useRouter();
-	const { noticeId }: any = router.query;
-
-	useEffect(() => {
-		if (!router.isReady) return;
-	}, [router.isReady]);
+	const noticeId = router.isReady ? router.query.noticeId : null;
+	console.log(noticeId);
 
 	const { data } = useQuery(["notice", noticeId], () => getNotice(noticeId));
 
@@ -47,8 +43,8 @@ export default function NoticeId() {
 			<span>{data?.content}</span>
 			<div>
 				<Link
-					href={`/community/notice/new/${noticeId}`}
-					as="/community/notice/new/1"
+					href="/community/notice/edit/[noticeId]"
+					as={`/community/notice/edit/${noticeId}`}
 				>
 					수정
 				</Link>
