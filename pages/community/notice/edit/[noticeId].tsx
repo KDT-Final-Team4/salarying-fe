@@ -29,13 +29,12 @@ const NoticeEdit = (props: Props) => {
 
 	const { data } = useQuery(["notice", noticeId], () => getNotice(noticeId));
 
-	const changeHandler = useCallback;
-	e => {
-		data.content = e.target.value;
+	const changeHandler = e => {
+		e.preventDefault();
 	};
 
 	return (
-		<Wrapper>
+		<Form onSubmit={changeHandler}>
 			<label htmlFor="title">제목</label>
 			<input name="title" defaultValue={data ? data.title : ""} />
 			<label htmlFor="content">내용</label>
@@ -44,11 +43,13 @@ const NoticeEdit = (props: Props) => {
 				defaultValue={data ? data.content : ""}
 				size={500}
 			/>
-		</Wrapper>
+			<button>확인</button>
+			<button>취소</button>
+		</Form>
 	);
 };
 
-const Wrapper = styled.div`
+const Form = styled.form`
 	width: 1200px;
 	display: flex;
 	flex-direction: column;
