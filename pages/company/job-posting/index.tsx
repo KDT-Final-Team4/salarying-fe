@@ -4,16 +4,18 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
-const listData = [{ title: '공고1' }, { title: '공고2' }, { title: '공고3' }];
+const listData = [
+  { title: '알바직 모집' },
+  { title: '인턴 모집' },
+  { title: 'CEO 모집' },
+  { title: '총무 모집' },
+];
 
 const JobPosting = () => {
   return (
     <Wrapper>
       <Head>
-        <h1>공고 리스트</h1>
-        <Link href='/company/job-posting/new'>
-          <div>공고 추가</div>
-        </Link>
+        <Title>공고 리스트 보기</Title>
       </Head>
 
       <PostList>
@@ -31,18 +33,22 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 10px;
-  gap: 100px;
+  padding: 0 100px;
+  /* gap: 100px; */
 `;
 
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 20px;
-  h1 {
-  }
+  margin: 50px 0;
+  padding: 30px 0;
+  border-bottom: 1px solid black;
 `;
-
+const Title = styled.h1``;
 const PostList = styled.div`
   /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
