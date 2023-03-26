@@ -2,20 +2,42 @@ import React from 'react';
 import styled from 'styled-components';
 
 const listData = [
-  { title: '알바직 모집' },
-  { title: '인턴 모집' },
-  { title: 'CEO 모집' },
-  { title: '총무 모집' },
+  { title: '공지사항1', author: '공혜지', createdAt: '2023.03.03' },
+  { title: '공지사항2', author: '황이삭', createdAt: '2023.03.04' },
+  { title: '공지사항3', author: '우지수', createdAt: '2023.03.05' },
 ];
 
+const ContentHeader = () => {
+  return (
+    <>
+      <HeaderCell>제목</HeaderCell>
+      <HeaderCell>작성자</HeaderCell>
+      <HeaderCell>작성날짜</HeaderCell>
+    </>
+  );
+};
+const HeaderCell = styled.div`
+  font-weight: 700;
+  font-size: 20px;
+  margin: 10px 0;
+`;
 export default function Notice() {
   return (
     <Wrapper>
       <Head>
-        <Title>지원자 관리</Title>
+        <Title>공지사항</Title>
       </Head>
 
-      <PostList></PostList>
+      <Contents>
+        <ContentHeader />
+        {listData.map((data) => (
+          <>
+            <div>{data.title}</div>
+            <div>{data.author}</div>
+            <div>{data.createdAt}</div>
+          </>
+        ))}
+      </Contents>
     </Wrapper>
   );
 }
@@ -37,10 +59,19 @@ const Head = styled.div`
   padding: 30px 0;
   border-bottom: 1px solid black;
 `;
-const Title = styled.h1``;
-const PostList = styled.div`
-  width: 100%;
-  display: flex;
+const Title = styled.h1`
+  font-weight: 700;
+`;
+const Contents = styled.div`
   flex-direction: column;
-  gap: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 100px 100px;
+  gap: 3px;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-emerald100);
+  }
 `;
