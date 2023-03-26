@@ -1,3 +1,5 @@
+import PostCard from '@/components/company/job-posting/PostCard';
+import ApplicantCard from '@/components/company/notice/ApplicantCard';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,14 +10,18 @@ const listData = [
   { title: '총무 모집' },
 ];
 
-export default function Notice() {
+export default function ApplicantManagement() {
   return (
     <Wrapper>
       <Head>
         <Title>지원자 관리</Title>
       </Head>
 
-      <PostList></PostList>
+      <PostList>
+        {listData.map((list) => (
+          <PostCard key={list.title} jobPost={list} />
+        ))}
+      </PostList>
     </Wrapper>
   );
 }

@@ -8,13 +8,6 @@ type Data = {
   data: unknown;
   message: string;
 };
-enum httpMethod {
-  POST = 'POST',
-  GET = 'GET',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
-}
 
 export default function handler(
   req: NextApiRequest,
