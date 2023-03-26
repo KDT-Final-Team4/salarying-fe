@@ -8,9 +8,11 @@ interface IProps {
   color?: string;
 }
 export default function Button_1({ name, Icon, color }: IProps) {
+  const iconColor = color && color[0] === '#' ? color : `var(${color})`;
+
   return (
     <Btn>
-      {Icon && <Icon color={color} />}
+      {Icon && <Icon color={iconColor} />}
       <span>{name}</span>
     </Btn>
   );
@@ -24,5 +26,6 @@ const Btn = styled.button`
   border-radius: 5px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 `;
