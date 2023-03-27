@@ -220,6 +220,9 @@
   --color-rose800: #9f1239;
   --color-rose900: #881337;
   --scrollbar-width: calc(100vw - 100%);
+  --color-primary: #201e34;
+  --color-sub: #282541;
+  --color-point: #c8ee44;
 }
 
 * {

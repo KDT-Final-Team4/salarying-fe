@@ -10,13 +10,10 @@ export default function SideNav() {
   const config = genConfig("admin@email.com");
   return (
     <Wrapper>
-      <Profile>
-        <Avatar style={{ width: "8rem", height: "8rem" }} {...config} />
-      </Profile>
-      <Mypage href="/admin/mypage">
-        <CgProfile />
-        마이페이지
-      </Mypage>
+      <Logo>
+        <img src="/logo.png" alt="" />
+      </Logo>
+
       <ul>
         <Link href="/admin/terms">
           <li>약관 관리</li>
@@ -78,6 +75,13 @@ export default function SideNav() {
           <Link href="/community/notice/new">/community/notice/new</Link>
         </div>
       </DevLinks>
+      {/* <Profile>
+        <Avatar style={{ width: "8rem", height: "8rem" }} {...config} />
+        <Mypage href="/admin/mypage">
+          <CgProfile />
+          마이페이지
+        </Mypage>
+      </Profile> */}
     </Wrapper>
   );
 }
@@ -85,41 +89,48 @@ export default function SideNav() {
 const Wrapper = styled.section`
   flex-shrink: 0;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
   width: 270px;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #2a36b8;
+  background-color: var(--color-primary);
   ul {
     width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 40px;
+    flex-wrap: wrap;
     a {
-      color: #fff;
+      color: var(--color-point);
+      font-weight: 500;
       font-weight: 400;
-      text-align: center;
       width: 100%;
+      :hover {
+        background-color: var(--color-sub);
+      }
       li {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        padding: 10px 0;
-        :hover {
-          background-color: #000c8e;
-        }
+        padding: 10px 40px;
       }
     }
   }
 `;
 
+const Logo = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  img {
+    width: 180px;
+    height: 115px;
+    padding: 40px 0;
+  }
+`;
+
 const Profile = styled.div`
   width: 100%;
-  height: 250px;
+  height: 200px;
   background-color: #000c8e;
   display: flex;
   justify-content: center;
@@ -131,7 +142,8 @@ const DevLinks = styled.div`
   flex-direction: column;
   height: 300px;
   overflow-y: auto;
-
+  position: absolute;
+  bottom: 0;
   div {
     margin-top: 20px;
     display: flex;
