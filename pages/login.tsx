@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
 import HeadLayout from '@/components/layout/HeadLayout';
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
+  const [showPW, setShowPW] = useState(false);
 
   const onValid = () => {};
   return (
@@ -30,11 +31,16 @@ export default function Login() {
             <InputDiv>
               <SubTitle>Password</SubTitle>
               <TextInput
-                type='text'
+                type={showPW? 'text' : 'password'}
                 {...register('password')}
                 placeholder='Enter your password'
+
               />
-              <AiOutlineEyeInvisible />
+              {showPW ? 
+                <AiOutlineEyeInvisible onClick={()=>setShowPW(false)}/>:
+              <AiOutlineEye onClick={()=>setShowPW(true)}/>
+              }
+              
             </InputDiv>
             <SubmitPanel>
               <div>
