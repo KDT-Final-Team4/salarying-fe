@@ -1,6 +1,7 @@
 import Link from "next/link";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import Content from "@/components/content/Content";
 
 interface Object {
 	id: number;
@@ -29,7 +30,7 @@ export default function NoticeList() {
 	const { data: notices, isLoading } = useQuery(["notices"], getNotices);
 
 	return (
-		<div>
+		<Content title="공지사항">
 			<div>
 				<Link href={"/community/notice/new"}>등록</Link>
 			</div>
@@ -46,6 +47,6 @@ export default function NoticeList() {
 						<time>{notice.date}</time>
 					</div>
 				))}
-		</div>
+		</Content>
 	);
 }
