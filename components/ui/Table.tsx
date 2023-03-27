@@ -23,7 +23,7 @@ const Table = ({ columns, data }) => {
 						</tr>
 					);
 				})}
-			</thead>{" "}
+			</thead>
 			<tbody {...getTableBodyProps}>
 				{rows.map(row => {
 					prepareRow(row);
@@ -41,7 +41,7 @@ const Table = ({ columns, data }) => {
 						</tr>
 					);
 				})}
-			</tbody>{" "}
+			</tbody>
 		</table>
 	);
 };

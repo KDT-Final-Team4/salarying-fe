@@ -35,10 +35,6 @@ export default function NoticeList() {
 	const columns = useMemo(
 		() => [
 			{
-				accessor: "id",
-				NoticeId: "ID",
-			},
-			{
 				accessor: "title",
 				Header: "제목",
 			},
@@ -57,10 +53,10 @@ export default function NoticeList() {
 		],
 		[],
 	);
-
+	console.log(notices);
 	return (
 		<Content title="공지사항">
-			<Table columns={columns} data={notices && notices} />
+			{!isLoading && notices && <Table columns={columns} data={notices} />}
 			<div>
 				<Link href={"/community/notice/new"}>등록</Link>
 			</div>
