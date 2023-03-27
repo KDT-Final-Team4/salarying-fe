@@ -1,6 +1,5 @@
 import PostCard from '@/components/company/job-posting/PostCard';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import ApplicantCard from '@/components/company/notice/ApplicantCard';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,11 +10,11 @@ const listData = [
   { title: '총무 모집' },
 ];
 
-const JobPosting = () => {
+export default function ApplicantManagement() {
   return (
     <Wrapper>
       <Head>
-        <Title>공고 리스트 보기</Title>
+        <Title>지원자 관리</Title>
       </Head>
 
       <PostList>
@@ -25,9 +24,7 @@ const JobPosting = () => {
       </PostList>
     </Wrapper>
   );
-};
-
-export default JobPosting;
+}
 
 const Wrapper = styled.section`
   display: flex;
@@ -35,6 +32,7 @@ const Wrapper = styled.section`
   width: 100%;
   padding: 0 100px;
   /* gap: 100px; */
+  border: 1px solid green;
 `;
 
 const Head = styled.div`
@@ -47,7 +45,7 @@ const Head = styled.div`
 `;
 const Title = styled.h1``;
 const PostList = styled.div`
-  /* width: 100%; */
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
