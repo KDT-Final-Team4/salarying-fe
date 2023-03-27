@@ -34,25 +34,31 @@ const NoticeEdit = (props: Props) => {
 	};
 
 	return (
-		<Form onSubmit={changeHandler}>
-			<label htmlFor="title">제목</label>
-			<input name="title" defaultValue={data ? data.title : ""} />
-			<label htmlFor="content">내용</label>
-			<input
-				name="content"
-				defaultValue={data ? data.content : ""}
-				size={500}
-			/>
-			<button>확인</button>
-			<button>취소</button>
-		</Form>
+		<Wrapper>
+			<form onSubmit={changeHandler}>
+				<label htmlFor="title">제목</label>
+				<input name="title" defaultValue={data ? data.title : ""} />
+				<label htmlFor="content">내용</label>
+				<input
+					name="content"
+					defaultValue={data ? data.content : ""}
+					size={500}
+				/>
+				<button>확인</button>
+				<button>취소</button>
+			</form>
+		</Wrapper>
 	);
 };
 
-const Form = styled.form`
-	width: 1200px;
-	display: flex;
-	flex-direction: column;
+const Wrapper = styled.div`
+	form {
+		width: 100%;
+		padding: 0 50px;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+	}
 
 	input:nth-child(4) {
 		height: 400px;
