@@ -60,6 +60,9 @@ export default function SideNav() {
           <Link href="/company/applicant-management">
             /company/applicant-management
           </Link>
+          <Link href="/company/applicant-management/category/1">
+            /company/applicant-management/category/1
+          </Link>
           <Link href="/company/notification">/company/notification</Link>
           <Link href="/company/notice">/company/notice</Link>
           <Link href="/company/notice/1">/company/notice/1</Link>
@@ -73,6 +76,7 @@ export default function SideNav() {
           <Link href="/community/notice">/community/notice</Link>
           <Link href="/community/notice/1">/community/notice/1</Link>
           <Link href="/community/notice/new">/community/notice/new</Link>
+          <Link href="/community/notice/edit/1">/community/notice/edit/1</Link>
         </div>
       </DevLinks>
       {/* <Profile>
