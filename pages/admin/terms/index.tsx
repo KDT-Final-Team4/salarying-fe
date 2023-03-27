@@ -1,13 +1,13 @@
-import { getSNBLayout } from '@/libs/client/getLayout';
-import Link from 'next/link';
-import React from 'react';
-import styled from 'styled-components';
+import { getSNBLayout } from "@/libs/client/getLayout";
+import Link from "next/link";
+import React from "react";
+import styled from "styled-components";
 
 const list = [
-  { title: '서비스 이용 약관', id: 1, status: '공개' },
-  { title: '개인 정보 처리 방침', id: 2, status: '공개' },
-  { title: '제3자 정보 제공', id: 3, status: '비공개' },
-  { title: '개인정보 마케팅 이용', id: 4, status: '비공개' },
+  { title: "서비스 이용 약관", id: 1, status: "공개" },
+  { title: "개인 정보 처리 방침", id: 2, status: "공개" },
+  { title: "제3자 정보 제공", id: 3, status: "비공개" },
+  { title: "개인정보 마케팅 이용", id: 4, status: "비공개" },
 ];
 
 const Terms = () => {
@@ -40,10 +40,12 @@ Terms.getLayout = getSNBLayout;
 const Container = styled.section`
   display: flex;
   width: 100%;
+  height: 100%;
   align-items: center;
   padding-top: 50px;
   justify-content: center;
   align-items: center;
+  background-color: aqua;
 `;
 
 const Inner = styled.div`

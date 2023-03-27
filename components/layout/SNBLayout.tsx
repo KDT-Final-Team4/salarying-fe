@@ -26,7 +26,6 @@ const Wrapper = styled.div`
 const BodyContent = styled.main`
   width: 100%;
   display: flex;
-  width: 100%;
-  height: 100%;
+  height: 100vh;
   margin-left: 270px;
 `;
