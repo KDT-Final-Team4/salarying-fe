@@ -107,11 +107,12 @@ const Wrapper = styled.section`
       font-weight: 500;
       font-weight: 400;
       width: 100%;
-      :hover {
-        background-color: var(--color-sub);
-      }
+
       li {
-        padding: 10px 40px;
+        padding: 15px 40px;
+        :hover {
+          font-weight: 700;
+        }
       }
     }
   }
