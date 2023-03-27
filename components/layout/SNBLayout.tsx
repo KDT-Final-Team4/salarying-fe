@@ -1,12 +1,12 @@
-import React from 'react';
-import Header from '@/components/Header/Header';
-import SideNav from '@/components/SideNav';
-import styled from 'styled-components';
+import React from "react";
+import Header from "@/components/Header/Header";
+import SideNav from "@/components/SideNav";
+import styled from "styled-components";
 
 export default function SNBLayout({ children }) {
   return (
     <Wrapper>
-      <Header />
+      {/* <Header /> */}
       <BodyContent>
         <SideNav />
         {children}
@@ -27,7 +27,6 @@ const BodyContent = styled.main`
   width: 100%;
   display: flex;
   width: 100%;
-  height: calc(100vh - 70px);
+  height: 100%;
   margin-left: 270px;
-  margin-top: 70px;
 `;

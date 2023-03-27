@@ -1,5 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import { ServerStyleSheet } from "styled-components";
 
 // html 의 기본 세팅을 나타내는 컴포넌트
 class MyDocument extends Document {
@@ -32,7 +32,10 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <title>HiredPro</title>
+          <link rel="icon" href="/favicon.png"></link>
+        </Head>
         <body>
           <Main />
           <NextScript />
