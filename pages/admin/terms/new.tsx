@@ -62,7 +62,9 @@ export default function New(props: Props) {
   }
   return (
     <Container>
-      <Content title="약관 등록" children={''}></Content>
+      <Content title="약관 등록">
+        <div></div>
+      </Content>
       <Inner>
         <Info>
           <Category>

@@ -13,7 +13,9 @@ const list = [
 export default function CompanyMembership() {
   return (
     <Container>
-      <Content title="기업 회원 관리" children={''}></Content>
+      <Content title="기업 회원 관리">
+        <div></div>
+      </Content>
       <Inner>
         {list.map((item) => (
           <Item key={item.id}>
