@@ -1,18 +1,17 @@
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
-import CompanyMembership from "../pages/admin/company-membership";
-import Notification from "../pages/company/notification";
-import { CgProfile } from "react-icons/cg";
-import Avatar, { genConfig } from "react-nice-avatar";
+import Link from 'next/link'
+import React from 'react'
+import styled from 'styled-components'
+import Notification from '../pages/company/notification'
+import { CgProfile } from 'react-icons/cg'
+import Avatar, { genConfig } from 'react-nice-avatar'
 
 export default function SideNav() {
-  const config = genConfig("admin@email.com");
+  const config = genConfig('admin@email.com')
   return (
     <Wrapper>
       <Logo>
         <Link href="/">
-          <img src="/logo.png" alt="" />
+          <img src="/logo_dark.png" alt="" />
         </Link>
       </Logo>
 
@@ -55,9 +54,7 @@ export default function SideNav() {
           <Link href="/admin">/admin</Link>
           <Link href="/admin/terms">/admin/terms</Link>
           <Link href="/admin/terms/1">/admin/terms/1</Link>
-          <Link href="/admin/company-membership">
-            /admin/company-membership
-          </Link>
+          <Link href="/admin/company-membership">/admin/company-membership</Link>
           <Link href="/admin/mypage">/admin/mypage</Link>
         </div>
 
@@ -67,12 +64,8 @@ export default function SideNav() {
           <Link href="/company/job-posting">/company/job-posting</Link>
           <Link href="/company/job-posting/1">/company/job-posting/1</Link>
           <Link href="/company/job-posting/new">/company/job-posting/new</Link>
-          <Link href="/company/applicant-management">
-            /company/applicant-management
-          </Link>
-          <Link href="/company/applicant-management/category/1">
-            /company/applicant-management/category/1
-          </Link>
+          <Link href="/company/applicant-management">/company/applicant-management</Link>
+          <Link href="/company/applicant-management/category/1">/company/applicant-management/category/1</Link>
           <Link href="/company/notification">/company/notification</Link>
           <Link href="/company/notice">/company/notice</Link>
           <Link href="/company/notice/1">/company/notice/1</Link>
@@ -97,7 +90,7 @@ export default function SideNav() {
         </Mypage>
       </Profile> */}
     </Wrapper>
-  );
+  )
 }
 
 const Wrapper = styled.section`
@@ -111,28 +104,29 @@ const Wrapper = styled.section`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--color-primary);
+  background-color: var(--color-lightgray);
   ul {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    color: var(--color-point);
+    color: var(--color-gray600);
     li {
       padding: 10px;
+      font-weight: 300;
     }
     a {
       width: 100%;
-      color: var(--color-point);
+      color: var(--color-gray600);
       font-weight: 500;
     }
   }
-`;
+`
 
 const Subcategory = styled.ul`
   li {
     padding: 10px;
   }
-`;
+`
 const Logo = styled.div`
   width: 100%;
   display: flex;
@@ -142,7 +136,7 @@ const Logo = styled.div`
     height: 115px;
     padding: 40px 0;
   }
-`;
+`
 
 const Profile = styled.div`
   width: 100%;
@@ -151,7 +145,7 @@ const Profile = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const DevLinks = styled.div`
   display: flex;
@@ -164,15 +158,8 @@ const DevLinks = styled.div`
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    &:hover {
-      background-color: #000c8e;
-    }
     a {
-      color: #fff;
-      &:hover {
-        color: #000c8e;
-        background-color: var(--color-gray100);
-      }
+      color: var(--color-gray600);
     }
   }
-`;
+`
