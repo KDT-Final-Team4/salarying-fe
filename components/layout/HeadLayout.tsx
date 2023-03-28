@@ -1,13 +1,13 @@
-import Link from 'next/link';
-import React from 'react';
-import styled from 'styled-components';
+import Link from "next/link";
+import React from "react";
+import styled from "styled-components";
 
 export default function HeadLayout({ children }) {
   return (
     <Wrapper>
       <Header>
         <Logo>
-          <Link href='/'>HiredPro</Link>
+          <Link href="/">HiredPro</Link>
         </Logo>
         <HeaderNav>
           <ul>
