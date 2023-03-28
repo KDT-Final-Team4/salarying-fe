@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import Content from '@/components/ui/Content'
 
 type Props = {}
 interface List {
@@ -52,7 +53,7 @@ const list: List[] = [
   },
 ]
 
-const New = (props: Props) => {
+export default function New(props: Props) {
   const router = useRouter()
   const [select, setSelect] = useState(0)
   const handleSelect = (idx: number) => {
@@ -61,9 +62,7 @@ const New = (props: Props) => {
   }
   return (
     <Container>
-      <Content>
-        <h1>약관 등록</h1>
-      </Content>
+      <Content title="약관 등록" children={''} />
       <Inner>
         <Info>
           <Category>
@@ -108,20 +107,6 @@ const Container = styled.section`
   width: 100%;
   height: 100%;
   align-content: flex-start;
-`
-
-const Content = styled.section`
-  width: 100%;
-  padding: 0 50px 0 50px;
-  box-sizing: border-box;
-  h1 {
-    color: var(--color-primary);
-    font-size: 24px;
-    font-weight: 700;
-    padding: 50px 0px 20px 0px;
-    margin-bottom: 30px;
-    border-bottom: 2px solid var(--color-lightgray);
-  }
 `
 
 const Inner = styled.div`
@@ -293,4 +278,3 @@ const Write = styled.div`
     resize: none;
   }
 `
-export default New
