@@ -1,9 +1,9 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { AiOutlineEyeInvisible } from 'react-icons/ai';
-import { BsCheckLg } from 'react-icons/bs';
-import HeadLayout from '@/components/layout/HeadLayout';
+import React from "react";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { BsCheckLg } from "react-icons/bs";
+import HeadLayout from "@/components/layout/HeadLayout";
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
@@ -15,21 +15,21 @@ export default function Login() {
       <LoginForm onSubmit={handleSubmit(onValid)}>
         <InputDiv>
           <SubTitle>ID</SubTitle>
-          <TextInput type='text' {...register('id')} />
+          <TextInput type="text" {...register("id")} />
         </InputDiv>
         <InputDiv>
           <SubTitle>Password</SubTitle>
-          <TextInput type='text' {...register('password')} />
+          <TextInput type="text" {...register("password")} />
           <AiOutlineEyeInvisible />
         </InputDiv>
         <SubmitPanel>
           <div>
             <RememberId>
-              <input type='checkbox' id='rememberId' />
-              <FakeCheckbox htmlFor='rememberId'>
+              <input type="checkbox" id="rememberId" />
+              <FakeCheckbox htmlFor="rememberId">
                 <BsCheckLg />
               </FakeCheckbox>
-              <label htmlFor='rememberId'>아이디 기억하기</label>
+              <label htmlFor="rememberId">아이디 기억하기</label>
             </RememberId>
             <span>패스워드 찾기</span>
           </div>
@@ -112,7 +112,7 @@ const RememberId = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 5px;
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     display: none;
 
     & + label {
