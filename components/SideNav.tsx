@@ -11,7 +11,7 @@ export default function SideNav() {
     <Wrapper>
       <Logo>
         <Link href="/">
-          <img src="/logo.png" alt="" />
+          <img src="/logo_dark.png" alt="" />
         </Link>
       </Logo>
 
@@ -104,19 +104,19 @@ const Wrapper = styled.section`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--color-primary);
+  background-color: var(--color-lightgray);
   ul {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    color: var(--color-point);
+    color: var(--color-gray600);
     li {
       padding: 10px;
       font-weight: 300;
     }
     a {
       width: 100%;
-      color: var(--color-point);
+      color: var(--color-gray600);
       font-weight: 500;
     }
   }
@@ -158,15 +158,8 @@ const DevLinks = styled.div`
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    &:hover {
-      background-color: #000c8e;
-    }
     a {
-      color: #fff;
-      &:hover {
-        color: #000c8e;
-        background-color: var(--color-gray100);
-      }
+      color: var(--color-gray600);
     }
   }
 `
