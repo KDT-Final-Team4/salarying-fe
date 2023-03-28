@@ -1,7 +1,7 @@
-import ApplicantGrid_data from '@/components/company/applicant-management/category/ApplicantGrid_data';
-import Link from 'next/link';
-import React from 'react';
-import styled from 'styled-components';
+import ApplicantGrid_data from '@/components/company/applicant-management/category/ApplicantGrid_data'
+import Link from 'next/link'
+import React from 'react'
+import styled from 'styled-components'
 
 const listData = [
   {
@@ -10,14 +10,14 @@ const listData = [
   { title: '이름2' },
   { title: '이름3' },
   { title: '이름4' },
-];
+]
 
 export default function CategoryId() {
   return (
     <Wrapper>
       <Head>
         <Title>지원자 상세</Title>
-        <Link href='/company/applicant-management'>목록으로 돌아가기</Link>
+        <Link href="/company/applicant-management">목록으로 돌아가기</Link>
       </Head>
       <Body>
         <Overview>
@@ -33,14 +33,16 @@ export default function CategoryId() {
           </Procedure>
         </Overview>
         <ApplicantGrid>
-          <ApplicantGrid_head>지원자</ApplicantGrid_head>
-          <ApplicantGrid_head>결정</ApplicantGrid_head>
+          <>
+            <ApplicantGrid_head>지원자</ApplicantGrid_head>
+            <ApplicantGrid_head>결정</ApplicantGrid_head>
+          </>
           <ApplicantGrid_data name={'황이삭'} />
           <ApplicantGrid_data name={'공혜지'} />
           <ApplicantGrid_data name={'우지수'} />
         </ApplicantGrid>
         <Pagination>
-          <li className='active'>1</li>
+          <li className="active">1</li>
           <li>2</li>
           <li>3</li>
           <li>4</li>
@@ -48,28 +50,28 @@ export default function CategoryId() {
         </Pagination>
       </Body>
     </Wrapper>
-  );
+  )
 }
 
 const Wrapper = styled.section`
   padding: 50px;
   width: 100%;
-`;
+`
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid black;
   padding-bottom: 30px;
-`;
-const Title = styled.h1``;
-const Body = styled.main``;
+`
+const Title = styled.h1``
+const Body = styled.main``
 const Overview = styled.div`
   h2 {
     font-weight: 700;
     font-size: 20px;
     margin: 20px 0;
   }
-`;
+`
 
 const Procedure = styled.div`
   display: flex;
@@ -85,7 +87,7 @@ const Procedure = styled.div`
     align-items: center;
     gap: 10px;
   }
-`;
+`
 const Step = styled.div`
   background-color: white;
   border-radius: 5px;
@@ -93,7 +95,7 @@ const Step = styled.div`
   /* display: flex;
   justify-content: center;
   align-items: center; */
-`;
+`
 const ApplicantGrid = styled.table`
   border: 1px solid red;
   display: grid;
@@ -112,13 +114,13 @@ const ApplicantGrid = styled.table`
       justify-content: center;
     }
   }
-`;
+`
 
 const ApplicantGrid_head = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-`;
+`
 
 const Pagination = styled.ul`
   display: flex;
@@ -137,4 +139,4 @@ const Pagination = styled.ul`
       font-size: 16px;
     }
   }
-`;
+`
