@@ -70,6 +70,7 @@ export default function TermsId() {
         <Nav>
           {list.map((item) => (
             <Link
+              key={item.id}
               href={`${item.id}`}
               className={termsId === item.id ? "active" : null}
             >
