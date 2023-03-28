@@ -11,13 +11,23 @@ export default function SideNav() {
   return (
     <Wrapper>
       <Logo>
-        <img src="/logo.png" alt="" />
+        <Link href="/">
+          <img src="/logo.png" alt="" />
+        </Link>
       </Logo>
 
       <ul>
-        <Link href="/admin/terms">
-          <li>약관 관리</li>
-        </Link>
+        <li>
+          약관 관리
+          <Subcategory>
+            <Link href="/admin/terms">
+              <li>최종 약관</li>
+            </Link>
+            <Link href="/admin/terms/service">
+              <li>약관별 관리</li>
+            </Link>
+          </Subcategory>
+        </li>
 
         <Link href="/admin/company-membership">
           <li>기업 회원관리</li>
@@ -106,22 +116,23 @@ const Wrapper = styled.section`
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    color: var(--color-point);
+    li {
+      padding: 10px;
+    }
     a {
+      width: 100%;
       color: var(--color-point);
       font-weight: 500;
-      font-weight: 400;
-      width: 100%;
-
-      li {
-        padding: 15px 40px;
-        :hover {
-          font-weight: 700;
-        }
-      }
     }
   }
 `;
 
+const Subcategory = styled.ul`
+  li {
+    padding: 10px;
+  }
+`;
 const Logo = styled.div`
   width: 100%;
   display: flex;
@@ -163,18 +174,5 @@ const DevLinks = styled.div`
         background-color: var(--color-gray100);
       }
     }
-  }
-`;
-
-const Mypage = styled(Link)`
-  width: 100%;
-  padding-top: 20px;
-  display: flex;
-  justify-content: center;
-  color: #fff;
-  svg {
-    box-sizing: content-box;
-    padding-right: 5px;
-    color: #fff;
   }
 `;

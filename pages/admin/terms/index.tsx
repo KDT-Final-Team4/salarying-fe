@@ -4,33 +4,32 @@ import React from "react";
 import styled from "styled-components";
 
 const list = [
-  { title: "서비스 이용 약관", id: 1, status: "공개" },
-  { title: "개인 정보 처리 방침", id: 2, status: "공개" },
-  { title: "제3자 정보 제공", id: 3, status: "비공개" },
-  { title: "개인정보 마케팅 이용", id: 4, status: "비공개" },
+  { title: "서비스 이용 약관", id: "service", status: "공개" },
+  { title: "개인 정보 처리 방침", id: "privacy", status: "공개" },
+  { title: "제3자 정보 제공", id: "information", status: "비공개" },
+  { title: "개인정보 마케팅 이용", id: "marketing", status: "비공개" },
 ];
 
 const Terms = () => {
   return (
     <Container>
+      <Title>
+        <h1>최종 약관</h1>
+      </Title>
       <Inner>
-        <Title>
-          <h1>약관 관리</h1>
-        </Title>
         <List>
           {list.map((item) => (
             <Item key={item.id}>
-              <Link href={`/admin/terms/${item.id}`}>
-                <p>{item.title}</p>
-                <p>{item.status}</p>
-              </Link>
+              <h3>{item.title}</h3>
+              <div>
+                <Link href={`/admin/terms/${item.id}`}>
+                  <p>관리하기</p>
+                </Link>
+              </div>
             </Item>
           ))}
         </List>
       </Inner>
-      {/* <button>
-        <Link href="/admin/terms/new">약관 추가하기</Link>
-      </button> */}
     </Container>
   );
 };
@@ -39,63 +38,70 @@ Terms.getLayout = getSNBLayout;
 
 const Container = styled.section`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   height: 100%;
-  align-items: center;
-  padding-top: 50px;
-  justify-content: center;
-  align-items: center;
-  background-color: aqua;
-`;
-
-const Inner = styled.div`
-  width: 80%;
-  height: 70%;
-  border: 1px solid lightgray;
-  border-radius: 15px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  background-color: #eeefff;
+  align-content: flex-start;
 `;
 
 const Title = styled.section`
   width: 100%;
+  padding: 0 50px 50px 50px;
+  box-sizing: border-box;
   h1 {
-    color: #fff;
-    font-size: 16px;
-    font-weight: 400;
-    padding: 20px 30px;
-    border-radius: 15px 15px 0 0;
-    background-color: #000c8e;
+    color: var(--color-primary);
+    font-size: 24px;
+    font-weight: 700;
+    padding: 50px 0px 20px 0px;
+    margin-bottom: 80px;
+    border-bottom: 2px solid var(--color-lightgray);
   }
 `;
 
-const List = styled.section`
-  display: flex;
+const Inner = styled.div`
   width: 100%;
+  margin: 0 50px;
+`;
+
+const List = styled.section`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   padding: 20px;
   justify-content: center;
   flex-wrap: wrap;
+  gap: 40px;
 `;
 
 const Item = styled.div`
   display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  font-size: 17px;
-  font-weight: 500;
-  padding: 20px 30px;
+  flex-wrap: wrap;
+  height: 200px;
+  background-color: var(--color-lightgray);
+  border-radius: 20px;
+  padding: 30px;
+  align-content: space-between;
   cursor: pointer;
-  a {
-    width: 100%;
-    color: #0072fd;
-    display: flex;
-    justify-content: space-between;
-  }
   :hover {
-    background-color: #f5f5f5;
-    border-radius: 10px;
+    background-color: var(--color-point);
+    transition: 0.3s;
+  }
+  h3 {
+    width: 100%;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    .icon {
+      color: var(--color-primary);
+      font-size: 100px;
+      margin-right: -20px;
+      margin-bottom: -20px;
+    }
   }
 `;
 export default Terms;
