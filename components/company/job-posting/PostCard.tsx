@@ -9,14 +9,12 @@ export default function PostCard({ jobPost }) {
         <BsFillBoxFill color="#fff" size="30" />
         <div>
           <Title>{jobPost.title}</Title>
-          <span>abcd@naver.com</span>
+          <SubTitle>abcd@naver.com</SubTitle>
         </div>
       </Left>
       <Right>
-        <Btns>
-          <Btn>자세히 보기</Btn>
-          <Btn>관리</Btn>
-        </Btns>
+        <Btn>자세히 보기</Btn>
+        <Btn>관리</Btn>
       </Right>
     </Card>
   )
@@ -25,13 +23,12 @@ export default function PostCard({ jobPost }) {
 const Card = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: var(--color-primary);
   color: var(--color-lightgray);
   align-items: center;
   width: 100%;
   border-radius: 10px;
   padding: 20px 30px;
-  cursor: pointer;
+  background-color: var(--color-primary);
   &:hover {
     background-color: var(--color-sub);
   }
@@ -46,19 +43,32 @@ const Left = styled.div`
     flex-direction: column;
   }
 `
-const Right = styled.div`
-  display: flex;
-`
 
 const Title = styled.h3`
   font-weight: 700;
 `
-const Btns = styled.div`
+const SubTitle = styled.h4`
+  font-weight: 400;
+  font-size: 12px;
+`
+
+const Right = styled.div`
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-end;
+  /* gap: 5px; */
 `
 const Btn = styled.button`
   border: none;
   background-color: transparent;
   color: var(--color-lightgray);
+  /* border: 1px solid white; */
+  border-radius: 5px;
+  padding: 4px 10px;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    color: var(--color-primary);
+    background-color: var(--color-lightgray);
+  }
 `
