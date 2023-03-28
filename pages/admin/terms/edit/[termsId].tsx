@@ -59,7 +59,9 @@ export default function TermsIdEdit() {
 
   return (
     <Container>
-      <Content title="약관 등록" children={''} />
+      <Content title="약관 등록">
+        <div></div>
+      </Content>
       <Inner>
         <Info>
           <Category>

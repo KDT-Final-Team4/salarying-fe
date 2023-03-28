@@ -14,7 +14,9 @@ const list = [
 export default function Terms() {
   return (
     <Container>
-      <Content title="최종 약관" children={''} />
+      <Content title="최종 약관">
+        <div></div>
+      </Content>
       <Inner>
         <List>
           {list.map((item) => (

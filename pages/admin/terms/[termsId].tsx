@@ -62,7 +62,9 @@ export default function TermsId() {
 
   return (
     <Container>
-      <Content title="약관 등록" children={''} />
+      <Content title="약관 등록">
+        <div></div>
+      </Content>
       <Inner>
         <Nav>
           {list.map((item) => (
