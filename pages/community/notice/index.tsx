@@ -50,32 +50,21 @@ export default function NoticeList() {
 				accessor: "state",
 				Header: "게시중",
 			},
+			{
+				accessor: "id",
+				Notice_id: "공지사항id",
+			},
 		],
 		[],
 	);
-	console.log(notices);
+
 	return (
 		<Content title="공지사항">
-			{!isLoading && notices && <Table columns={columns} data={notices} />}
 			<div>
 				<Link href={"/community/notice/new"}>등록</Link>
 			</div>
-			<List>
-				<div className="table-head"></div>
-				{!isLoading &&
-					notices?.map((notice, idx) => (
-						<div className="list-item" key={idx}>
-							<Link
-								href="/community/notice/[noticeId]"
-								as={`/community/notice/${notice.id}`}
-							>
-								<span>{notice.title}</span>
-								<strong>{notice.edit_id}</strong>
-								<time>{notice.date}</time>
-							</Link>
-						</div>
-					))}
-			</List>
+			{!isLoading && notices && <Table columns={columns} data={notices} />}
+			<List></List>
 		</Content>
 	);
 }

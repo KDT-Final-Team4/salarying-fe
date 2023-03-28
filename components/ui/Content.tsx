@@ -9,14 +9,14 @@ type contentProps = {
 
 const Content = (props: contentProps) => {
 	return (
-		<Title>
+		<Wrapper>
 			<h1>{props.title}</h1>
 			<div className="output">{props.children}</div>
-		</Title>
+		</Wrapper>
 	);
 };
 
-const Title = styled.section`
+const Wrapper = styled.section`
 	width: 100%;
 	padding: 0 50px;
 	box-sizing: border-box;
