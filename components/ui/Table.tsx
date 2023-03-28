@@ -30,10 +30,8 @@ const Table = ({ columns, data }) => {
           );
         })}
       </thead>
-      <tbody {...getTableBodyProps}>
+      <tbody {...getTableBodyProps()}>
         {rows.map((row) => {
-          console.log(row);
-          console.log(noticeID);
           prepareRow(row);
           const { key, ...restRowProps } = row.getRowProps();
           return (
@@ -42,8 +40,13 @@ const Table = ({ columns, data }) => {
                 href="/community/notice/[noticeId]"
                 as={`/community/notice/${noticeID[row.id]}`}
               >
+                {/* <td>{row.cells[0].value}</td>
+                <td>{row.cells[1].value}</td>
+                <td>{row.cells[2].value}</td>
+                <td>{row.cells[3].value}</td> */}
                 {row.cells.map((cell) => {
                   const { key, ...restCellProps } = cell.getCellProps();
+
                   return (
                     <td key={key} {...restCellProps}>
                       {cell.render("Cell")}
@@ -51,7 +54,6 @@ const Table = ({ columns, data }) => {
                   );
                 })}
               </Link>
-              ;
             </tr>
           );
         })}

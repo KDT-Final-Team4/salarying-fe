@@ -1,13 +1,13 @@
-import PostCard from '@/components/company/job-posting/PostCard';
-import ApplicantCard from '@/components/company/notice/ApplicantCard';
-import React from 'react';
-import styled from 'styled-components';
+import PostCard from "@/components/company/job-posting/PostCard";
+import ApplicantCard from "@/components/company/notice/ApplicantCard";
+import React from "react";
+import styled from "styled-components";
 
 const listData = [
-  { title: '알바직 모집' },
-  { title: '인턴 모집' },
-  { title: 'CEO 모집' },
-  { title: '총무 모집' },
+  { title: "알바직 모집" },
+  { title: "인턴 모집" },
+  { title: "CEO 모집" },
+  { title: "총무 모집" },
 ];
 
 export default function ApplicantManagement() {
