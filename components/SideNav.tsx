@@ -11,7 +11,9 @@ export default function SideNav() {
   return (
     <Wrapper>
       <Logo>
-        <img src="/logo.png" alt="" />
+        <Link href="/">
+          <img src="/logo.png" alt="" />
+        </Link>
       </Logo>
 
       <ul>
