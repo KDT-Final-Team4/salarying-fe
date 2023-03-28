@@ -21,6 +21,7 @@ const HeaderCell = styled.div`
   font-size: 20px;
   margin: 10px 0;
 `;
+
 export default function Notice() {
   return (
     <Wrapper>
@@ -32,8 +33,8 @@ export default function Notice() {
         <ContentHeader />
         {listData.map((data) => (
           <>
-            <div>{data.title}</div>
-            <div>{data.author}</div>
+            <ChildTitle>{data.title}</ChildTitle>
+            <ChildAuthor>{data.author}</ChildAuthor>
             <div>{data.createdAt}</div>
           </>
         ))}
@@ -41,7 +42,12 @@ export default function Notice() {
     </Wrapper>
   );
 }
-
+const ChildTitle = styled.section`
+  /* asdfasdf */
+`
+const ChildAuthor = styled.div`
+  /* fafd */
+`
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -63,9 +69,9 @@ const Title = styled.h1`
   font-weight: 700;
 `;
 const Contents = styled.div`
+  display: grid;
   flex-direction: column;
   width: 100%;
-  display: grid;
   grid-template-columns: 1fr 100px 100px;
   gap: 3px;
   div {

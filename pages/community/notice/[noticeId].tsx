@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import styled from "styled-components";
 
 interface content {
 	noticeId: string;
@@ -38,7 +39,7 @@ export default function NoticeDetail() {
 	const { data } = useQuery(["notice", noticeId], () => getNotice(noticeId));
 
 	return (
-		<div>
+		<Wrapper>
 			<h2>{data?.title}</h2>
 			<span>{data?.content}</span>
 			<div>
@@ -50,6 +51,17 @@ export default function NoticeDetail() {
 				</Link>
 				<button>삭제</button>
 			</div>
-		</div>
+		</Wrapper>
 	);
 }
+
+const Wrapper = styled.div`
+	width: 100%;
+	margin: 10% auto;
+	padding: 0 50px;
+	box-sizing: border-box;
+	h2 {
+		font-size: 20px;
+		margin-bottom: 20px;
+	}
+`;
