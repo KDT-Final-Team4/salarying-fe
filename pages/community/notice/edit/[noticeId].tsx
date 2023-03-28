@@ -29,29 +29,36 @@ const NoticeEdit = (props: Props) => {
 
 	const { data } = useQuery(["notice", noticeId], () => getNotice(noticeId));
 
-	const changeHandler = useCallback;
-	e => {
-		data.content = e.target.value;
+	const changeHandler = e => {
+		e.preventDefault();
 	};
 
 	return (
 		<Wrapper>
-			<label htmlFor="title">제목</label>
-			<input name="title" defaultValue={data ? data.title : ""} />
-			<label htmlFor="content">내용</label>
-			<input
-				name="content"
-				defaultValue={data ? data.content : ""}
-				size={500}
-			/>
+			<form onSubmit={changeHandler}>
+				<label htmlFor="title">제목</label>
+				<input name="title" defaultValue={data ? data.title : ""} />
+				<label htmlFor="content">내용</label>
+				<input
+					name="content"
+					defaultValue={data ? data.content : ""}
+					size={500}
+				/>
+				<button>확인</button>
+				<button>취소</button>
+			</form>
 		</Wrapper>
 	);
 };
 
 const Wrapper = styled.div`
-	width: 1200px;
-	display: flex;
-	flex-direction: column;
+	form {
+		width: 100%;
+		padding: 0 50px;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+	}
 
 	input:nth-child(4) {
 		height: 400px;
