@@ -9,6 +9,7 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import styled, { createGlobalStyle } from "styled-components";
 import SNBLayout from "@/components/layout/SNBLayout";
+import Head from "next/head";
 enum layout {
   SINGLE = "SINGLE",
   HEAD = "HEAD",
@@ -36,7 +37,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {withLayout(<Component {...pageProps} />)}
+      {withLayout(
+        <>
+          <Head>
+            <link rel="icon" href="/favicon.png"></link>
+            <title>HiredPro</title>
+          </Head>
+          <Component {...pageProps} />
+        </>,
+      )}
 
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
