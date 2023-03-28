@@ -1,15 +1,10 @@
-import PostCard from '@/components/company/job-posting/PostCard';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react';
-import styled from 'styled-components';
+import PostCard from '@/components/company/job-posting/PostCard'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
+import styled from 'styled-components'
 
-const listData = [
-  { title: '알바직 모집' },
-  { title: '인턴 모집' },
-  { title: 'CEO 모집' },
-  { title: '총무 모집' },
-];
+const listData = [{ title: '알바직 모집' }, { title: '인턴 모집' }, { title: 'CEO 모집' }, { title: '총무 모집' }]
 
 const JobPosting = () => {
   return (
@@ -24,10 +19,10 @@ const JobPosting = () => {
         ))}
       </PostList>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default JobPosting;
+export default JobPosting
 
 const Wrapper = styled.section`
   display: flex;
@@ -35,7 +30,7 @@ const Wrapper = styled.section`
   width: 100%;
   padding: 0 100px;
   /* gap: 100px; */
-`;
+`
 
 const Head = styled.div`
   display: flex;
@@ -43,12 +38,14 @@ const Head = styled.div`
   font-size: 20px;
   margin: 50px 0;
   padding: 30px 0;
-  border-bottom: 1px solid black;
-`;
-const Title = styled.h1``;
+`
+const Title = styled.h1`
+  font-weight: 700;
+  color: var(--color-gray600);
+`
 const PostList = styled.div`
   /* width: 100%; */
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
+`
