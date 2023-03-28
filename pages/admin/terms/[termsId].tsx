@@ -62,9 +62,7 @@ export default function TermsId() {
   return (
     <Container>
       <Title>
-        <Link href={`/admin/terms/service`}>
-          <h1>약관별 관리</h1>
-        </Link>
+        <h1>약관별 관리</h1>
       </Title>
       <Inner>
         <Nav>
@@ -81,6 +79,9 @@ export default function TermsId() {
         <List></List>
         <button>수정하기</button>
         <button>삭제하기</button>
+        <Link href="new">
+          <button>등록하기</button>
+        </Link>
       </Inner>
     </Container>
   );
