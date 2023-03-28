@@ -10,35 +10,35 @@ import type { AppProps } from "next/app";
 import styled, { createGlobalStyle } from "styled-components";
 import SNBLayout from "@/components/layout/SNBLayout";
 enum layout {
-	SINGLE = "SINGLE",
-	HEAD = "HEAD",
+  SINGLE = "SINGLE",
+  HEAD = "HEAD",
 }
 const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			cacheTime: Infinity,
-		},
-	},
+  defaultOptions: {
+    queries: {
+      cacheTime: Infinity,
+    },
+  },
 });
 
 type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-	layout?: (page: ReactElement) => ReactNode;
+  layout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
-	Component: NextPageWithLayout;
+  Component: NextPageWithLayout;
 };
 
 // 앱의 레이아웃을 결정하는 컴포넌트입니다.
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-	const withLayout =
-		Component.layout ?? (page => <SNBLayout>{page}</SNBLayout>);
+  const withLayout =
+    Component.layout ?? ((page) => <SNBLayout>{page}</SNBLayout>);
 
-	return (
-		<QueryClientProvider client={queryClient}>
-			{withLayout(<Component {...pageProps} />)}
+  return (
+    <QueryClientProvider client={queryClient}>
+      {withLayout(<Component {...pageProps} />)}
 
-			<ReactQueryDevtools initialIsOpen={false} />
-		</QueryClientProvider>
-	);
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }
