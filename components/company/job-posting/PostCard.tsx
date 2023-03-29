@@ -6,7 +6,7 @@ export default function PostCard({ jobPost }) {
   return (
     <Card>
       <Left>
-        <BsFillBoxFill color="#fff" size="30" />
+        <BsFillBoxFill size="30" />
         <div>
           <Title>{jobPost.title}</Title>
           <SubTitle>abcd@naver.com</SubTitle>
@@ -23,14 +23,23 @@ export default function PostCard({ jobPost }) {
 const Card = styled.div`
   display: flex;
   justify-content: space-between;
-  color: var(--color-lightgray);
+  color: var(--color-primary);
   align-items: center;
   width: 100%;
   border-radius: 10px;
   padding: 20px 30px;
-  background-color: var(--color-primary);
+  background-color: var(--color-lightgray);
+  transition: all 0.3s;
   &:hover {
     background-color: var(--color-sub);
+    color: #fff;
+    button {
+      color: #fff;
+      &:hover {
+        background-color: var(--color-lightgray);
+        color: var(--color-primary);
+      }
+    }
   }
 `
 const Left = styled.div`
@@ -61,14 +70,8 @@ const Right = styled.div`
 const Btn = styled.button`
   border: none;
   background-color: transparent;
-  color: var(--color-lightgray);
-  /* border: 1px solid white; */
   border-radius: 5px;
   padding: 4px 10px;
   transition: all 0.2s;
   cursor: pointer;
-  &:hover {
-    color: var(--color-primary);
-    background-color: var(--color-lightgray);
-  }
 `
