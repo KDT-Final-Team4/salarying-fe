@@ -1,19 +1,19 @@
-import Link from 'next/link'
-import { useState } from 'react'
-import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
-import Content from '@/components/ui/Content'
-import styled from 'styled-components'
+import Link from 'next/link';
+import { useState } from 'react';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import Content from '@/components/ui/Content';
+import styled from 'styled-components';
 
 interface Object {
-  id: number
-  title: string
-  edit_id: string
-  date: string
-  state: boolean
+  id: number;
+  title: string;
+  edit_id: string;
+  date: string;
+  state: boolean;
 }
 interface StyledProps {
-  toggle: boolean
+  toggle: boolean;
 }
 
 const getNotices = async () => {
@@ -23,18 +23,18 @@ const getNotices = async () => {
       url: '/api/notice',
     })
     .then((response) => {
-      return response.data.data
+      return response.data.data;
     })
     .catch((error) => {
-      console.log(error)
-    })
-  return result
-}
+      console.log(error);
+    });
+  return result;
+};
 
 export default function NoticeList() {
-  const { data: notices, isLoading } = useQuery(['notices'], getNotices)
+  const { data: notices, isLoading } = useQuery(['notices'], getNotices);
 
-  const headerArray = ['제목', '작성자', '작성날짜', '게시중']
+  const headerArray = ['제목', '작성자', '작성날짜', '게시중'];
 
   return (
     <Content title="공지사항">
@@ -62,12 +62,12 @@ export default function NoticeList() {
           ))}
       </List>
     </Content>
-  )
+  );
 }
 
 const List = styled.div`
   color: var(--color-gray600);
-`
+`;
 const Top = styled.section`
   width: 100%;
   height: 80px;
@@ -82,7 +82,7 @@ const Top = styled.section`
   .item {
     margin: 0 auto;
   }
-`
+`;
 
 const ContentList = styled.section`
   width: 100%;
@@ -110,7 +110,8 @@ const ContentList = styled.section`
     font-weight: 700;
     color: var(--color-gray500);
   }
-`
+`;
+
 const ToggleBtn = styled.button<StyledProps>`
   width: 130px;
   height: 50px;
@@ -124,7 +125,8 @@ const ToggleBtn = styled.button<StyledProps>`
   align-items: center;
   margin: 0 auto;
   transition: all 0.5s ease-in-out;
-`
+`;
+
 const Circle = styled.div<StyledProps>`
   background-color: white;
   width: 38px;
@@ -133,4 +135,4 @@ const Circle = styled.div<StyledProps>`
   position: absolute;
   left: 5%;
   transition: all 0.5s ease-in-out;
-`
+`;

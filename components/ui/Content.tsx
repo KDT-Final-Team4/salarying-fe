@@ -1,11 +1,11 @@
-import styled from 'styled-components'
-import React from 'react'
-import { ReactNode } from 'react'
+import styled from 'styled-components';
+import React from 'react';
+import { ReactNode } from 'react';
 
 type contentProps = {
-  title: string
-  children: ReactNode
-}
+  title: string;
+  children: ReactNode;
+};
 
 const Content = (props: contentProps) => {
   return (
@@ -13,8 +13,8 @@ const Content = (props: contentProps) => {
       <h1>{props.title}</h1>
       <div className="output">{props.children}</div>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.section`
   width: 100%;
@@ -27,6 +27,9 @@ const Wrapper = styled.section`
     padding: 50px 0px 20px 0px;
     border-bottom: 2px solid var(--color-lightgray);
   }
-`
+  .output {
+    margin: auto;
+  }
+`;
 
-export default Content
+export default Content;

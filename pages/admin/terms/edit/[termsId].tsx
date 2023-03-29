@@ -1,9 +1,8 @@
+import React, { Children, useState } from 'react'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
 import styled from 'styled-components'
 import Content from '@/components/ui/Content'
 
-type Props = {}
 interface List {
   title: string
   id: string
@@ -13,6 +12,7 @@ interface List {
   writer: string
   date: number
 }
+
 const list: List[] = [
   {
     title: '서비스 이용 약관',
@@ -53,13 +53,10 @@ const list: List[] = [
   },
 ]
 
-export default function New(props: Props) {
+export default function TermsIdEdit() {
   const router = useRouter()
-  const [select, setSelect] = useState(0)
-  const handleSelect = (idx: number) => {
-    setSelect(idx)
-    console.log(idx)
-  }
+  const { termsId } = router.query
+
   return (
     <Container>
       <Content title="약관 등록">
@@ -71,9 +68,7 @@ export default function New(props: Props) {
             <p>약관 종류</p>
             <div className="wrap">
               {list.map((item, idx) => (
-                <div key={idx} className={idx === select ? 'select' : null} onClick={() => handleSelect(idx)}>
-                  {item.title}
-                </div>
+                <div key={idx}>{item.title}</div>
               ))}
             </div>
           </Category>
@@ -94,7 +89,7 @@ export default function New(props: Props) {
         </Write>
         <div>
           <button className="submit">등록</button>
-          <button className="cancel" onClick={() => router.push('-1')}>
+          <button className="cancel" onClick={() => router.push('/admin/terms/service')}>
             취소
           </button>
         </div>

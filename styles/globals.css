@@ -239,3 +239,17 @@ a:hover {
   text-decoration: none;
   outline: none;
 }
+
+button {
+  border: none;
+  user-select: none;
+}
+
+::selection {
+  background-color: var(--color-point);
+  color: var(--color-primary);
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Noto Sans', sans-serif;
+}

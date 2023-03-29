@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react'
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import { useQuery } from '@tanstack/react-query'
-import styled from 'styled-components'
-import Link from 'next/link'
-import Button_Point from '@/components/ui/Button_Point'
-import Content from '@/components/ui/Content'
+import React, { useCallback } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
+import styled from 'styled-components';
+import Link from 'next/link';
+import Button_Point from '@/components/ui/Button_Point';
+import Content from '@/components/ui/Content';
 
-type Props = {}
+type Props = {};
 
 const getNotice = async (noticeId: string | string[]) => {
   const result = await axios
@@ -16,25 +16,25 @@ const getNotice = async (noticeId: string | string[]) => {
       url: `/api/notice/${noticeId}`,
     })
     .then((response) => {
-      console.log(response.data.data.noticeId)
-      return response.data.data
+      console.log(response.data.data.noticeId);
+      return response.data.data;
     })
     .catch((error) => {
-      console.log(error)
-    })
-  return result
-}
+      console.log(error);
+    });
+  return result;
+};
 
 export default function NoticeEdit(props: Props) {
-  const router = useRouter()
-  const noticeId = router.isReady ? router.query.noticeId : null
-  console.log(noticeId)
+  const router = useRouter();
+  const noticeId = router.isReady ? router.query.noticeId : null;
+  console.log(noticeId);
 
-  const { data } = useQuery(['notice', noticeId], () => getNotice(noticeId))
+  const { data } = useQuery(['notice', noticeId], () => getNotice(noticeId));
 
   const changeHandler = (e) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   return (
     <Content title={'공지사항 수정하기'}>
@@ -59,7 +59,7 @@ export default function NoticeEdit(props: Props) {
         </div>
       </Wrapper>
     </Content>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -77,7 +77,7 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
     align-items: flex-end;
   }
-`
+`;
 
 const Table = styled.form`
   display: grid;
@@ -109,7 +109,7 @@ const Table = styled.form`
     min-height: 300px;
     overflow-y: scroll;
   }
-`
+`;
 const BtnWrapper = styled.div`
   position: relative;
   width: 500px;
@@ -119,4 +119,4 @@ const BtnWrapper = styled.div`
   margin: 50px 0 0;
   bottom: 0;
   right: 0;
-`
+`;
