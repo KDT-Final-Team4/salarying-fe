@@ -41,7 +41,7 @@ const Head = styled.div`
 `
 const Title = styled.h1`
   font-weight: 700;
-  color: var(--color-gray600);
+  color: var(--color-primary);
 `
 const PostList = styled.div`
   /* width: 100%; */

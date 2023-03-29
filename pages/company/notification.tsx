@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { AiOutlineMail } from 'react-icons/ai'
 import styled from 'styled-components'
 import { useEffect } from 'react'
+import MailCells from '@/components/company/notification/MailCells'
+import Button_2 from '@/components/ui/Button_2'
 
 const mails = [
   {
@@ -21,25 +23,15 @@ const mails = [
     checked: false,
   },
 ]
-const Mail = ({ title, id, handleCheckChild, checked }: any) => {
-  return (
-    <>
-      <div>
-        <input type="checkbox" onChange={(event) => handleCheckChild(event, id)} checked={checked} />
-      </div>
-      <div>{title}</div>
-      <div>
-        <Button_1 {...sendBtnProps} />
-      </div>
-    </>
-  )
-}
 
 const GridHeader = () => {
   return (
     <>
       <input type="checkbox" />
-      <GridHeaderCell>MAIL</GridHeaderCell>
+      <GridHeaderCell>#</GridHeaderCell>
+      <GridHeaderCell>MAIL TITLE</GridHeaderCell>
+      <GridHeaderCell>PROGRESS</GridHeaderCell>
+      <GridHeaderCell>STATUS</GridHeaderCell>
       <GridHeaderCell>SEND</GridHeaderCell>
     </>
   )
@@ -87,15 +79,23 @@ const Notification = () => {
   return (
     <Wrapper>
       <H1 onClick={() => console.log(childChecked)}>메일함</H1>
-      <Panel>
-        <input type="checkbox" checked={checked} onChange={handleCheckAll} />
-        <span>전체 발송</span>
-      </Panel>
+      <Button_2 name="Pending" color="oragne" />
       <GridContents>
         <GridHeader />
-        {mails.map((mail, index) => (
-          <Mail key={index} title={mail.title} handleCheckChild={handleCheckChild} checked={mail.checked} id={mail.id} />
-        ))}
+        <>
+          <input type="checkbox" />
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </>
+
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
       </GridContents>
     </Wrapper>
   )
@@ -120,12 +120,13 @@ const GridContents = styled.div`
   flex-direction: column;
   width: 100%;
   display: grid;
-  grid-template-columns: 50px 1fr 200px;
+  grid-template-columns: 30px 50px 1fr 100px 100px 100px;
   gap: 3px;
   div {
     display: flex;
     align-items: center;
-    background-color: var(--color-emerald100);
+    border: 1px solid var(--color-emerald500);
+    height: 30px;
   }
 `
 
