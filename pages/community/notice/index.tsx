@@ -97,8 +97,9 @@ const ContentList = styled.section`
   .item {
     margin: 0 auto;
   }
-  > strong {
+  > a {
     font-weight: 700;
+    margin: 0 auto;
     color: var(--color-gray600);
   }
   > span {
@@ -116,11 +117,12 @@ const ToggleBtn = styled.button<StyledProps>`
   border-radius: 30px;
   border: none;
   cursor: pointer;
-  background-color: ${(props) => (!props.toggle ? 'none' : 'var()')};
+  background-color: ${(props) => (!props.toggle ? 'none' : 'var(--color-primary)')};
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
   transition: all 0.5s ease-in-out;
 `
 const Circle = styled.div<StyledProps>`

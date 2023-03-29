@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import styled from 'styled-components'
+import Button_Point from '@/components/ui/Button_Point'
+import Content from '@/components/ui/Content'
 
 interface content {
   noticeId: string
@@ -39,26 +41,78 @@ export default function NoticeDetail() {
   const { data } = useQuery(['notice', noticeId], () => getNotice(noticeId))
 
   return (
-    <Wrapper>
-      <h2>{data?.title}</h2>
-      <span>{data?.content}</span>
-      <div>
-        <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
-          수정
-        </Link>
-        <button>삭제</button>
-      </div>
-    </Wrapper>
+    <Content title={'공지사항 상세정보'}>
+      <Wrapper>
+        <div className="flex-wrapper">
+          <Table className="static">
+            <h3>제목</h3>
+            <span className="title">{data?.title}</span>
+            <h3>내용</h3>
+            <span className="content">{data?.content}</span>
+          </Table>
+          <BtnWrapper>
+            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
+              <Button_Point name={'수정'}></Button_Point>
+            </Link>
+            <Button_Point name={'삭제'} />
+          </BtnWrapper>
+        </div>
+      </Wrapper>
+    </Content>
   )
 }
 
 const Wrapper = styled.div`
-  width: 100%;
-  margin: 10% auto;
+  margin: 50px auto 0;
   padding: 0 50px;
   box-sizing: border-box;
   h2 {
     font-size: 20px;
     margin-bottom: 20px;
   }
+  .flex-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+`
+
+const Table = styled.div`
+  display: grid;
+  grid-template-columns: 100px 1000px;
+  grid-template-rows: 100px 1fr;
+  color: var(--color-primary);
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    padding-top: 20px;
+  }
+  span {
+    font-size: 18px;
+    color: var(--color-gray500);
+    font-weight: 700;
+    border: 2px solid var(--color-gray300);
+    border-radius: 10px;
+    padding: 10px 20px;
+    line-height: 1.8;
+    overflow-y: scroll;
+    &.title {
+      height: 60px;
+    }
+    &.content {
+      min-height: 300px;
+    }
+  }
+`
+const BtnWrapper = styled.div`
+  position: relative;
+  width: 500px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin: 50px 0 0;
+  bottom: 0;
+  right: 0;
 `
