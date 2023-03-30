@@ -2,6 +2,7 @@ import Button_1 from '@/components/ui/Button_1';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button_2 from '@/components/ui/Button_2';
+import Checkbox_1 from '@/components/ui/Checkbox_1';
 
 const users = [
   {
@@ -43,11 +44,12 @@ const GridHeaderCell = styled.h3`
   font-size: 14px;
   padding-top: 2px;
 `;
-const GridRow = ({ user }) => {
+const GridRow = ({ user, id }) => {
   return (
     <>
       <GridCell>
-        <input type="checkbox" />
+        {/* <input type="checkbox" /> */}
+        <Checkbox_1 id={id} />
       </GridCell>
       <GridCellNameEmail>
         <h6>{user.name}</h6>
@@ -113,9 +115,14 @@ export default function Notification() {
   return (
     <Wrapper>
       <H1 onClick={() => console.log(childChecked)}>지원자 상세</H1>
+      <Panel>
+        <input type="checkbox" />
+        <Button_2 name="전송하기" color="sky" />
+      </Panel>
+
       <GridContents>
         {users.map((user) => (
-          <GridRow key={user.id} user={user} />
+          <GridRow key={user.id} user={user} id={user.id} />
         ))}
       </GridContents>
       <Pages>
@@ -130,19 +137,24 @@ export default function Notification() {
 const Wrapper = styled.section`
   padding: 20px 50px;
   width: 100%;
-  border: 1px solid red;
 `;
 
 const H1 = styled.h1`
   font-weight: 700;
   font-size: 20px;
+  margin-bottom: 50px;
+`;
+const Panel = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 const GridContents = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: 50px auto 100px;
   /* border-top: 1px solid var(--color-gray100); */
-  margin: 50px 0;
+
+  margin-bottom: 50px;
 `;
 
 const Pages = styled.ul`

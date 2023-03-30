@@ -6,60 +6,59 @@ import { BsCheckLg } from 'react-icons/bs';
 import HeadLayout from '@/components/layout/HeadLayout';
 import Link from 'next/link';
 
-
 export default function SignUp() {
   const { register, handleSubmit } = useForm();
   const onValid = () => {};
-  return <Wrapper>
-  <LoginSection>
-    <Inner>
-      <Title>Create new account</Title>
-      <TitleDescription>
-        Welcome back! Please enter your details
-      </TitleDescription>
+  return (
+    <Wrapper>
+      <LoginSection>
+        <Inner>
+          <Title>Create new account</Title>
+          <TitleDescription>Welcome back! Please enter your details</TitleDescription>
 
-      <LoginForm onSubmit={handleSubmit(onValid)}>
-      <InputDiv>
-          <SubTitle>Name</SubTitle>
-          <TextInput
-            type='text'
-            {...register('name')}
-            placeholder='Enter your name'
-          />
-        </InputDiv>
-        <InputDiv>
-          <SubTitle>Email</SubTitle>
-          <TextInput
-            type='text'
-            {...register('id')}
-            placeholder='Enter your email'
-          />
-        </InputDiv>
-        <InputDiv>
-          <SubTitle>Password</SubTitle>
-          <TextInput
-          type="text"
-            {...register('password')}
-            placeholder='Enter your password'
+          <LoginForm onSubmit={handleSubmit(onValid)}>
+            <InputDiv>
+              <SubTitle>Email</SubTitle>
+              <TextInput type="text" {...register('email')} placeholder="Enter your email" />
+            </InputDiv>
+            <InputDiv>
+              <SubTitle>Password</SubTitle>
+              <TextInput type="text" {...register('password')} placeholder="Enter your password" />
+            </InputDiv>
+            <InputDiv>
+              <SubTitle>Password2</SubTitle>
+              <TextInput type="text" {...register('password2')} placeholder="Enter your password" />
+            </InputDiv>
+            <InputDiv>
+              <SubTitle>Name</SubTitle>
+              <TextInput type="text" {...register('name')} placeholder="Enter your name" />
+            </InputDiv>
+            <InputDiv>
+              <SubTitle>Company Name</SubTitle>
+              <TextInput type="text" {...register('companyName')} placeholder="Enter your company name" />
+            </InputDiv>
 
-          />
-          
-        </InputDiv>
-        <SubmitPanel>
-          <LoginButton>Create Account</LoginButton>
-        </SubmitPanel>
-          <AccountExists>Already have an account? <Link href='/login'> Sign in</Link></AccountExists>
-        
-      </LoginForm>
-    </Inner>
-  </LoginSection>
-  <KVSection></KVSection>
-</Wrapper>;
+            <InputDiv>
+              <SubTitle>Company phone number</SubTitle>
+              <TextInput type="text" {...register('companyPhoneNumber')} placeholder="Enter your company phone number" />
+            </InputDiv>
+            <InputDiv>
+              <SubTitle>Position</SubTitle>
+              <TextInput type="text" {...register('position')} placeholder="Enter your position" />
+            </InputDiv>
+            <SubmitPanel>
+              <LoginButton>Create Account</LoginButton>
+            </SubmitPanel>
+            <AccountExists>
+              Already have an account? <Link href="/login"> Sign in</Link>
+            </AccountExists>
+          </LoginForm>
+        </Inner>
+      </LoginSection>
+      <KVSection></KVSection>
+    </Wrapper>
+  );
 }
-
-
-
-
 
 SignUp.layout = (page) => page;
 
@@ -72,6 +71,8 @@ const Wrapper = styled.section`
 `;
 
 const LoginSection = styled.section`
+  border: 1px solid red;
+  /* overflow: scroll; */
   width: 50%;
   height: 100%;
   display: flex;
@@ -80,9 +81,7 @@ const LoginSection = styled.section`
   flex-direction: column;
 `;
 
-const Inner = styled.div`
-  
-`;
+const Inner = styled.div``;
 
 const KVSection = styled.section`
   width: 50%;
@@ -97,7 +96,7 @@ const Title = styled.h1`
   font-size: 30px;
   color: var(--color-gray800);
   margin-bottom: 10px;
-  img{
+  img {
     width: 50%;
   }
 `;
@@ -114,7 +113,7 @@ const LoginForm = styled.form`
   margin-top: 30px;
 `;
 const InputDiv = styled.div`
-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -147,7 +146,6 @@ const SubmitPanel = styled.div`
       color: #1f2832;
       text-decoration: underline;
     }
-   
   }
 `;
 const Button = styled.button`
@@ -160,17 +158,15 @@ const Button = styled.button`
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
-`
+`;
 const LoginButton = styled(Button)`
   background-color: var(--color-point);
   font-weight: 700;
   color: var(--color-gray700);
-  &:hover{
+  &:hover {
     filter: brightness(1.05);
   }
-  
-`
-
+`;
 
 const TextInput = styled.input`
   border: 1px solid var(--color-gray300);
@@ -180,7 +176,7 @@ const TextInput = styled.input`
   padding: 10px;
   padding-right: 35px;
   color: var(--color-gray600);
-  &:focus{
+  &:focus {
     outline: 1px solid var(--color-point);
   }
 `;
@@ -188,15 +184,14 @@ const TextInput = styled.input`
 const AccountExists = styled.span`
   display: flex;
   justify-content: center;
-  color: var(--color-gray400); 
-
+  color: var(--color-gray400);
+  font-weight: 300;
   a {
     margin-left: 10px;
     color: var(--color-gray500);
-    font-weight: 700;
-    &:hover{
+    font-weight: 500;
+    &:hover {
       color: var(--color-gray700);
-
     }
   }
-`
+`;
