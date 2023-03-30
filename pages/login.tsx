@@ -4,59 +4,47 @@ import styled from 'styled-components';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
 import HeadLayout from '@/components/layout/HeadLayout';
+import { useRouter } from 'next/router';
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
   const [showPW, setShowPW] = useState(false);
+  const router = useRouter();
 
   const onValid = () => {};
   return (
     <Wrapper>
       <LoginSection>
         <Inner>
-          <Title><img src='/logo.png' /></Title>
-          <TitleDescription>
-            Welcome back! Please enter your details
-          </TitleDescription>
+          <Title>
+            <img src="/logo.png" />
+          </Title>
+          <TitleDescription>Welcome back! Please enter your details</TitleDescription>
 
           <LoginForm onSubmit={handleSubmit(onValid)}>
             <InputDiv>
               <SubTitle>Email</SubTitle>
-              <TextInput
-                type='text'
-                {...register('id')}
-                placeholder='Enter your email'
-              />
+              <TextInput type="text" {...register('id')} placeholder="Enter your email" />
             </InputDiv>
             <InputDiv>
               <SubTitle>Password</SubTitle>
-              <TextInput
-                type={showPW? 'text' : 'password'}
-                {...register('password')}
-                placeholder='Enter your password'
-
-              />
-              {showPW ? 
-                <AiOutlineEyeInvisible onClick={()=>setShowPW(false)}/>:
-              <AiOutlineEye onClick={()=>setShowPW(true)}/>
-              }
-              
+              <TextInput type={showPW ? 'text' : 'password'} {...register('password')} placeholder="Enter your password" />
+              {showPW ? <AiOutlineEyeInvisible onClick={() => setShowPW(false)} /> : <AiOutlineEye onClick={() => setShowPW(true)} />}
             </InputDiv>
             <SubmitPanel>
               <div>
                 <RememberId>
-                  <input type='checkbox' id='rememberId' />
-                  <FakeCheckbox htmlFor='rememberId'>
+                  <input type="checkbox" id="rememberId" />
+                  <FakeCheckbox htmlFor="rememberId">
                     <BsCheckLg />
                   </FakeCheckbox>
-                  <label htmlFor='rememberId'>아이디 기억하기</label>
+                  <label htmlFor="rememberId">아이디 기억하기</label>
                 </RememberId>
                 <span>패스워드 찾기</span>
               </div>
               <LoginButton>Login</LoginButton>
-              <SignupButton>Sign up</SignupButton>
+              <SignupButton onClick={() => router.push('/signup')}>Sign up</SignupButton>
             </SubmitPanel>
-            
           </LoginForm>
         </Inner>
       </LoginSection>
@@ -84,9 +72,7 @@ const LoginSection = styled.section`
   flex-direction: column;
 `;
 
-const Inner = styled.div`
-  
-`;
+const Inner = styled.div``;
 
 const KVSection = styled.section`
   width: 50%;
@@ -101,7 +87,7 @@ const Title = styled.h1`
   font-size: 30px;
   color: var(--color-gray800);
   margin-bottom: 10px;
-  img{
+  img {
     width: 50%;
   }
 `;
@@ -117,7 +103,7 @@ const LoginForm = styled.form`
   margin-top: 30px;
 `;
 const InputDiv = styled.div`
-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -150,7 +136,6 @@ const SubmitPanel = styled.div`
       color: #1f2832;
       text-decoration: underline;
     }
-   
   }
 `;
 const Button = styled.button`
@@ -163,33 +148,32 @@ const Button = styled.button`
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
-`
+`;
 const LoginButton = styled(Button)`
   background-color: var(--color-point);
-  
+
   color: var(--color-gray700);
-  &:hover{
+  &:hover {
     filter: brightness(1.05);
   }
-  
-`
-const SignupButton =styled(Button)`
+`;
+const SignupButton = styled(Button)`
   background-color: #fff;
   border: 1px solid var(--color-gray300);
   font-weight: 400;
   color: var(--color-gray500);
 
-  &:hover{
+  &:hover {
     filter: brightness(0.95);
   }
-`
+`;
 const RememberId = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 5px;
-  
-  label{
+
+  label {
     padding-top: 1px;
   }
   input[type='checkbox'] {
@@ -203,7 +187,7 @@ const RememberId = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      
+
       svg {
         display: none;
       }
@@ -229,7 +213,7 @@ const TextInput = styled.input`
   padding: 10px;
   padding-right: 35px;
   color: var(--color-gray600);
-  &:focus{
+  &:focus {
     outline: 1px solid var(--color-point);
   }
 `;

@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import React from 'react'
-import styled from 'styled-components'
-import Notification from '../pages/company/notification'
-import { CgProfile } from 'react-icons/cg'
-import Avatar, { genConfig } from 'react-nice-avatar'
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
+import Notification from '../pages/company/notification';
+import { CgProfile } from 'react-icons/cg';
+import Avatar, { genConfig } from 'react-nice-avatar';
 
 export default function SideNav() {
-  const config = genConfig('admin@email.com')
+  const config = genConfig('admin@email.com');
   return (
     <Wrapper>
       <Logo>
@@ -67,15 +67,9 @@ export default function SideNav() {
           <Link href="/company/applicant-management">/company/applicant-management</Link>
           <Link href="/company/applicant-management/category/1">/company/applicant-management/category/1</Link>
           <Link href="/company/notification">/company/notification</Link>
-          <Link href="/company/notice">/company/notice</Link>
-          <Link href="/company/notice/1">/company/notice/1</Link>
-          <Link href="/company/notice/new">/company/notice/new</Link>
         </div>
         <div>
           <Link href="/community/faq">/community/faq</Link>
-          <Link href="/community/cs">/community/cs</Link>
-          <Link href="/community/cs/1">/community/cs/1</Link>
-          <Link href="/community/cs/new">/community/cs/new</Link>
           <Link href="/community/notice">/community/notice</Link>
           <Link href="/community/notice/1">/community/notice/1</Link>
           <Link href="/community/notice/new">/community/notice/new</Link>
@@ -90,7 +84,7 @@ export default function SideNav() {
         </Mypage>
       </Profile> */}
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.section`
@@ -120,13 +114,13 @@ const Wrapper = styled.section`
       font-weight: 500;
     }
   }
-`
+`;
 
 const Subcategory = styled.ul`
   li {
     padding: 10px;
   }
-`
+`;
 const Logo = styled.div`
   width: 100%;
   display: flex;
@@ -136,7 +130,7 @@ const Logo = styled.div`
     height: 115px;
     padding: 40px 0;
   }
-`
+`;
 
 const Profile = styled.div`
   width: 100%;
@@ -145,7 +139,7 @@ const Profile = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const DevLinks = styled.div`
   display: flex;
@@ -162,4 +156,4 @@ const DevLinks = styled.div`
       color: var(--color-gray600);
     }
   }
-`
+`;

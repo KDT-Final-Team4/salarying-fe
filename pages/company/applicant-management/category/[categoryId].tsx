@@ -1,142 +1,178 @@
-import ApplicantGrid_data from '@/components/company/applicant-management/category/ApplicantGrid_data'
-import Link from 'next/link'
-import React from 'react'
-import styled from 'styled-components'
+import Button_1 from '@/components/ui/Button_1';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Button_2 from '@/components/ui/Button_2';
 
-const listData = [
+const users = [
   {
-    title: '이름1',
+    id: 1,
+    name: '황이삭',
+    email: 'abcd@naver.com',
+    progress: '서류 심사',
+    status: '불합격',
   },
-  { title: '이름2' },
-  { title: '이름3' },
-  { title: '이름4' },
-]
+  {
+    id: 2,
+    name: '황이삭',
+    email: 'abcd@naver.com',
+    progress: '서류 합격',
+    status: '합격',
+  },
+  {
+    id: 3,
+    name: '황이삭',
+    email: 'abcd@naver.com',
+    progress: '서류 심사',
+    status: '불합격',
+  },
+  {
+    id: 4,
+    name: '황이삭',
+    email: 'abcd@naver.com',
+    progress: '서류 심사',
+    status: '합격',
+  },
+];
 
-export default function CategoryId() {
+const GridHeader = () => {
+  return (
+    <>
+      <GridHeaderCell>#</GridHeaderCell>
+      <GridHeaderCell>NAME/E-MAIL</GridHeaderCell>
+      <GridHeaderCell>PROGRESS</GridHeaderCell>
+      <GridHeaderCell>STATUS</GridHeaderCell>
+    </>
+  );
+};
+const GridHeaderCell = styled.h3`
+  color: var(--color-gray400);
+  height: 40px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding-top: 2px;
+`;
+const GridRow = ({ user }) => {
+  return (
+    <>
+      <GridCell>{user.id}</GridCell>
+      <GridCellNameEmail>
+        <h6>{user.name}</h6>
+        <span>{user.email}</span>
+      </GridCellNameEmail>
+      <GridCell>
+        <Button_2 name={user.progress} color={user.progress === '서류 심사' ? 'lime' : 'sky'} />
+      </GridCell>
+      <GridCell>
+        <Button_2 name={user.status} color={user.status === '불합격' ? 'rose' : 'emerald'} />
+      </GridCell>
+    </>
+  );
+};
+const GridCell = styled.div`
+  display: flex;
+  align-items: center;
+  height: 30px;
+  border-bottom: 1px solid var(--color-gray100);
+  height: 60px;
+  color: var(--color-gray600);
+`;
+const GridCellNameEmail = styled(GridCell)`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  span {
+    font-size: 14px;
+    color: var(--color-gray400);
+  }
+`;
+
+const GridCellLines = styled(GridCell)``;
+
+const CategoryId = () => {
+  const [checked, setChecked] = useState(false); // 전체 체크박스의 체크 여부
+  const [childChecked, setChildChecked] = useState(users); // 자식 체크박스들의 체크 여부
+
+  // 전체 체크박스가 변경되었을 때 호출되는 함수
+  // const handleCheckAll = (event) => {
+  //   const masterChecked = event.target.checked;
+  //   setChecked(masterChecked);
+  //   const newChild = childChecked.map((child) => {
+  //     child.checked = masterChecked;
+  //     return child;
+  //   });
+  //   setChildChecked(newChild);
+  // };
+
+  // 자식 체크박스 중 하나가 변경되었을 때 호출되는 함수
+  // const handleCheckChild = (event, id) => {
+  // const newChildChecked = [...childChecked];
+  // newChildChecked[index] = event.target.checked;
+  // const newChildChecked = childChecked.map((mail) => {
+  //   if (mail.id === id) {
+  //     mail.checked = event.target.checked;
+  //   }
+  //   return mail;
+  // });
+  // setChildChecked(newChildChecked);
+  // setChecked(newChildChecked.every((mail) => mail.checked === true));
+  // };
+
   return (
     <Wrapper>
-      <Head>
-        <Title>지원자 상세</Title>
-        <Link href="/company/applicant-management">목록으로 돌아가기</Link>
-      </Head>
-      <Body>
-        <Overview>
-          <h2>알바직 모집 지원 현황</h2>
-          <Procedure>
-            <h3>전형단계</h3>
-            <div>
-              <Step>
-                <span>서류</span>
-              </Step>
-              <Step>면접</Step>
-            </div>
-          </Procedure>
-        </Overview>
-        <ApplicantGrid>
-          <>
-            <ApplicantGrid_head>지원자</ApplicantGrid_head>
-            <ApplicantGrid_head>결정</ApplicantGrid_head>
-          </>
-          <ApplicantGrid_data name={'황이삭'} />
-          <ApplicantGrid_data name={'공혜지'} />
-          <ApplicantGrid_data name={'우지수'} />
-        </ApplicantGrid>
-        <Pagination>
-          <li className="active">1</li>
-          <li>2</li>
-          <li>3</li>
-          <li>4</li>
-          <li>5</li>
-        </Pagination>
-      </Body>
+      <H1 onClick={() => console.log(childChecked)}>지원자 상세</H1>
+      <GridContents>
+        <GridHeader />
+        {users.map((user) => (
+          <GridRow key={user.id} user={user} />
+        ))}
+      </GridContents>
+      <Pages>
+        <li className="active">1</li>
+        <li>2</li>
+        <li>3</li>
+      </Pages>
     </Wrapper>
-  )
-}
+  );
+};
+
+export default CategoryId;
 
 const Wrapper = styled.section`
-  padding: 50px;
+  padding: 20px 50px;
   width: 100%;
-`
-const Head = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid black;
-  padding-bottom: 30px;
-`
-const Title = styled.h1``
-const Body = styled.main``
-const Overview = styled.div`
-  h2 {
-    font-weight: 700;
-    font-size: 20px;
-    margin: 20px 0;
-  }
-`
-
-const Procedure = styled.div`
-  display: flex;
-  background-color: var(--color-gray300);
-  align-items: center;
-  padding: 10px 20px;
-  h3 {
-    margin-right: 50px;
-    font-weight: 700;
-  }
-  div {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-`
-const Step = styled.div`
-  background-color: white;
-  border-radius: 5px;
-  padding: 5px 20px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-`
-const ApplicantGrid = styled.table`
   border: 1px solid red;
-  display: grid;
-  grid-template-columns: 1fr 200px;
-  grid-template-rows: auto;
-  /* gap: 5px; */
-  row-gap: 5px;
-  div {
-    background-color: var(--color-pink50);
-    height: 50px;
-    display: flex;
-    &:nth-child(2n + 1) {
-      padding-left: 30px;
-    }
-    &:nth-child(2n) {
-      justify-content: center;
-    }
-  }
-`
+`;
 
-const ApplicantGrid_head = styled.div`
-  display: flex;
-  align-items: center;
+const H1 = styled.h1`
   font-weight: 700;
-`
+  font-size: 20px;
+`;
+const GridContents = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50px auto 100px 100px;
+  /* border-top: 1px solid var(--color-gray100); */
+  margin: 50px 0;
+`;
 
-const Pagination = styled.ul`
+const Pages = styled.ul`
   display: flex;
-  border: 1px solid blue;
   justify-content: center;
-  align-items: center;
-  margin-top: 50px;
   gap: 5px;
+  color: var(--color-gray400);
   li {
-    font-size: 14px;
     cursor: pointer;
-    color: var(--color-gray500);
+    padding: 5px;
     &.active {
-      color: var(--color-gray900);
-      font-weight: 700;
-      font-size: 16px;
+      color: var(--color-gray800);
+      background-color: var(--color-point);
+    }
+    &:hover {
+      text-decoration: underline;
     }
   }
-`
+`;
