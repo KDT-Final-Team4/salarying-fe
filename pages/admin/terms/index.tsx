@@ -63,31 +63,42 @@ const Item = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: 200px;
-  background-color: var(--color-lightgray);
-  border-radius: 20px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
   padding: 30px;
   align-content: space-between;
   cursor: pointer;
+  color: var(--color-lightgray);
+  p {
+    color: var(--color-lightgray);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--color-lightgray) inset;
+  }
   :hover {
+    color: var(--color-primary);
     background-color: var(--color-point);
     transition: 0.3s;
+    p {
+      box-sizing: border-box;
+      box-shadow: none;
+      color: var(--color-lightgray);
+      background-color: var(--color-primary);
+    }
   }
   h3 {
     width: 100%;
     font-size: 28px;
     font-weight: 500;
-    color: var(--color-primary);
+    :after {
+      content: '';
+      border-bottom: solid 3px white;
+    }
   }
   div {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    .icon {
-      color: var(--color-primary);
-      font-size: 100px;
-      margin-right: -20px;
-      margin-bottom: -20px;
-    }
   }
 `
