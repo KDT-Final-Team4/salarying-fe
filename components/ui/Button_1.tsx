@@ -1,21 +1,21 @@
-import React from 'react';
-import { IconType } from 'react-icons';
-import styled from 'styled-components';
+import React from 'react'
+import { IconType } from 'react-icons'
+import styled from 'styled-components'
 
 interface IProps {
-  name: string;
-  Icon?: IconType;
-  color?: string;
+  name: string
+  Icon?: IconType
+  color?: string
 }
 export default function Button_1({ name, Icon, color }: IProps) {
-  const iconColor = color && color[0] === '#' ? color : `var(${color})`;
+  const iconColor = color && color[0] === '#' ? color : `var(${color})`
 
   return (
     <Btn>
       {Icon && <Icon color={iconColor} />}
       <span>{name}</span>
     </Btn>
-  );
+  )
 }
 
 const Btn = styled.button`
@@ -28,4 +28,4 @@ const Btn = styled.button`
   align-items: center;
   justify-content: center;
   gap: 5px;
-`;
+`
