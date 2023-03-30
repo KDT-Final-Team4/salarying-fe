@@ -1,4 +1,5 @@
 import React from 'react';
+import Toggle from 'react-toggle';
 import styled from 'styled-components';
 
 export default function New() {
@@ -6,34 +7,27 @@ export default function New() {
     <Wrapper>
       <TextInput>
         <h3>공고명</h3>
-        <input type='text' />
+        <input type="text" />
       </TextInput>
       <TextInput>
         <h3>지원자 이름</h3>
-        <input type='text' />
+        <input type="text" />
       </TextInput>
       <TextInput>
         <h3>지원자 메일</h3>
-        <input type='text' />
+        <input type="text" />
       </TextInput>
-      <ProcedureInput>
-        <h3>채용상태 절차</h3>
-        <Procedure>
-          <Circle />
-          <Circle />
-          <Circle />
-        </Procedure>
-      </ProcedureInput>
+
       <FailOrPass>
         <h3>합격/불합격</h3>
         <div>
           <div>
-            <input name='pass-or-fail' id='pass' type='radio' />
-            <label htmlFor='pass'>합격</label>
+            <input name="pass-or-fail" id="pass" type="radio" />
+            <label htmlFor="pass">합격</label>
           </div>
           <div>
-            <input name='pass-or-fail' id='fail' type='radio' />
-            <label htmlFor='fail'>불합격</label>
+            {/* <Toggle id="cheese-status" defaultChecked={this.state.cheeseIsReady} onChange={this.handleCheeseChange} />
+            <label htmlFor="cheese-status">Adjacent label tag</label> */}
           </div>
           <div>
             <Announce>통보</Announce>

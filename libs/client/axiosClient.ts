@@ -7,7 +7,6 @@ const headers = {
 };
 
 class Axios {
-  private static instance: Axios | null;
   axiosClient: AxiosInstance;
 
   constructor() {
@@ -16,37 +15,32 @@ class Axios {
       headers,
     });
   }
-  // 싱글톤 패턴 적용
-  public static getInstance() {
-    if (!Axios.instance) {
-      Axios.instance = new Axios();
-    }
-    return Axios.instance;
-  }
 
-  // 회원가입
+  // 회원가입 ok
   async postSignup(payload) {
+    console.log('signup');
     try {
       const res = await this.axiosClient.post('/signup', payload);
       console.log('signup', res.data);
       return res.data;
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e);
     }
   }
-  // 로그인
+  // 로그인 ok
   async postLogin(payload) {
-    console.log(payload);
+    console.log('postLogin');
     try {
       const res = await this.axiosClient.post('/users/login', payload);
-      console.log('login', res.data);
+      console.log('signup', res.data);
       return res.data;
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e);
     }
   }
 }
 
-const api = Axios.getInstance();
+const ax = new Axios();
+// const ax = new Axios();
 
-export default api;
+export default ax;

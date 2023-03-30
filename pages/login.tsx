@@ -3,15 +3,36 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
-import HeadLayout from '@/components/layout/HeadLayout';
 import { useRouter } from 'next/router';
-
+import ax from '@/libs/client/axiosClient';
+import useAccessToken from '@/libs/hooks/useAccessToken';
+import { toast } from 'react-toastify';
 export default function Login() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { isSubmitting, isValid, errors },
+    watch,
+    handleSubmit,
+    reset,
+    getValues,
+    setError,
+    setValue,
+    clearErrors,
+    getFieldState,
+  } = useForm();
   const [showPW, setShowPW] = useState(false);
   const router = useRouter();
+  const { accessToken, saveAccessToken, saveIsAdmin } = useAccessToken();
+  const [isAdminLogin, setIsAdminLogin] = useState(false);
+  const onValid = async () => {};
+  const handleTest = async () => {
+    const res = await ax.postLogin({
+      email: 'test@email.com',
+      password: 'test@1234',
+    });
 
-  const onValid = () => {};
+    console.log(res);
+  };
   return (
     <Wrapper>
       <LoginSection>
@@ -24,7 +45,7 @@ export default function Login() {
           <LoginForm onSubmit={handleSubmit(onValid)}>
             <InputDiv>
               <SubTitle>Email</SubTitle>
-              <TextInput type="text" {...register('id')} placeholder="Enter your email" />
+              <TextInput type="text" {...register('email')} placeholder="Enter your email" />
             </InputDiv>
             <InputDiv>
               <SubTitle>Password</SubTitle>
@@ -34,17 +55,18 @@ export default function Login() {
             <SubmitPanel>
               <div>
                 <RememberId>
-                  <input type="checkbox" id="rememberId" />
-                  <FakeCheckbox htmlFor="rememberId">
+                  <input type="checkbox" id="adminLogin" checked={isAdminLogin} onChange={(event) => setIsAdminLogin(event.target.checked)} />
+                  <FakeCheckbox htmlFor="adminLogin">
                     <BsCheckLg />
                   </FakeCheckbox>
-                  <label htmlFor="rememberId">아이디 기억하기</label>
+                  <label htmlFor="adminLogin">관리자 로그인</label>
                 </RememberId>
                 <span>패스워드 찾기</span>
               </div>
               <LoginButton>Login</LoginButton>
               <SignupButton onClick={() => router.push('/signup')}>Sign up</SignupButton>
             </SubmitPanel>
+            <span onClick={handleTest}>TEst</span>
           </LoginForm>
         </Inner>
       </LoginSection>
@@ -61,6 +83,7 @@ const Wrapper = styled.section`
   display: flex;
   align-items: center;
   color: var(--color-gray600);
+  padding: 0 10px;
 `;
 
 const LoginSection = styled.section`
@@ -96,7 +119,9 @@ const TitleDescription = styled.span`
   display: flex-inline;
 `;
 const LoginForm = styled.form`
-  width: 422px;
+  /* width: 422px; */
+
+  max-width: 422px;
   display: flex;
   flex-direction: column;
   gap: 20px;

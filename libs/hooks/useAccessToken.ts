@@ -2,11 +2,18 @@ import { useState, useEffect } from 'react';
 
 const useAccessToken = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
     const token = getCookie('accessToken');
+    const admin = getCookie('isAdmin');
+
     if (token) {
       setAccessToken(token);
+    }
+
+    if (admin) {
+      setIsAdmin(admin === 'true');
     }
   }, []);
 
@@ -20,10 +27,23 @@ const useAccessToken = () => {
     deleteCookie('accessToken');
   };
 
+  const saveIsAdmin = (admin: boolean) => {
+    setIsAdmin(admin);
+    setCookie('isAdmin', String(admin), 1);
+  };
+
+  const removeIsAdmin = () => {
+    setIsAdmin(null);
+    deleteCookie('isAdmin');
+  };
+
   return {
     accessToken,
+    isAdmin,
     saveAccessToken,
     removeAccessToken,
+    saveIsAdmin,
+    removeIsAdmin,
   };
 };
 
