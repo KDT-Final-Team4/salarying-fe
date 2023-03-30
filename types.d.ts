@@ -16,3 +16,13 @@ type Data = {
   success: boolean;
   data: any[];
 };
+
+interface IPostLogin {
+  stateCode: number;
+  success: boolean;
+  data: {
+    token: string;
+    role: 'USER' | 'ADMIN';
+  };
+  message: string;
+}
