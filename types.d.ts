@@ -14,7 +14,7 @@ enum httpMethod {
 type Data = {
   stateCode: number;
   success: boolean;
-  data: any[];
+  data: any;
 };
 
 interface IPostLogin {
@@ -26,3 +26,34 @@ interface IPostLogin {
   };
   message: string;
 }
+
+interface IPostAdminPassword extends Data {
+  message: string;
+}
+
+interface ITerms {
+  version: string;
+  title: string;
+  content: string;
+}
+interface ITermsWithId extends ITerms {
+  id: string;
+}
+interface ITermsWithType extends ITerms {
+  type: string;
+}
+
+interface IPostApplicantsPayload {
+  recruitingId: number;
+  email: string;
+  name: string;
+  number: string;
+}
+type TPostApplicantsMessagePayload = {
+  recruitingId: number;
+  applicantEmail: string;
+  title: string;
+  content: string;
+  progress: string;
+  status: string;
+}[];
