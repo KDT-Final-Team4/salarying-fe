@@ -22,16 +22,47 @@ export default function Login() {
   } = useForm();
   const [showPW, setShowPW] = useState(false);
   const router = useRouter();
-  const { accessToken, saveAccessToken, saveIsAdmin } = useAccessToken();
+  const { accessToken, isAdmin, saveAccessToken, saveIsAdmin } = useAccessToken();
   const [isAdminLogin, setIsAdminLogin] = useState(false);
-  const onValid = async () => {};
+  const onValid = async () => {
+    try {
+      if (isAdminLogin) {
+        console.log('admin 로그인!', getValues());
+        // admin 로그인시
+        const res = await ax.postAdminLogin(getValues());
+        if (res.success) {
+          toast.success(`(admin)${res.message}`);
+          router.replace('/admin');
+          saveAccessToken(res.data.token);
+          saveIsAdmin(isAdminLogin);
+        } else {
+          toast.success(res.message);
+        }
+      } else {
+        // 로그인시
+        const res = await ax.postLogin(getValues());
+        if (res.success) {
+          toast.success(res.message);
+          router.replace('/company');
+          saveAccessToken(res.data.token);
+          saveIsAdmin(isAdminLogin);
+        } else {
+          toast.success(res.message);
+        }
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
   const handleTest = async () => {
-    const res = await ax.postLogin({
-      email: 'test@email.com',
-      password: 'test@1234',
+    const url = 'https://www.salarying-recruiting.shop';
+    const res = await fetch(url + '/', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({}),
     });
-
-    console.log(res);
   };
   return (
     <Wrapper>
@@ -63,7 +94,7 @@ export default function Login() {
                 </RememberId>
                 <span>패스워드 찾기</span>
               </div>
-              <LoginButton>Login</LoginButton>
+              <LoginButton>{isAdminLogin ? 'Admin login' : 'Login'}</LoginButton>
               <SignupButton onClick={() => router.push('/signup')}>Sign up</SignupButton>
             </SubmitPanel>
             <span onClick={handleTest}>TEst</span>
