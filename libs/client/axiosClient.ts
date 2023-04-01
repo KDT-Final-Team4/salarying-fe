@@ -16,6 +16,63 @@ class Axios {
     });
   }
 
+  // admin-controller
+
+  /** 비밀번호 변경 (admin) */
+  async putAdminPassword(accessToken: string, { password }: { password: string }) {
+    return console.log('사용안하는게?');
+    try {
+      const res = await this.axiosClient.put(
+        '/admin/password',
+        { password },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putAdminPassword>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** 비밀번호 확인 (admin) ok */
+  async postAdminPassword(accessToken: string, { password }: { password: string }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.post(
+        '/admin/password',
+        { password },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('postAdminPassword>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** 관리자 별 담당 기업 리스트 출력 (admin) ok */
+  async getCorporations(accessToken: string): Promise<IGetCorporations> {
+    try {
+      const res = await this.axiosClient.get('/corporations', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('getCorporations>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  // login-controller
   /** 회원가입 (user) ok */
   async postSignup({
     email,
@@ -61,51 +118,13 @@ class Axios {
       console.log('postAdminLogin', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
-  /** 비밀번호 확인 (admin) ok */
-  async postAdminPassword(accessToken: string, { password }: { password: string }): Promise<Data> {
-    try {
-      const res = await this.axiosClient.post(
-        '/admin/password',
-        { password },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      console.log('postAdminPassword>>', res.data);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  /** 비밀번호 변경 (admin) */
-  async putAdminPassword(accessToken: string, { password }: { password: string }) {
-    return console.log('사용안하는게?');
-    try {
-      const res = await this.axiosClient.put(
-        '/admin/password',
-        { password },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      console.log('putAdminPassword>>', res.data);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
+  // applicant-controller
   /** 지원자 리스트 출력 (user) ok */
-  async getApplicants(accessToken, { recruiting_id = 2 }) {
+  async getApplicants(accessToken, { recruiting_id = 2 }): Promise<IGetApplicants> {
     try {
       const res = await this.axiosClient.get(`/applicants?recruiting_id=${recruiting_id}`, {
         headers: {
@@ -115,7 +134,27 @@ class Axios {
       console.log('getApplicants>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** 지원자 progress,status수정 (user) ok */
+  async putApplicants(accessToken, { recruitingId, progress, status, email }) {
+    try {
+      const res = await this.axiosClient.post(
+        '/applicants',
+        {},
+        {
+          params: { recruitingId, progress, status, email },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putApplicants>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
@@ -134,12 +173,12 @@ class Axios {
       console.log('postApplicants>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
   /** 채용전형과 합격여부와 일치하는 지원자 리스트 출력 -> 버림 */
-  async getApplicantsSelection(accessToken, { id, progress, status }) {
+  async getApplicantsSelection(accessToken, { id, progress, status }): Promise<Data> {
     try {
       const res = await this.axiosClient.post(
         '/applicants',
@@ -150,14 +189,14 @@ class Axios {
           },
         },
       );
-      console.log('postApplicants>>', res.data);
+      console.log('getApplicantsSelection>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
-  /** email 목록 가져오기 (user) */
+  /** email 목록 가져오기 (user) ok */
   async getApplicantsMessage(accessToken): Promise<IGetApplicantsMessage> {
     try {
       const res = await this.axiosClient.get('/applicants/message', {
@@ -168,11 +207,11 @@ class Axios {
       console.log('getApplicantsMessage>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
-  /** email 보내기 (user) */
-  async postApplicantsMessage(accessToken, payload) {
+  /** email 보내기 (user) ok  */
+  async postApplicantsMessage(accessToken: string, payload: IPostApplicantsMessage[]) {
     try {
       const res = await this.axiosClient.post('/applicants/message', payload, {
         headers: {
@@ -182,7 +221,7 @@ class Axios {
       console.log('postApplicantsMessage>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
@@ -201,7 +240,7 @@ class Axios {
       console.log('postUsersPassword>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
   /** 기업 비밀번호 변경 */
@@ -219,11 +258,112 @@ class Axios {
       console.log('putUsersPassword>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  // notice-controller
+  /** 공지사항 리스트 조회 (admin,user) ok */
+  async getNotice(accessToken): Promise<Data> {
+    try {
+      const res = await this.axiosClient.get('/notice', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('getNotice>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
-  /** 채용공고별 전형단계 출력 */
+  /** 공지사항 공지사항 수정 (admin) ok */
+  async putNotice(accessToken, { id, title, content }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.put(
+        '/notice',
+        { id, title, content },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putNotice>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** 공지사항 공지사항 등록 (admin) ok */
+  async postNotice(accessToken, { title, content }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.post(
+        '/notice',
+        { title, content },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('postNotice>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  /** 공지사항 삭제 (admin) ok */
+  async deleteNotice(accessToken, id): Promise<Data> {
+    try {
+      const res = await this.axiosClient.delete(`/notice`, {
+        data: { id },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('deleteNotice>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** 공지사항 상세정보 조회 (admin) ok */
+  async getNoticeDetail(accessToken, id): Promise<INoticeDetail> {
+    try {
+      const res = await this.axiosClient.get(`/notice/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('getNoticeDetail>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  /** 공지사항 status 수정 (admin) ok */
+  async putNoticeStatus(accessToken, { id, status }: { id: string | number; status: boolean }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.put(
+        `/notice/status`,
+        { id, status },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putNoticeStatus>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  // progress-controller
+  /** 채용공고별 전형단계 출력 (user) */
   async postRecruitingProgress(accessToken, id) {
     try {
       const res = await this.axiosClient.post(`/recruiting/progress/${id}`, {
@@ -234,7 +374,7 @@ class Axios {
       console.log('postRecruitingProgress>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
@@ -249,7 +389,26 @@ class Axios {
       console.log('getRecruiting>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  /** 기업별 채용공고 status 변경 (user) ok */
+  async putRecruitingStatus(accessToken, { recruitingId, status }) {
+    try {
+      const res = await this.axiosClient.put(
+        `/recruiting`,
+        {},
+        {
+          params: { recruitingId, status },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putRecruiting>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
@@ -264,7 +423,21 @@ class Axios {
       console.log('postRecruiting>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  /** 기업별 채용공고 상세 (user)  ok */
+  async getRecruitingDetail(accessToken, id) {
+    try {
+      const res = await this.axiosClient.get(`/recruiting/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('getRecruiting>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
@@ -279,7 +452,7 @@ class Axios {
       console.log('getTerms>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
   /** 약관 수정 (admin) ok */
@@ -298,7 +471,7 @@ class Axios {
       console.log('putTerms>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
   /** 약관 등록 (admin) ok */
@@ -312,7 +485,7 @@ class Axios {
       console.log('postTerms>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 
@@ -327,7 +500,7 @@ class Axios {
       console.log('deleteTerms>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
   /** 약관 상세보기 (admin) ok*/
@@ -341,7 +514,7 @@ class Axios {
       console.log('getTerms>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
   /** 약관 status 변경: 최소 1개 공개해야함, (admin) ok*/
@@ -359,7 +532,7 @@ class Axios {
       console.log('postTermsStatus>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err?.response?.data?.errorMessage);
+      console.error(err?.response?.data?.errorMessage);
     }
   }
 }
