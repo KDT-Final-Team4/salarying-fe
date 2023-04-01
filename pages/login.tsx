@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
 import { useRouter } from 'next/router';
-import ax from '@/libs/client/axiosClient';
+import api from '@/libs/client/axiosClient';
 import useAccessToken from '@/libs/hooks/useAccessToken';
 import { toast } from 'react-toastify';
 export default function Login() {
@@ -22,32 +22,31 @@ export default function Login() {
   } = useForm();
   const [showPW, setShowPW] = useState(false);
   const router = useRouter();
-  const { accessToken, isAdmin, saveAccessToken, saveIsAdmin } = useAccessToken();
+  const { accessToken: token, isAdmin, saveAccessToken, saveIsAdmin } = useAccessToken();
   const [isAdminLogin, setIsAdminLogin] = useState(false);
   const onValid = async () => {
     try {
       if (isAdminLogin) {
-        console.log('admin 로그인!', getValues());
         // admin 로그인시
-        const res = await ax.postAdminLogin(getValues());
+        const res = await api.postAdminLogin(getValues());
         if (res.success) {
           toast.success(`(admin)${res.message}`);
-          router.replace('/admin');
+          // router.replace('/admin');
           saveAccessToken(res.data.token);
           saveIsAdmin(isAdminLogin);
         } else {
-          toast.success(res.message);
+          toast.success('(Admin)' + res.message);
         }
       } else {
         // 로그인시
-        const res = await ax.postLogin(getValues());
+        const res = await api.postLogin(getValues());
         if (res.success) {
           toast.success(res.message);
-          router.replace('/company');
+          // router.replace('/company');
           saveAccessToken(res.data.token);
           saveIsAdmin(isAdminLogin);
         } else {
-          toast.success(res.message);
+          toast.success('(User)' + res.message);
         }
       }
     } catch (err) {
@@ -55,13 +54,19 @@ export default function Login() {
     }
   };
   const handleTest = async () => {
-    const url = 'https://www.salarying-recruiting.shop';
-    const res = await fetch(url + '/', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({}),
+    // const url = 'https://www.salarying-recruiting.shop';
+    // const res = await fetch(url + '/', {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({}),
+    // });
+    console.log(token);
+    // await api.getTerms(token, 'service');
+    const re = await api.postTermsStatus(token, {
+      status: '공개',
+      id: 28,
     });
   };
   return (
@@ -97,7 +102,7 @@ export default function Login() {
               <LoginButton>{isAdminLogin ? 'Admin login' : 'Login'}</LoginButton>
               <SignupButton onClick={() => router.push('/signup')}>Sign up</SignupButton>
             </SubmitPanel>
-            <span onClick={handleTest}>TEst</span>
+            <span onClick={handleTest}>{isAdmin ? '관리자' : '유저'}</span>
           </LoginForm>
         </Inner>
       </LoginSection>
