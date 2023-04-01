@@ -16,19 +16,36 @@ class Axios {
     });
   }
 
-  // 회원가입 ok
-  async postSignup(payload) {
+  /** 회원가입 (user) ok */
+  async postSignup({
+    email,
+    password = 'test@email.com',
+    companyName = '익명회사',
+    companyPhoneNumber = '010-1234-5678',
+    name = '익명',
+    position = '대표',
+  }: {
+    [key: string]: string;
+  }) {
     try {
-      const res = await this.axiosClient.post('/signup', payload);
+      const res = await this.axiosClient.post('/signup', {
+        email,
+        password,
+        companyName,
+        companyPhoneNumber,
+        name,
+        position,
+      });
       console.log('postSignup', res.data);
       return res.data;
     } catch (e) {
       console.log(e);
     }
   }
-  // 로그인 ok
+  /** 로그인 (user) ok */
   async postLogin(payload): Promise<IPostLogin> {
     try {
+      console.log(payload);
       const res = await this.axiosClient.post('/users/login', payload);
       console.log('postLogin', res.data);
       return res.data;
@@ -37,10 +54,10 @@ class Axios {
     }
   }
 
-  // Admin로그인 ok
-  async postAdminLogin(payload): Promise<IPostLogin> {
+  /** Admin로그인 (admin) ok */
+  async postAdminLogin({ email, password }: { [key: string]: string }): Promise<IPostLogin> {
     try {
-      const res = await this.axiosClient.post('/admin/login', payload);
+      const res = await this.axiosClient.post('/admin/login', { email, password });
       console.log('postAdminLogin', res.data);
       return res.data;
     } catch (err) {
@@ -48,8 +65,8 @@ class Axios {
     }
   }
 
-  // 비밀번호 확인 payload = {password :string}
-  async postAdminPassword(accessToken, { password }): Promise<IPostAdminPassword> {
+  /** 비밀번호 확인 (admin) ok */
+  async postAdminPassword(accessToken: string, { password }: { password: string }): Promise<Data> {
     try {
       const res = await this.axiosClient.post(
         '/admin/password',
@@ -67,8 +84,9 @@ class Axios {
     }
   }
 
-  // 비밀번호 변경 payload = {password :string}
-  async putAdminPassword(accessToken, { password }) {
+  /** 비밀번호 변경 (admin) */
+  async putAdminPassword(accessToken: string, { password }: { password: string }) {
+    return console.log('사용안하는게?');
     try {
       const res = await this.axiosClient.put(
         '/admin/password',
@@ -86,10 +104,10 @@ class Axios {
     }
   }
 
-  // 지원자 리스트 출력 (관)
-  async getApplicants(accessToken) {
+  /** 지원자 리스트 출력 (user) ok */
+  async getApplicants(accessToken, { recruiting_id = 2 }) {
     try {
-      const res = await this.axiosClient.get('/applicants', {
+      const res = await this.axiosClient.get(`/applicants?recruiting_id=${recruiting_id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -101,8 +119,8 @@ class Axios {
     }
   }
 
-  // 채용공고에 지원자 등록
-  async postApplicants(accessToken, { recruitingId, email, name, number }) {
+  /** 채용공고에 지원자 등록 (user) ok */
+  async postApplicants(accessToken, { recruitingId = 2, email = 'test@email.com', name = '익명', number = '010-8989-0000' }) {
     try {
       const res = await this.axiosClient.post(
         '/applicants',
@@ -120,7 +138,7 @@ class Axios {
     }
   }
 
-  // 채용전형과 합격여부와 일치하는 지원자 리스트 출력 -> 버림
+  /** 채용전형과 합격여부와 일치하는 지원자 리스트 출력 -> 버림 */
   async getApplicantsSelection(accessToken, { id, progress, status }) {
     try {
       const res = await this.axiosClient.post(
@@ -139,8 +157,8 @@ class Axios {
     }
   }
 
-  // email 목록 가져오기 (기업회원이어야 함)
-  async getApplicantsMessage(accessToken) {
+  /** email 목록 가져오기 (user) */
+  async getApplicantsMessage(accessToken): Promise<IGetApplicantsMessage> {
     try {
       const res = await this.axiosClient.get('/applicants/message', {
         headers: {
@@ -153,7 +171,7 @@ class Axios {
       console.log(err);
     }
   }
-  // email 보내기 (기업회원이어야 함)
+  /** email 보내기 (user) */
   async postApplicantsMessage(accessToken, payload) {
     try {
       const res = await this.axiosClient.post('/applicants/message', payload, {
@@ -168,7 +186,7 @@ class Axios {
     }
   }
 
-  // 기업 비밀번호 확인
+  /** 기업 비밀번호 확인 ok */
   async postUsersPassword(accessToken, { password }) {
     try {
       const res = await this.axiosClient.post(
@@ -186,7 +204,7 @@ class Axios {
       console.log(err);
     }
   }
-  // 기업 비밀번호 변경
+  /** 기업 비밀번호 변경 */
   async putUsersPassword(accessToken, { password }) {
     try {
       const res = await this.axiosClient.put(
@@ -205,7 +223,7 @@ class Axios {
     }
   }
 
-  // 채용공고별 전형단계 출력
+  /** 채용공고별 전형단계 출력 */
   async postRecruitingProgress(accessToken, id) {
     try {
       const res = await this.axiosClient.post(`/recruiting/progress/${id}`, {
@@ -220,7 +238,7 @@ class Axios {
     }
   }
 
-  // 채용공고 리스트 출력
+  /** 채용공고 리스트 출력 */
   async getRecruiting(accessToken) {
     try {
       const res = await this.axiosClient.get(`/recruiting`, {
@@ -235,8 +253,8 @@ class Axios {
     }
   }
 
-  // 기업별 채용공고 등록
-  async postRecruiting(accessToken, payload: IPostRecruit) {
+  /** 기업별 채용공고 등록 (user) ok */
+  async postRecruiting(accessToken, payload: IPostRecruit): Promise<IPostRecruiting> {
     try {
       const res = await this.axiosClient.post(`/recruiting`, payload, {
         headers: {
@@ -250,10 +268,10 @@ class Axios {
     }
   }
 
-  // 약관 리스트 출력
-  async getTerms(accessToken) {
+  /** 약관 리스트 출력 (admin) ok */
+  async getTerms(accessToken, type: 'service' | 'privacy' | 'information' | 'marketing'): Promise<IGetTerms> {
     try {
-      const res = await this.axiosClient.get(`/terms`, {
+      const res = await this.axiosClient.get(`/terms?type=${type}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -264,22 +282,27 @@ class Axios {
       console.log(err);
     }
   }
-  // 약관 수정
-  async putTerms(accessToken, payload: ITerms) {
+  /** 약관 수정 (admin) ok */
+  async putTerms(accessToken, payload: IPutTerms) {
     try {
-      const res = await this.axiosClient.put(`/terms`, payload, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const res = await this.axiosClient.put(
+        `/terms`,
+        {},
+        {
+          params: payload,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
       console.log('putTerms>>', res.data);
       return res.data;
     } catch (err) {
       console.log(err);
     }
   }
-  // 약관 등록
-  async postTerms(accessToken, payload: ITermsWithType) {
+  /** 약관 등록 (admin) ok */
+  async postTerms(accessToken, payload: ITermsWithType): Promise<Data> {
     try {
       const res = await this.axiosClient.post(`/terms`, payload, {
         headers: {
@@ -293,7 +316,7 @@ class Axios {
     }
   }
 
-  // 약관 삭제
+  /** 약관 삭제 (admin) ok */
   async deleteTerms(accessToken, id) {
     try {
       const res = await this.axiosClient.delete(`/terms/${id}`, {
@@ -307,8 +330,8 @@ class Axios {
       console.log(err);
     }
   }
-  // 약관 상세보기
-  async getTermsDetail(accessToken, id) {
+  /** 약관 상세보기 (admin) ok*/
+  async getTermsDetail(accessToken, id): Promise<ItermsDetail> {
     try {
       const res = await this.axiosClient.get(`/terms/detail/${id}`, {
         headers: {
@@ -321,12 +344,12 @@ class Axios {
       console.log(err);
     }
   }
-  // 약관 상태 변경
-  async postTermsStatus(accessToken, { status, id }: { status: string; id: number }) {
+  /** 약관 status 변경: 최소 1개 공개해야함, (admin) ok*/
+  async postTermsStatus(accessToken, { status, id }) {
     try {
       const res = await this.axiosClient.post(
         `/terms/status`,
-        { status, id },
+        { status, id, force: true },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -336,20 +359,12 @@ class Axios {
       console.log('postTermsStatus>>', res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.log(err?.response?.data?.errorMessage);
     }
   }
 }
 
-const ax = new Axios();
-// const ax = new Axios();
+const api = new Axios();
+/** const ax = new Axios(); */
 
-export default ax;
-interface IPostRecruit {
-  title: string;
-  task: string;
-  document: boolean;
-  firstRound: boolean;
-  secondRound: boolean;
-  finalRound: boolean;
-}
+export default api;

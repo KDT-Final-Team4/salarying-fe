@@ -15,32 +15,47 @@ type Data = {
   stateCode: number;
   success: boolean;
   data: any;
+  message: string;
 };
 
-interface IPostLogin {
-  stateCode: number;
-  success: boolean;
+interface IPostLogin extends Data {
   data: {
     token: string;
     role: 'USER' | 'ADMIN';
   };
-  message: string;
 }
 
-interface IPostAdminPassword extends Data {
-  message: string;
-}
-
+type TTermsType = 'service' | 'privacy' | 'information' | 'marketing';
 interface ITerms {
+  type: TTermsType;
   version: string;
   title: string;
   content: string;
 }
+interface ItermsDetail extends Data {
+  data: {
+    content: string;
+    name: string;
+    status: string;
+    title: string;
+    type: string;
+    version: string;
+  };
+}
+interface IPutTerms {
+  version: string;
+  title: string;
+  content: string;
+  id: number;
+}
 interface ITermsWithId extends ITerms {
   id: string;
 }
-interface ITermsWithType extends ITerms {
-  type: string;
+interface ITermsWithType {
+  type: TTermsType;
+  version: string;
+  title: string;
+  content: string;
 }
 
 interface IPostApplicantsPayload {
@@ -57,3 +72,45 @@ type TPostApplicantsMessagePayload = {
   progress: string;
   status: string;
 }[];
+
+interface IGetApplicantsMessage extends Data {
+  data: {
+    applicantEmail: string;
+    progress: string;
+    recruitingName: string;
+    sendDate: string;
+    status: string;
+  }[];
+  message: string;
+}
+
+interface IPostRecruit {
+  title: string;
+  task: string;
+  document: boolean;
+  firstRound: boolean;
+  secondRound: boolean;
+  finalRound: boolean;
+}
+
+interface IPostRecruiting extends Data {
+  message: string;
+  data: {
+    id: number;
+    postDate: string;
+    status: string;
+    task: string;
+    title: string;
+  };
+}
+
+interface IGetTerms extends Data {
+  message: string;
+  data: {
+    status: string;
+    title: string;
+    version: string;
+    name: string;
+    id: number;
+  }[];
+}
