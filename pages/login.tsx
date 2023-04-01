@@ -63,11 +63,7 @@ export default function Login() {
     //   body: JSON.stringify({}),
     // });
     console.log(token);
-    // await api.getTerms(token, 'service');
-    const re = await api.postTermsStatus(token, {
-      status: '공개',
-      id: 28,
-    });
+    const res = await api.putNoticeStatus(token, { id: 32, status: false });
   };
   return (
     <Wrapper>

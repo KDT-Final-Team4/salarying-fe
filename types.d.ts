@@ -114,3 +114,42 @@ interface IGetTerms extends Data {
     id: number;
   }[];
 }
+
+interface IGetCorporations extends Data {
+  data: {
+    company_name: string;
+    name: string;
+    position: string;
+  }[];
+}
+
+interface IGetApplicants extends Data {
+  data: {
+    applicantNm: string;
+    applicantTel: string;
+    applicantEmail: string;
+    progress: string;
+    status: string;
+  }[];
+}
+
+interface IPostApplicantsMessage {
+  recruitingId: unknown;
+  applicantEmail: string;
+  title: string;
+  content: string;
+  progress: string;
+  status: string;
+}
+
+interface INoticeDetail extends Data {
+  data: {
+    adminEmail: string;
+    adminName: string;
+    content: string;
+    id: number;
+    postDate: string;
+    status: boolean;
+    title: string;
+  };
+}
