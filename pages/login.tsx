@@ -54,16 +54,12 @@ export default function Login() {
     }
   };
   const handleTest = async () => {
-    // const url = 'https://www.salarying-recruiting.shop';
-    // const res = await fetch(url + '/', {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({}),
-    // });
     console.log(token);
-    const res = await api.putNoticeStatus(token, { id: 32, status: false });
+    await api.putFAQStatus(token, {
+      id: 36,
+      question: 'putfaqstatus',
+      answer: 'asdfadfs',
+    });
   };
   return (
     <Wrapper>
