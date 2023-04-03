@@ -11,6 +11,8 @@ interface IApplicant {
   progress: string;
   status: string;
 }
+
+
 const applicantsData: IApplicant[] = [
   {
     applicantNm: '박혁거세',
@@ -27,46 +29,13 @@ const applicantsData: IApplicant[] = [
     status: '합격',
   },
 ];
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-`;
-
-const Table = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const Th = styled.th`
-  border: 1px solid #e0e0e0;
-  text-align: left;
-  padding: 12px;
-  background-color: #f5f5f5;
-  color: #333;
-`;
-
-const Td = styled.td`
-  border: 1px solid #e0e0e0;
-  text-align: left;
-  padding: 12px;
-`;
-
-const Tr = styled.tr`
-  &:nth-child(even) {
-    background-color: #fafafa;
-  }
-`;
 
 const Applicants: React.FC = () => {
   return (
     <Wrapper>
       <h1>지원자 관리 페이지</h1>
       <Table>
-        <thead>
+        <Thead>
           <Tr>
             <Th>이름</Th>
             <Th>전화번호</Th>
@@ -75,8 +44,8 @@ const Applicants: React.FC = () => {
             <Th>상태</Th>
             <Th>메일 보내기</Th>
           </Tr>
-        </thead>
-        <tbody>
+        </Thead>
+        <Tbody>
           {applicantsData.map((applicant, index) => (
             <Tr key={index}>
               <Td>{applicant.applicantNm}</Td>
@@ -85,14 +54,94 @@ const Applicants: React.FC = () => {
               <Td>{applicant.progress}</Td>
               <Td>{applicant.status}</Td>
               <Td>
-                <Button_2 name="Send" color="sky" />
+                <SendBtn>Send</SendBtn>
               </Td>
             </Tr>
           ))}
-        </tbody>
+        </Tbody>
       </Table>
     </Wrapper>
   );
 };
 
 export default Applicants;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  margin: 0 auto;
+  h1 {
+    color: var(--color-gray700);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
+`;
+
+const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+`;
+const Thead = styled.thead`
+  tr {
+    th {
+      border-top: 1px solid var(--color-gray100);
+      text-align: left;
+      padding: 22px 12px;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--color-gray400);
+    }
+  }
+`;
+const Tbody = styled.tbody`
+  tr:hover {
+    background-color: var(--color-gray50);
+  }
+`;
+
+const Th = styled.th`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 22px 12px;
+  font-weight: 500;
+  color: var(--color-gray400);
+`;
+
+const Td = styled.td`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 20px 12px;
+  padding-right: 40px;
+  color: var(--color-gray600);
+  p {
+    font-size: 12px;
+    margin-top: 10px;
+    color: var(--color-gray400);
+  }
+  /* 버튼 칸에 약간 패딩주기 */
+  &:last-child {
+    padding: 0px 40px;
+  }
+`;
+
+const Tr = styled.tr`
+  &:last-child {
+    border-bottom: 1px solid var(--color-gray100);
+  }
+`;
+
+const SendBtn = styled.button`
+  background-color: var(--color-point);
+  color: var(--color-gray700);
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  &:hover {
+    filter: brightness(1.05);
+  }
+`;

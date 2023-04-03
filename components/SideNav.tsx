@@ -7,6 +7,7 @@ import Avatar, { genConfig } from 'react-nice-avatar';
 import { useRouter } from 'next/router';
 import CustomLink from './CustomLink';
 import AccordionMenu from './AccordionMenu';
+import useAccessToken from '@/libs/hooks/useAccessToken';
 
 const subNavs = [
   {
@@ -21,6 +22,7 @@ export default function SideNav() {
   const config = genConfig('admin@email.com');
   const router = useRouter();
   const [pathname, setPathname] = useState('');
+  const { isAdmin, accessToken } = useAccessToken();
 
   useEffect(() => {
     setPathname(router.pathname);
@@ -28,6 +30,7 @@ export default function SideNav() {
 
   return (
     <Wrapper>
+      <span style={{ position: 'absolute', color: `var(--color-green700)` }}>{!accessToken ? '로그인필요' : isAdmin ? '관리자계정' : '기업회원'}</span>
       <Logo>{<img src="/logo_dark.png" alt="" />}</Logo>
 
       <NavMenues>
