@@ -154,8 +154,14 @@ const DevLinks = styled.div`
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    &:hover {
+      background-color: var(--color-orange50);
+    }
     a {
       color: var(--color-gray600);
+      &:hover {
+        background-color: var(--color-orange200);
+      }
     }
   }
 `;

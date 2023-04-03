@@ -9,7 +9,7 @@ interface IApplicant {
   applicantTel: string;
   applicantEmail: string;
   progress: string;
-  status: string;
+  status: '합격' | '불합격';
 }
 
 
