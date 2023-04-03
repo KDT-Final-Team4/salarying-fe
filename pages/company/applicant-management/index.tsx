@@ -2,46 +2,97 @@ import PostCard from '@/components/company/job-posting/PostCard'
 import ApplicantCard from '@/components/company/notice/ApplicantCard'
 import React from 'react'
 import styled from 'styled-components'
+import Button_2 from '@/components/ui/Button_2';
 
-const listData = [{ title: '알바직 모집' }, { title: '인턴 모집' }, { title: 'CEO 모집' }, { title: '총무 모집' }]
+interface IApplicant {
+  applicantNm: string;
+  applicantTel: string;
+  applicantEmail: string;
+  progress: string;
+  status: string;
+}
+const applicantsData: IApplicant[] = [
+  {
+    applicantNm: '박혁거세',
+    applicantTel: '01012341234',
+    applicantEmail: 'test@email.com',
+    progress: '서류 심사',
+    status: '합격',
+  },
+  {
+    applicantNm: '황이삭',
+    applicantTel: '01022222222',
+    applicantEmail: 'hwisaac0@gmail.com',
+    progress: '서류 심사',
+    status: '합격',
+  },
+];
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+`;
 
-export default function ApplicantManagement() {
+const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const Th = styled.th`
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  padding: 12px;
+  background-color: #f5f5f5;
+  color: #333;
+`;
+
+const Td = styled.td`
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  padding: 12px;
+`;
+
+const Tr = styled.tr`
+  &:nth-child(even) {
+    background-color: #fafafa;
+  }
+`;
+
+const Applicants: React.FC = () => {
   return (
     <Wrapper>
-      <Head>
-        <Title>지원자 관리</Title>
-      </Head>
-
-      <PostList>
-        {listData.map((list) => (
-          <PostCard key={list.title} jobPost={list} />
-        ))}
-      </PostList>
+      <h1>지원자 관리 페이지</h1>
+      <Table>
+        <thead>
+          <Tr>
+            <Th>이름</Th>
+            <Th>전화번호</Th>
+            <Th>이메일</Th>
+            <Th>진행 상황</Th>
+            <Th>상태</Th>
+            <Th>메일 보내기</Th>
+          </Tr>
+        </thead>
+        <tbody>
+          {applicantsData.map((applicant, index) => (
+            <Tr key={index}>
+              <Td>{applicant.applicantNm}</Td>
+              <Td>{applicant.applicantTel}</Td>
+              <Td>{applicant.applicantEmail}</Td>
+              <Td>{applicant.progress}</Td>
+              <Td>{applicant.status}</Td>
+              <Td>
+                <Button_2 name="Send" color="sky" />
+              </Td>
+            </Tr>
+          ))}
+        </tbody>
+      </Table>
     </Wrapper>
-  )
-}
+  );
+};
 
-const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 0 100px;
-  /* gap: 100px; */
-  border: 1px solid green;
-`
-
-const Head = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 20px;
-  margin: 50px 0;
-  padding: 30px 0;
-  border-bottom: 1px solid black;
-`
-const Title = styled.h1``
-const PostList = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`
+export default Applicants;

@@ -1,39 +1,45 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import Toggle from 'react-toggle';
 import styled from 'styled-components';
 
+const ReqPostRecruit = {
+  title: '새로운공고',
+  task: '경영',
+  document: true, // 서류전형
+  firstRound: true,
+  secondRound: true,
+  finalRound: true,
+};
+
 export default function New() {
+  const { register, handleSubmit } = useForm();
+  const onValid = () => {};
   return (
     <Wrapper>
       <TextInput>
         <h3>공고명</h3>
-        <input type='text' />
+        <input type="text" {...register('title')} />
       </TextInput>
       <TextInput>
-        <h3>지원자 이름</h3>
-        <input type='text' />
+        <h3>Task</h3>
+        <input type="text" {...register('task')} />
       </TextInput>
       <TextInput>
         <h3>지원자 메일</h3>
-        <input type='text' />
+        <input type="text" />
       </TextInput>
-      <ProcedureInput>
-        <h3>채용상태 절차</h3>
-        <Procedure>
-          <Circle />
-          <Circle />
-          <Circle />
-        </Procedure>
-      </ProcedureInput>
+
       <FailOrPass>
         <h3>합격/불합격</h3>
         <div>
           <div>
-            <input name='pass-or-fail' id='pass' type='radio' />
-            <label htmlFor='pass'>합격</label>
+            <input name="pass-or-fail" id="pass" type="radio" />
+            <label htmlFor="pass">합격</label>
           </div>
           <div>
-            <input name='pass-or-fail' id='fail' type='radio' />
-            <label htmlFor='fail'>불합격</label>
+            {/* <Toggle id="cheese-status" defaultChecked={this.state.cheeseIsReady} onChange={this.handleCheeseChange} />
+            <label htmlFor="cheese-status">Adjacent label tag</label> */}
           </div>
           <div>
             <Announce>통보</Announce>

@@ -110,7 +110,7 @@ const Nav = styled.ul`
     justify-content: center;
     cursor: pointer;
     font-weight: 400;
-    border-radius: 50px;
+    border-radius: 10px;
     padding: 20px 0;
     margin: 0 20px;
     background-color: var(--color-lightgray);
@@ -119,14 +119,12 @@ const Nav = styled.ul`
       background-color: var(--color-point);
       transition: 0.1s;
       font-weight: 700;
-      border: 1px solid var(--color-primary);
       box-sizing: border-box;
     }
     &.active {
       background-color: var(--color-point);
       transition: 0.2s;
       font-weight: 700;
-      border: 1px solid var(--color-primary);
       box-sizing: border-box;
     }
   }

@@ -3,37 +3,18 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
-const posting = `
-회사명: [회사명]
-채용분야: [채용분야]
-근무지역: [근무지역]
-근무형태: [근무형태]
-모집인원: [모집인원]
-담당업무: [담당업무]
-
-자격요건:
-- [자격요건1]
-- [자격요건2]
-- [자격요건3]
-- [자격요건4]
-
-우대사항:
-- [우대사항1]
-- [우대사항2]
-- [우대사항3]
-
-근무조건:
-- 연봉: [연봉]
-- 복리후생: [복리후생]
-- 근무시간: [근무시간]
-
-지원방법:
-- 이메일: [이메일 주소]
-- 문의전화: [문의전화번호]
-- 제출서류: [제출서류]
-
-많은 분들의 지원 바랍니다. 감사합니다.
-`;
+interface IPostData {
+  title: string;
+  postDate: string;
+  task: string;
+  status: string;
+}
+const postData: IPostData = {
+  title: '2023 상반기 신입사원',
+  postDate: '2023-03-28T06:02:13.290+00:00',
+  task: '전산',
+  status: '서류심사',
+};
 
 export default function JobPostingId() {
   const router = useRouter();
@@ -41,16 +22,13 @@ export default function JobPostingId() {
   return (
     <Wrapper>
       <Head>
-        <H1>공고 등록</H1>
-        <Author>
-          <span>작성자</span>
-          <span>공혜지</span>
-        </Author>
+        <H1></H1>
+        <PostDate>{postData.postDate}</PostDate>
       </Head>
       <Body>
         <Overview>
           <Row_title>
-            <h2>공고 제목</h2>
+            <h2>{postData.title}</h2>
             <span>인턴 모집</span>
           </Row_title>
           <Row_procedure>
@@ -63,7 +41,7 @@ export default function JobPostingId() {
             </div>
           </Row_procedure>
         </Overview>
-        <PostingContent>{posting}</PostingContent>
+        <PostingContent></PostingContent>
       </Body>
     </Wrapper>
   );
@@ -84,7 +62,7 @@ const H1 = styled.h1`
   font-weight: 700;
   font-size: 24px;
 `;
-const Author = styled.div`
+const PostDate = styled.div`
   display: flex;
   gap: 30px;
   span {

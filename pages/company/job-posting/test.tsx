@@ -1,4 +1,4 @@
-import PostCard from '@/components/company/job-posting/PostCard';
+import PostCard from '@/components/company/job-posting/TestPostCard';
 import ax from '@/libs/client/axiosClient';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -79,7 +79,7 @@ const JobPosting = () => {
       <Head>
         <Title onClick={handleClick}>공고 리스트 보기</Title>
       </Head>
-      <AddBtn>신규 등록</AddBtn>
+
       <PostList>
         {res.data.map((post) => (
           <PostCard key={post.title} jobPost={post} />
@@ -95,11 +95,9 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
   padding: 0 100px;
-  padding-bottom: 100px;
 `;
-const AddBtn = styled.div``;
+
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
@@ -112,7 +110,7 @@ const Title = styled.h1`
   color: var(--color-primary);
 `;
 const PostList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
 `;

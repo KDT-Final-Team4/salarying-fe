@@ -123,9 +123,8 @@ const Inner = styled.div`
     height: 50px;
     background-color: transparent;
     margin: 20px 10px;
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
-    border: 1px solid var(--color-primary);
     &.cancel {
       :hover {
         font-weight: 700;
@@ -144,8 +143,7 @@ const Inner = styled.div`
 
 const Info = styled.div`
   width: 100%;
-  border: 1px solid var(--color-gray400);
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: var(--color-lightgray);
   padding: 30px;
 `
@@ -173,8 +171,7 @@ const Category = styled.div`
       user-select: none;
       cursor: pointer;
       color: var(--color-gray500);
-      border: 1px solid var(--color-gray300);
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 15px 20px;
       margin: 0 20px;
       display: flex;
@@ -184,18 +181,14 @@ const Category = styled.div`
       :hover {
         color: var(--color-primary);
         font-weight: 700;
-        border: 1px solid transparent;
         background-color: var(--color-point);
         transition: 0.2s;
-        border: 1px solid var(--color-primary);
       }
       &.select {
         color: var(--color-primary);
         font-weight: 700;
-        border: 1px solid transparent;
         background-color: var(--color-point);
         transition: 0.2s;
-        border: 1px solid var(--color-primary);
       }
     }
   }
@@ -257,8 +250,7 @@ const Version = styled.div`
 
 const Write = styled.div`
   width: 100%;
-  border: 1px solid var(--color-gray400);
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: var(--color-lightgray);
   padding: 30px;
   margin-top: 20px;
@@ -276,7 +268,7 @@ const Write = styled.div`
     padding: 30px;
     border: none;
     outline: none;
-    border-radius: 20px;
+    border-radius: 10px;
     resize: none;
   }
 `

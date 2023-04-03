@@ -33,7 +33,7 @@ const users = [
   },
 ];
 
-const GridHeaderCell = styled.h3`
+const GridHeaderCell = styled.th`
   color: var(--color-gray400);
   height: 40px;
   font-weight: 700;
@@ -42,9 +42,10 @@ const GridHeaderCell = styled.h3`
   font-size: 14px;
   padding-top: 2px;
 `;
-const GridRow = ({ user, id }) => {
+
+const GridRow = ({ user }) => {
   return (
-    <>
+    <TableRow>
       <GridCellNameEmail>
         <h6>{user.name}</h6>
         <span>{user.email}</span>
@@ -52,10 +53,11 @@ const GridRow = ({ user, id }) => {
       <GridCell>
         <Button_2 name={'전송하기'} color={'lime'} />
       </GridCell>
-    </>
+    </TableRow>
   );
 };
-const GridCell = styled.div`
+
+const GridCell = styled.td`
   display: flex;
   align-items: center;
   height: 30px;
@@ -63,6 +65,7 @@ const GridCell = styled.div`
   height: 60px;
   color: var(--color-gray600);
 `;
+
 const GridCellNameEmail = styled(GridCell)`
   display: flex;
   flex-direction: column;
@@ -75,18 +78,19 @@ const GridCellNameEmail = styled(GridCell)`
   }
 `;
 
-const GridCellLines = styled(GridCell)``;
+const TableRow = styled.tr``;
 
 export default function Notification() {
   return (
     <Wrapper>
-      <H1>지원자 상세</H1>
-
-      <GridContents>
-        {users.map((user) => (
-          <GridRow key={user.id} user={user} id={user.id} />
-        ))}
-      </GridContents>
+      <H1>알림 서비스</H1>
+      <Table>
+        <tbody>
+          {users.map((user) => (
+            <GridRow key={user.id} user={user} />
+          ))}
+        </tbody>
+      </Table>
       <Pages>
         <li className="active">1</li>
         <li>2</li>
@@ -106,16 +110,10 @@ const H1 = styled.h1`
   font-size: 20px;
   margin-bottom: 50px;
 `;
-const Panel = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-const GridContents = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: auto 100px;
-  /* border-top: 1px solid var(--color-gray100); */
 
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 50px;
 `;
 
