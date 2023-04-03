@@ -1,49 +1,44 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Notification from '../pages/company/notification';
 import { CgProfile } from 'react-icons/cg';
 import Avatar, { genConfig } from 'react-nice-avatar';
+import { useRouter } from 'next/router';
+import CustomLink from './CustomLink';
+import AccordionMenu from './AccordionMenu';
+
+const subNavs = [
+  {
+    title: '최종 약관',
+    href: '/admin/terms',
+  },
+  { title: '약관별', href: '/admin/terms/service' },
+  { title: '테스트', href: '/company/mypage' },
+];
 
 export default function SideNav() {
   const config = genConfig('admin@email.com');
+  const router = useRouter();
+  const [pathname, setPathname] = useState('');
+
+  useEffect(() => {
+    setPathname(router.pathname);
+  }, [router.pathname]);
+
   return (
     <Wrapper>
-      <Logo>
-        <Link href="/">
-          <img src="/logo_dark.png" alt="" />
-        </Link>
-      </Logo>
+      <Logo>{<img src="/logo_dark.png" alt="" />}</Logo>
 
-      <ul>
-        <li>
-          약관 관리
-          <Subcategory>
-            <Link href="/admin/terms">
-              <li>최종 약관</li>
-            </Link>
-            <Link href="/admin/terms/service">
-              <li>약관별 관리</li>
-            </Link>
-          </Subcategory>
-        </li>
+      <NavMenues>
+        <AccordionMenu title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
 
-        <Link href="/admin/company-membership">
-          <li>기업 회원관리</li>
-        </Link>
+        <CustomLink href="/admin/company-membership">기업 회원관리</CustomLink>
 
-        <Link href="/community/notice">
-          <li>공지사항</li>
-        </Link>
+        <CustomLink href="/community/notice">공지사항</CustomLink>
 
-        <Link href="/community/faq">
-          <li>FAQ</li>
-        </Link>
-
-        <Link href="/community/cs">
-          <li>1:1 문의</li>
-        </Link>
-      </ul>
+        <CustomLink href="/community/faq">FAQ</CustomLink>
+      </NavMenues>
       <DevLinks>
         <div>
           <Link href="/login">/login</Link>
@@ -76,6 +71,7 @@ export default function SideNav() {
           <Link href="/community/notice/edit/1">/community/notice/edit/1</Link>
         </div>
       </DevLinks>
+
       {/* <Profile>
         <Avatar style={{ width: "8rem", height: "8rem" }} {...config} />
         <Mypage href="/admin/mypage">
@@ -90,8 +86,8 @@ export default function SideNav() {
 const Wrapper = styled.section`
   flex-shrink: 0;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
   align-content: flex-start;
   width: 270px;
   height: 100vh;
@@ -99,28 +95,31 @@ const Wrapper = styled.section`
   top: 0;
   left: 0;
   background-color: var(--color-lightgray);
-  ul {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    color: var(--color-gray600);
-    li {
-      padding: 10px;
-      font-weight: 300;
-    }
-    a {
-      width: 100%;
-      color: var(--color-gray600);
-      font-weight: 500;
-    }
+`;
+
+const NavMenues = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledLink = styled(Link)<any>`
+  display: flex;
+  align-items: center;
+  width: 90%;
+  height: 50px;
+  color: ${({ pathname, href }) => (href === pathname ? 'var(--color-gray600)' : 'var(--color-gray300)')};
+  cursor: pointer;
+  border: 1px solid red;
+  border-radius: 10px;
+  margin: 0 10px;
+  padding: 0 10px;
+  font-weight: 700;
+  background-color: ${({ href, pathname }) => (href === pathname ? 'var(--color-point' : 'transparent')};
+  &:hover {
+    background-color: var(--color-orange400);
   }
 `;
 
-const Subcategory = styled.ul`
-  li {
-    padding: 10px;
-  }
-`;
 const Logo = styled.div`
   width: 100%;
   display: flex;
