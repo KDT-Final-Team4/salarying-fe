@@ -1,17 +1,23 @@
-import Content from '@/components/ui/Content'
-import { getSNBLayout } from '@/libs/client/getLayout'
-import Link from 'next/link'
-import React from 'react'
-import styled from 'styled-components'
+import Content from '@/components/ui/Content';
+import ax from '@/libs/client/axiosClient';
+import { getSNBLayout } from '@/libs/client/getLayout';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
 
 const list = [
   { title: '서비스 이용 약관', id: 'service', status: '공개' },
   { title: '개인 정보 처리 방침', id: 'privacy', status: '공개' },
   { title: '제3자 정보 제공', id: 'information', status: '비공개' },
   { title: '개인정보 마케팅 이용', id: 'marketing', status: '비공개' },
-]
+];
 
 export default function Terms() {
+  const handleTermList = async () => {
+    const termRes = await ax.getTerms();
+    console.log(termRes);
+  };
+  handleTermList();
   return (
     <Container>
       <Content title="최종 약관">
@@ -32,10 +38,10 @@ export default function Terms() {
         </List>
       </Inner>
     </Container>
-  )
+  );
 }
 
-Terms.getLayout = getSNBLayout
+Terms.getLayout = getSNBLayout;
 
 const Container = styled.section`
   display: flex;
@@ -43,12 +49,12 @@ const Container = styled.section`
   width: 100%;
   height: 100%;
   align-content: flex-start;
-`
+`;
 
 const Inner = styled.div`
   width: 100%;
   margin: 80px 50px 0 50px;
-`
+`;
 
 const List = styled.section`
   display: grid;
@@ -57,7 +63,7 @@ const List = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
-`
+`;
 
 const Item = styled.div`
   display: flex;
@@ -101,4 +107,4 @@ const Item = styled.div`
     justify-content: flex-end;
     align-items: flex-end;
   }
-`
+`;
