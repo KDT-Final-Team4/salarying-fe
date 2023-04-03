@@ -17,6 +17,7 @@ export default function AccordionMenu({ title, subNavs, activeURL, ...others }) 
   const isActiveWrapper = (activeURL) => {
     return router.isReady && router.asPath.startsWith(activeURL);
   };
+
   return (
     <AccordionWrapper isOpen={isOpen} {...others} isActiveWrapper={isActiveWrapper(activeURL)}>
       <div onClick={toggleAccordion}>
@@ -33,6 +34,7 @@ export default function AccordionMenu({ title, subNavs, activeURL, ...others }) 
     </AccordionWrapper>
   );
 }
+
 const AccordionWrapper = styled.div<{ isOpen: boolean; isActiveWrapper: boolean }>`
   display: flex;
   /* align-items: center; */
@@ -63,6 +65,9 @@ const AccordionWrapper = styled.div<{ isOpen: boolean; isActiveWrapper: boolean 
       color: var(--color-gray600);
       transition: all 0.2s;
       transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+    }
+    &:hover {
+      color: ${({ isActiveWrapper }) => (isActiveWrapper ? 'var(--color-gray600)' : 'var(--color-gray400)')};
     }
   }
   div:nth-child(2) {
