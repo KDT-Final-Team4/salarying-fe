@@ -83,7 +83,9 @@ const CategoryId = () => {
               <Td>{user.name}</Td>
               <Td>{user.email}</Td>
               <Td>{user.progress}</Td>
-              <Td>{user.status}</Td>
+              <Td>
+                <Button_2 name={user.status} color={user.status === '합격' ? 'indigo' : 'pink'} />
+              </Td>
             </Tr>
           ))}
         </Tbody>

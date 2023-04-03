@@ -41,7 +41,7 @@ const Card = styled.div`
   justify-content: space-between;
   color: var(--color-primary);
   align-items: center;
-  width: 100%;
+  width: 600px;
   border-radius: 10px;
   padding: 20px 30px;
   background-color: var(--color-lightgray);

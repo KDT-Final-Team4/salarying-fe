@@ -1,4 +1,6 @@
 import PostCard from '@/components/company/job-posting/PostCard';
+import Button_3 from '@/components/ui/Button_3';
+import Button_Point from '@/components/ui/Button_Point';
 import ax from '@/libs/client/axiosClient';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -74,12 +76,14 @@ const res = {
 const JobPosting = () => {
   // useQuery(["jobPostings"], () => )
   const handleClick = async () => {};
+
   return (
     <Wrapper>
       <Head>
         <Title onClick={handleClick}>공고 리스트 보기</Title>
       </Head>
-      <AddBtn>신규 등록</AddBtn>
+
+      <Button_3 onClick={() => console.log('hi')}>신규 등록</Button_3>
       <PostList>
         {res.data.map((post) => (
           <PostCard key={post.title} jobPost={post} />
@@ -94,12 +98,20 @@ export default JobPosting;
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: auto;
   height: fit-content;
-  padding: 0 100px;
-  padding-bottom: 100px;
+
+  margin: 0 auto;
+  border: 1px solid red;
 `;
-const AddBtn = styled.div``;
+const AddBtn = styled.button`
+  cursor: pointer;
+  border: none;
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
+  background-color: var(--color-point);
+`;
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
@@ -115,4 +127,6 @@ const PostList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
+  border: 1px solid orange;
 `;

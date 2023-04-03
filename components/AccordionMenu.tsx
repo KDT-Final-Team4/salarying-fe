@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BiChevronUp } from 'react-icons/bi';
+import { BiChevronDown } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 type Props = {};
 
@@ -22,7 +22,7 @@ export default function AccordionMenu({ title, subNavs, activeURL, ...others }) 
     <AccordionWrapper isOpen={isOpen} {...others} isActiveWrapper={isActiveWrapper(activeURL)}>
       <div onClick={toggleAccordion}>
         <h3>{title}</h3>
-        <BiChevronUp size="22" />
+        <BiChevronDown size="22" />
       </div>
       <div>
         {subNavs?.map((nav) => (
