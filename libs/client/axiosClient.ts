@@ -8,7 +8,8 @@ const headers = {
 };
 
 class Axios {
-  axiosClient: AxiosInstance;
+  private static instance: Axios;
+  private axiosClient: AxiosInstance;
 
   constructor() {
     this.axiosClient = axios.create({
@@ -16,8 +17,15 @@ class Axios {
       headers,
     });
   }
+  ////// singleton 패턴
+  public static getInstance(): Axios {
+    if (!Axios.instance) {
+      Axios.instance = new Axios();
+    }
+    return Axios.instance;
+  }
 
-  // admin-controller
+  ////// admin-controller
 
   /** 비밀번호 변경 (admin) */
   async putAdminPassword(accessToken: string, { password }: { password: string }) {
@@ -73,7 +81,7 @@ class Axios {
     }
   }
 
-  // login-controller
+  ////// login-controller
   /** 회원가입 (user) ok */
   async postSignup({
     email,
@@ -123,7 +131,7 @@ class Axios {
     }
   }
 
-  // applicant-controller
+  ////// applicant-controller
   /** 지원자 리스트 출력 (user) ok */
   async getApplicants(accessToken, { recruiting_id = 2 }): Promise<IGetApplicants> {
     try {
@@ -178,7 +186,7 @@ class Axios {
     }
   }
 
-  /** 채용전형과 합격여부와 일치하는 지원자 리스트 출력 -> 버림 */
+  /** 채용전형과 합격여부와 일치하는 지원자 리스트 출력 -> ??? */
   async getApplicantsSelection(accessToken, { id, progress, status }): Promise<Data> {
     try {
       const res = await this.axiosClient.post(
@@ -212,7 +220,7 @@ class Axios {
     }
   }
   /** email 보내기 (user) ok  */
-  async postApplicantsMessage(accessToken: string, payload: IPostApplicantsMessage[]) {
+  async postApplicantsMessage(accessToken: string, payload: IPostApplicantsMessage[]): Promise<Data> {
     try {
       const res = await this.axiosClient.post('/applicants/message', payload, {
         headers: {
@@ -226,7 +234,116 @@ class Axios {
     }
   }
 
-  /** 기업 비밀번호 확인 ok */
+  ////// faq-controller
+  /** FAQ 리스트 출력 (user,admin) ok */
+  async getFAQ(accessToken: string): Promise<IGetFAQ> {
+    try {
+      const res = await this.axiosClient.get('/faq', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('getFAQ>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** FAQ 정보 수정 (admin) ok */
+  async putFAQ(accessToken: string, { id, question, answer }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.put(
+        '/faq',
+        { id, question, answer },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putFAQ>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** FAQ 등록 (admin) ok */
+  async postFAQ(accessToken: string, { question, answer, category }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.post(
+        '/faq',
+        { question, answer, category },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('postFAQ>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  /** FAQ 상세정보 출력 (admin, user) ok */
+  async getFAQDetail(accessToken: string, id): Promise<Data> {
+    try {
+      const res = await this.axiosClient.get(`/faq/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log('getFAQDetail>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+  /** FAQ 삭제 (admin) ok */
+  async deleteFAQ(accessToken: string, id): Promise<Data> {
+    try {
+      const res = await this.axiosClient.delete(`/faq`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {
+          id,
+        },
+      });
+      console.log('deleteFAQ>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  /** FAQ Status 수정 (admin) ok */
+  async putFAQStatus(accessToken: string, { id, question, answer }): Promise<Data> {
+    try {
+      const res = await this.axiosClient.put(
+        `/faq/status`,
+        {
+          id,
+          question,
+          answer,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      console.log('putFAQStatus>>', res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+    }
+  }
+
+  ////// MEMBER-CONTROLLER
+  /** 기업 비밀번호 확인 (user) ok */
   async postUsersPassword(accessToken, { password }) {
     try {
       const res = await this.axiosClient.post(
@@ -244,7 +361,7 @@ class Axios {
       console.error(err?.response?.data?.errorMessage);
     }
   }
-  /** 기업 비밀번호 변경 */
+  /** 기업 비밀번호 변경 (user) */
   async putUsersPassword(accessToken, { password }) {
     try {
       const res = await this.axiosClient.put(
@@ -262,7 +379,8 @@ class Axios {
       console.error(err?.response?.data?.errorMessage);
     }
   }
-  // notice-controller
+
+  ////// NOTICE-CONTROLLER
   /** 공지사항 리스트 조회 (admin,user) ok */
   async getNotice(accessToken): Promise<Data> {
     try {
@@ -538,7 +656,7 @@ class Axios {
   }
 }
 
-const api = new Axios();
+const api = Axios.getInstance();
 /** const ax = new Axios(); */
 
 export default api;

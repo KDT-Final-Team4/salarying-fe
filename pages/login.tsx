@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
@@ -8,6 +8,7 @@ import api from '@/libs/client/axiosClient';
 import useAccessToken from '@/libs/hooks/useAccessToken';
 import { toast } from 'react-toastify';
 export default function Login() {
+  const textRef = useRef(null);
   const {
     register,
     formState: { isSubmitting, isValid, errors },
@@ -26,44 +27,51 @@ export default function Login() {
   const [isAdminLogin, setIsAdminLogin] = useState(false);
   const onValid = async () => {
     try {
+      let newToken;
       if (isAdminLogin) {
         // admin 로그인시
         const res = await api.postAdminLogin(getValues());
         if (res.success) {
           toast.success(`(admin)${res.message}`);
           // router.replace('/admin');
-          saveAccessToken(res.data.token);
+          newToken = res.data.token;
+          console.log('새로운 토큰', newToken);
+          saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
         } else {
-          toast.success('(Admin)' + res.message);
+          toast.error('(Admin)' + res.message);
         }
       } else {
         // 로그인시
         const res = await api.postLogin(getValues());
         if (res.success) {
           toast.success(res.message);
+          newToken = res.data.token;
           // router.replace('/company');
-          saveAccessToken(res.data.token);
+          saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
+          console.log('새로운 토큰', newToken);
         } else {
-          toast.success('(User)' + res.message);
+          toast.error('(User)' + res.message);
         }
+      }
+      // 로그인 하면 클립보드에 토큰 저장
+      if (newToken) {
+        textRef.current.value = newToken;
+        textRef.current.select();
+        document.execCommand('copy', false, newToken);
       }
     } catch (err) {
       toast.error(err.message);
     }
   };
   const handleTest = async () => {
-    // const url = 'https://www.salarying-recruiting.shop';
-    // const res = await fetch(url + '/', {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({}),
-    // });
     console.log(token);
-    const res = await api.putNoticeStatus(token, { id: 32, status: false });
+    await api.putFAQStatus(token, {
+      id: 36,
+      question: 'putfaqstatus',
+      answer: 'asdfadfs',
+    });
   };
   return (
     <Wrapper>
@@ -95,10 +103,10 @@ export default function Login() {
                 </RememberId>
                 <span>패스워드 찾기</span>
               </div>
-              <LoginButton>{isAdminLogin ? 'Admin login' : 'Login'}</LoginButton>
+              <LoginButton isAdminLogin={isAdminLogin}>{isAdminLogin ? 'Admin login' : 'Login'}</LoginButton>
               <SignupButton onClick={() => router.push('/signup')}>Sign up</SignupButton>
             </SubmitPanel>
-            <span onClick={handleTest}>{isAdmin ? '관리자' : '유저'}</span>
+            <HiddenToken onChange={() => {}} type="text" value={!token ? 'No accessToken' : token} ref={textRef} />
           </LoginForm>
         </Inner>
       </LoginSection>
@@ -108,6 +116,12 @@ export default function Login() {
 }
 
 Login.layout = (page) => page;
+
+const HiddenToken = styled.input`
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+`;
 
 const Wrapper = styled.section`
   width: 100%;
@@ -206,10 +220,13 @@ const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s;
 `;
-const LoginButton = styled(Button)`
-  background-color: var(--color-point);
-
-  color: var(--color-gray700);
+const LoginButton = styled(Button)<{ isAdminLogin: boolean }>`
+  /* background-color: var(--color-point); */
+  background-color: ${(props) => (props.isAdminLogin ? 'var(--color-green700)' : 'var(--color-point)')};
+  /* font-weight: ${(props) => props.isAdminLogin && '700'}; */
+  font-weight: 700;
+  color: ${(props) => (props.isAdminLogin ? '#ffffff' : 'var(--color-gray700)')};
+  /* color: var(--color-gray700); */
   &:hover {
     filter: brightness(1.05);
   }
@@ -229,13 +246,12 @@ const RememberId = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 5px;
-
+  position: relative;
   label {
     padding-top: 1px;
   }
   input[type='checkbox'] {
     display: none;
-
     & + label {
       width: 15px;
       height: 15px;
@@ -256,6 +272,10 @@ const RememberId = styled.div`
         color: white;
         display: flex;
       }
+    }
+    & + label + label {
+      position: relative;
+      top: -2px;
     }
   }
 `;

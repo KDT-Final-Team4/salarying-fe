@@ -153,3 +153,12 @@ interface INoticeDetail extends Data {
     title: string;
   };
 }
+
+interface IFAQ {
+  question: string;
+  answer: string;
+  category: string;
+}
+interface IGetFAQ {
+  data: IFAQ[];
+}
