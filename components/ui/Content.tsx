@@ -29,8 +29,7 @@ const Wrapper = styled.section`
   }
   .output {
     margin: auto;
-    width: 90%;
-    margin-top: 6rem;
+    margin-top: 5%;
   }
 `;
 

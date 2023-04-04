@@ -66,79 +66,97 @@ export default function NoticeList() {
   };
 
   let pageGroups = usePagination(notices?.data);
-  console.log(pageGroups);
 
   let pageMembersList = pageGroups[activePage - 1];
-  // let pageMembersList = numbering.map((number) => notices?.data[number]);
 
   return (
     <Content title="공지사항">
       <Wrapper>
         <NewButton>
           <Link className="new" href={'/community/notice/new'}>
-            <Button_Send text={'신규 등록하기'} />
+            <Button_Send text={'신규 등록하기'} height={null} width={null} />
           </Link>
         </NewButton>
-        <TableStyle>
-          <thead>
-            <tr>
-              {heads.map((head: string, index: number) => (
-                <th key={index}>{head}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {pageMembersList?.map((notice, index) => (
-              <tr key={index}>
-                <td>{notice?.title}</td>
-                <td>{notice?.adminName}</td>
-                <td>
-                  <Link href="/community/notice/[noticeId]" as={`/community/notice/${notice.id}`}>
-                    <Button_Send text={'view'} />
-                  </Link>
-                </td>
-                <td></td>
+        <SectionStyle>
+          <TableStyle>
+            <thead>
+              <tr>
+                {heads.map((head: string, index: number) => (
+                  <th key={index}>{head}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </TableStyle>
-        <div className="pagination">
-          <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
-        </div>
+            </thead>
+            <tbody>
+              {pageMembersList?.map((notice, index) => (
+                <tr key={index}>
+                  <td>{notice?.title}</td>
+                  <td>{notice?.adminName}</td>
+                  <td>
+                    <Link href="/community/notice/[noticeId]" as={`/community/notice/${notice.id}`}>
+                      <Button_Send text={'view'} height={null} width={null} />
+                    </Link>
+                  </td>
+                  <td></td>
+                </tr>
+              ))}
+            </tbody>
+          </TableStyle>
+          <div className="pagination">
+            <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
+          </div>
+        </SectionStyle>
       </Wrapper>
     </Content>
   );
 }
 
 const Wrapper = styled.div`
+  width: 90%;
+  margin: auto;
+`;
+
+const SectionStyle = styled.div`
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .pagination {
-    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 `;
 
 const NewButton = styled.div`
   display: flex;
-  justify-content: end;
   margin-bottom: 3rem;
+  justify-content: end;
 `;
 
 const TableStyle = styled.table`
   width: 100%;
+  table-layout: fixed;
   thead {
     th {
       color: var(--color-gray400);
       font-weight: 600;
+      height: 80px;
       text-align: left;
+    }
+    th + th {
+      text-align: center;
     }
     margin-bottom: 40px;
   }
   tbody {
     tr {
       font-weight: 700;
-      color: var(--color-gray600)
-      text-align: left;
+      color: var(--color-gray600);
       height: 80px;
+      /* text-align: center; */
       border-bottom: 1px solid rgba(156, 163, 175, 0.2);
+    }
+    td + td {
+      text-align: center;
     }
     a {
       align-items: center;

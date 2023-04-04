@@ -459,7 +459,7 @@ class Axios {
         },
       });
       console.log('getNoticeDetail>>', res.data);
-      return res.data;
+      return res.data.data;
     } catch (err) {
       console.error(err?.response?.data?.errorMessage);
     }
