@@ -1,9 +1,10 @@
 import Content from '@/components/ui/Content';
-import ax from '@/libs/client/axiosClient';
+import api from '@/libs/client/axiosClient';
 import { getSNBLayout } from '@/libs/client/getLayout';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const list = [
   { title: '서비스 이용 약관', id: 'service', status: '공개' },
@@ -12,9 +13,14 @@ const list = [
   { title: '개인정보 마케팅 이용', id: 'marketing', status: '비공개' },
 ];
 
+const token = process.env.NEXT_PUBLIC_TOKEN_JISOO;
+console.log(token);
 export default function Terms() {
+  const fetcher = () => api.getTerms(token, 'service');
+  const { data: terms, isLoading } = useQuery(['terms'], fetcher);
+  console.log(terms);
   const handleTermList = async () => {
-    const termRes = await ax.getTerms();
+    const termRes = await api.getTerms(token, 'service');
     console.log(termRes);
   };
   handleTermList();
@@ -108,3 +114,6 @@ const Item = styled.div`
     align-items: flex-end;
   }
 `;
+function getTerms(arg0: string[], getTerms: any): { isLoading: any; data: any } {
+  throw new Error('Function not implemented.');
+}
