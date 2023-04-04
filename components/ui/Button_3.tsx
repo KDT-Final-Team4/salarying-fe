@@ -13,6 +13,8 @@ const SendBtn = styled.button`
   cursor: pointer;
   font-weight: 600;
   width: fit-content;
+  display: flex;
+  align-items: center;
   &:hover {
     filter: brightness(1.05);
   }

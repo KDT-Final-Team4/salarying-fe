@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
+import { GrFormAdd } from 'react-icons/gr';
 
 const listData = [{ title: '알바직 모집' }, { title: '인턴 모집' }, { title: 'CEO 모집' }, { title: '총무 모집' }];
 const res = {
@@ -74,17 +75,17 @@ const res = {
 };
 
 const JobPosting = () => {
-  // useQuery(["jobPostings"], () => )
   const handleClick = async () => {};
 
   return (
     <Wrapper>
       <Head>
-        <Title onClick={handleClick}>공고 리스트 보기</Title>
+        <Title onClick={handleClick}>공고 리스트</Title>
       </Head>
-
-      <Button_3 onClick={() => console.log('hi')}>신규 등록</Button_3>
       <PostList>
+        <AddCard>
+          <GrFormAdd size="50" />
+        </AddCard>
         {res.data.map((post) => (
           <PostCard key={post.title} jobPost={post} />
         ))}
@@ -100,17 +101,51 @@ const Wrapper = styled.section`
   flex-direction: column;
   width: auto;
   height: fit-content;
-
   margin: 0 auto;
-  border: 1px solid red;
 `;
-const AddBtn = styled.button`
+const AddBtn = styled(Button_3)`
   cursor: pointer;
-  border: none;
-  width: 100px;
-  height: 30px;
+  margin-bottom: 20px;
+  align-self: flex-end;
+`;
+const AddCard = styled.div`
+  display: flex;
+  justify-content: center;
+  color: var(--color-primary);
+  align-items: center;
+  width: 600px;
+  border: 2px dashed var(--color-primary);
   border-radius: 10px;
-  background-color: var(--color-point);
+  padding: 20px 30px;
+  background-color: var(--color-lightgray);
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100px;
+  cursor: pointer;
+
+  svg {
+    border-radius: 100%;
+    background-color: var(--color-gray100);
+  }
+  &:hover {
+    background-color: var(--color-sub);
+    color: #fff;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    button {
+      color: #fff;
+      &:hover {
+        background-color: var(--color-lightgray);
+        color: var(--color-primary);
+      }
+    }
+    svg {
+      background-color: var(--color-lightgray);
+      color: var(--color-primary);
+    }
+  }
+  &:active {
+    background-color: var(--color-lightgray);
+  }
 `;
 const Head = styled.div`
   display: flex;
@@ -128,5 +163,4 @@ const PostList = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  border: 1px solid orange;
 `;

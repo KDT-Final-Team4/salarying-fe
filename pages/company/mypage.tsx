@@ -17,7 +17,6 @@ export default function MyPage() {
   return (
     <>
       <div onClick={handleClick}>mypage</div>
-      <button onClick={() => toast('wow so easy')}> accessToekn</button>
     </>
   );
 }

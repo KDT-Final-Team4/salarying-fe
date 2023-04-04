@@ -47,7 +47,7 @@ const Card = styled.div`
   background-color: var(--color-lightgray);
   transition: all 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
+  height: 120px;
   &:hover {
     background-color: var(--color-sub);
     color: #fff;
