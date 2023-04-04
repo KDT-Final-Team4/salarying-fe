@@ -7,11 +7,11 @@ type contentProps = {
   children: ReactNode;
 };
 
-const Content = (props: contentProps) => {
+const Content = ({title, children, ...others}: contentProps) => {
   return (
-    <Wrapper>
-      <h1>{props.title}</h1>
-      <div className="output">{props.children}</div>
+    <Wrapper {...others}>
+      <h1>{title}</h1>
+      <div className="output">{children}</div>
     </Wrapper>
   );
 };

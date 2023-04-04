@@ -41,13 +41,13 @@ const Card = styled.div`
   justify-content: space-between;
   color: var(--color-primary);
   align-items: center;
-  width: 100%;
+  width: 600px;
   border-radius: 10px;
   padding: 20px 30px;
   background-color: var(--color-lightgray);
   transition: all 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
+  height: 120px;
   &:hover {
     background-color: var(--color-sub);
     color: #fff;

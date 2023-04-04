@@ -7,11 +7,11 @@ interface IProps {
   Icon?: IconType
   color?: string
 }
-export default function Button_1({ name, Icon, color }: IProps) {
+export default function Button_1({ name, Icon, color, ...props }: IProps) {
   const iconColor = color && color[0] === '#' ? color : `var(${color})`
 
   return (
-    <Btn>
+    <Btn {...props}>
       {Icon && <Icon color={iconColor} />}
       <span>{name}</span>
     </Btn>

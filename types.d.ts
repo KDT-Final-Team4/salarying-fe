@@ -36,7 +36,7 @@ interface ItermsDetail extends Data {
   data: {
     content: string;
     name: string;
-    status: string;
+    status: '공개' | '비공개';
     title: string;
     type: string;
     version: string;
@@ -107,7 +107,7 @@ interface IPostRecruiting extends Data {
 interface IGetTerms extends Data {
   message: string;
   data: {
-    status: string;
+    status: '공개' | '비공개';
     title: string;
     version: string;
     name: string;
@@ -129,7 +129,7 @@ interface IGetApplicants extends Data {
     applicantTel: string;
     applicantEmail: string;
     progress: string;
-    status: string;
+    status: '합격' | '불합격';
   }[];
 }
 
@@ -161,4 +161,15 @@ interface IFAQ {
 }
 interface IGetFAQ {
   data: IFAQ[];
+}
+
+interface IRecruiting {
+  id: number;
+  title: string;
+  postDate: string;
+  task: '전산';
+  status: '서류심사' | '서류전형' | '1차전형' | '2차전형' | '최종전형';
+}
+interface IGetRecruiting extends Data {
+  data: IRecruiting[];
 }
