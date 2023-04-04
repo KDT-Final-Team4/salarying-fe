@@ -382,6 +382,7 @@ class Axios {
   ////// NOTICE-CONTROLLER
   /** 공지사항 리스트 조회 (admin,user) ok */
   async getNotice(accessToken): Promise<Data> {
+    if (!accessToken) return;
     try {
       const res = await this.axiosClient.get('/notice', {
         headers: {
