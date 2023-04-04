@@ -33,60 +33,34 @@ const users = [
   },
 ];
 
-const GridHeaderCell = styled.h3`
-  color: var(--color-gray400);
-  height: 40px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  padding-top: 2px;
-`;
-const GridRow = ({ user, id }) => {
-  return (
-    <>
-      <GridCellNameEmail>
-        <h6>{user.name}</h6>
-        <span>{user.email}</span>
-      </GridCellNameEmail>
-      <GridCell>
-        <Button_2 name={'전송하기'} color={'lime'} />
-      </GridCell>
-    </>
-  );
-};
-const GridCell = styled.div`
-  display: flex;
-  align-items: center;
-  height: 30px;
-  border-bottom: 1px solid var(--color-gray100);
-  height: 60px;
-  color: var(--color-gray600);
-`;
-const GridCellNameEmail = styled(GridCell)`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 8px;
-  span {
-    font-size: 14px;
-    color: var(--color-gray400);
-  }
-`;
-
-const GridCellLines = styled(GridCell)``;
-
 export default function Notification() {
   return (
     <Wrapper>
-      <H1>지원자 상세</H1>
+      <h1>지원자 상세</h1>
 
-      <GridContents>
-        {users.map((user) => (
-          <GridRow key={user.id} user={user} id={user.id} />
-        ))}
-      </GridContents>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>이름</Th>
+            <Th>전화번호</Th>
+            <Th>이메일</Th>
+            <Th>진행 상황</Th>
+            <Th>상태</Th>
+            <Th>메일 보내기</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {users.map((user, index) => (
+            <Tr key={index}>
+              <Td>{user.id}</Td>
+              <Td>{user.name}</Td>
+              <Td>{user.email}</Td>
+              <Td>{user.progress}</Td>
+              <Td>{user.status}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
       <Pages>
         <li className="active">1</li>
         <li>2</li>
@@ -96,27 +70,66 @@ export default function Notification() {
   );
 }
 
-const Wrapper = styled.section`
-  padding: 20px 50px;
-  width: 100%;
-`;
-
-const H1 = styled.h1`
-  font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 50px;
-`;
-const Panel = styled.div`
+const Wrapper = styled.div`
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  padding: 3rem;
+  margin: 0 auto;
+  h1 {
+    color: var(--color-gray700);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
 `;
-const GridContents = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: auto 100px;
-  /* border-top: 1px solid var(--color-gray100); */
 
-  margin-bottom: 50px;
+const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+`;
+const Thead = styled.thead`
+  tr {
+    th {
+      border-top: 1px solid var(--color-gray100);
+      text-align: left;
+      padding: 22px 12px;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--color-gray400);
+    }
+  }
+`;
+const Tbody = styled.tbody`
+  tr:hover {
+    background-color: var(--color-gray50);
+  }
+`;
+
+const Th = styled.th`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 22px 12px;
+  font-weight: 500;
+  color: var(--color-gray400);
+`;
+
+const Td = styled.td`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 20px 12px;
+  padding-right: 40px;
+  color: var(--color-gray600);
+  p {
+    font-size: 12px;
+    margin-top: 10px;
+    color: var(--color-gray400);
+  }
+`;
+
+const Tr = styled.tr`
+  &:last-child {
+    border-bottom: 1px solid var(--color-gray100);
+  }
 `;
 
 const Pages = styled.ul`

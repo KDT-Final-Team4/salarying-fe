@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import CustomLink from './CustomLink';
 import AccordionMenu from './AccordionMenu';
 import useAccessToken from '@/libs/hooks/useAccessToken';
+import { MdOutlineQuestionAnswer, MdOutlineAnnouncement, MdManageAccounts, MdChromeReaderMode } from 'react-icons/md';
 
 const subNavs = [
   {
@@ -34,13 +35,19 @@ export default function SideNav() {
       <Logo>{<img src="/logo_dark.png" alt="" />}</Logo>
 
       <NavMenues>
-        <AccordionMenu title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
+        <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
 
-        <CustomLink href="/admin/company-membership">기업 회원관리</CustomLink>
+        <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
+          기업 회원관리
+        </CustomLink>
 
-        <CustomLink href="/community/notice">공지사항</CustomLink>
+        <CustomLink Icon={MdOutlineAnnouncement} href="/community/notice">
+          공지사항
+        </CustomLink>
 
-        <CustomLink href="/community/faq">FAQ</CustomLink>
+        <CustomLink Icon={MdOutlineQuestionAnswer} href="/community/faq">
+          FAQ
+        </CustomLink>
       </NavMenues>
       <DevLinks>
         <div>
@@ -154,8 +161,14 @@ const DevLinks = styled.div`
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    &:hover {
+      background-color: var(--color-orange50);
+    }
     a {
       color: var(--color-gray600);
+      &:hover {
+        background-color: var(--color-orange200);
+      }
     }
   }
 `;

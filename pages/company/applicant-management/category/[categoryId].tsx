@@ -34,64 +34,6 @@ const users = [
   },
 ];
 
-const GridHeader = () => {
-  return (
-    <>
-      <GridHeaderCell>#</GridHeaderCell>
-      <GridHeaderCell>NAME/E-MAIL</GridHeaderCell>
-      <GridHeaderCell>PROGRESS</GridHeaderCell>
-      <GridHeaderCell>STATUS</GridHeaderCell>
-    </>
-  );
-};
-const GridHeaderCell = styled.h3`
-  color: var(--color-gray400);
-  height: 40px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  padding-top: 2px;
-`;
-const GridRow = ({ user }) => {
-  return (
-    <>
-      <GridCell>{user.id}</GridCell>
-      <GridCellNameEmail>
-        <h6>{user.name}</h6>
-        <span>{user.email}</span>
-      </GridCellNameEmail>
-      <GridCell>
-        <Button_2 name={user.progress} color={user.progress === '서류 심사' ? 'lime' : 'sky'} />
-      </GridCell>
-      <GridCell>
-        <Button_2 name={user.status} color={user.status === '불합격' ? 'rose' : 'emerald'} />
-      </GridCell>
-    </>
-  );
-};
-const GridCell = styled.div`
-  display: flex;
-  align-items: center;
-  height: 30px;
-  border-bottom: 1px solid var(--color-gray100);
-  height: 60px;
-  color: var(--color-gray600);
-`;
-const GridCellNameEmail = styled(GridCell)`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 8px;
-  span {
-    font-size: 14px;
-    color: var(--color-gray400);
-  }
-`;
-
-const GridCellLines = styled(GridCell)``;
-
 const CategoryId = () => {
   const [checked, setChecked] = useState(false); // 전체 체크박스의 체크 여부
   const [childChecked, setChildChecked] = useState(users); // 자식 체크박스들의 체크 여부
@@ -123,13 +65,31 @@ const CategoryId = () => {
 
   return (
     <Wrapper>
-      <H1 onClick={() => console.log(childChecked)}>지원자 상세</H1>
-      <GridContents>
-        <GridHeader />
-        {users.map((user) => (
-          <GridRow key={user.id} user={user} />
-        ))}
-      </GridContents>
+      <h1 onClick={() => console.log(childChecked)}>지원자 리스트</h1>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Index</Th>
+            <Th>이름</Th>
+            <Th>이메일</Th>
+            <Th>진행 상황</Th>
+            <Th>상태</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {users.map((user, index) => (
+            <Tr key={index}>
+              <Td>{index}</Td>
+              <Td>{user.name}</Td>
+              <Td>{user.email}</Td>
+              <Td>{user.progress}</Td>
+              <Td>
+                <Button_2 name={user.status} color={user.status === '합격' ? 'indigo' : 'pink'} />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
       <Pages>
         <li className="active">1</li>
         <li>2</li>
@@ -141,28 +101,74 @@ const CategoryId = () => {
 
 export default CategoryId;
 
-const Wrapper = styled.section`
-  padding: 20px 50px;
-  width: 100%;
-  border: 1px solid red;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  margin: 0 auto;
+  h1 {
+    color: var(--color-gray700);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
 `;
 
-const H1 = styled.h1`
-  font-weight: 700;
-  font-size: 20px;
-`;
-const GridContents = styled.div`
+const Table = styled.table`
+  border-collapse: collapse;
   width: 100%;
-  display: grid;
-  grid-template-columns: 50px auto 100px 100px;
-  /* border-top: 1px solid var(--color-gray100); */
-  margin: 50px 0;
+`;
+const Thead = styled.thead`
+  tr {
+    th {
+      border-top: 1px solid var(--color-gray100);
+      text-align: left;
+      padding: 22px 12px;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--color-gray400);
+    }
+  }
+`;
+const Tbody = styled.tbody`
+  tr:hover {
+    background-color: var(--color-gray50);
+  }
+`;
+
+const Th = styled.th`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 22px 12px;
+  font-weight: 500;
+  color: var(--color-gray400);
+`;
+
+const Td = styled.td`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 20px 12px;
+  padding-right: 40px;
+  color: var(--color-gray600);
+  p {
+    font-size: 12px;
+    margin-top: 10px;
+    color: var(--color-gray400);
+  }
+`;
+
+const Tr = styled.tr`
+  &:last-child {
+    border-bottom: 1px solid var(--color-gray100);
+  }
 `;
 
 const Pages = styled.ul`
   display: flex;
   justify-content: center;
   gap: 5px;
+
+  margin: 50px 0;
   color: var(--color-gray400);
   li {
     cursor: pointer;

@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, UseMutationResult } from '@tanstack/react-query';
 import Content from '@/components/ui/Content';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import api from '@/libs/client/axiosClient';
-import useAccessToken from '@/libs/hooks/useAccessToken';
+import useCookies from '@/libs/hooks/useCookies';
+import Button_Send from '@/components/ui/Button_Send';
+import usePagination from '@/libs/hooks/usePagination';
+import Pagination from '@/components/ui/Pagination';
 
 interface Object {
   id: number;
@@ -17,6 +20,12 @@ interface Object {
 interface StyledProps {
   toggle: boolean;
 }
+
+type NoticeStatusMutationParams = {
+  accessToken: string;
+  id: string | number;
+  status: boolean;
+};
 
 const getNotices = async () => {
   const result = await axios
@@ -33,39 +42,137 @@ const getNotices = async () => {
   return result;
 };
 
-export default function NoticeList() {
-  const { isAdmin, accessToken } = useAccessToken();
-  const { data: notices, isLoading } = useQuery(['notices'], () => api.getNotice(accessToken));
-  if (!accessToken) return;
+// const useNoticeStatusMutation = (): UseMutationResult<Data, unknown, NoticeStatusMutationParams> => {
 
-  const heads = ['제목', '작성자', '게시중'];
+//   return mutation;
+// };
+
+export default function NoticeList() {
+  const [activePage, setActivePage] = useState<number>(1);
+
+  const accessToken = useCookies();
+  const { data: notices } = useQuery(['notices'], () => api.getNotice(accessToken));
+
+  const heads = ['제목', '작성자', '상세보기', '게시중'];
+
+  const { mutate } = useMutation<Data, unknown, NoticeStatusMutationParams>(({ accessToken, id, status }) => api.putNoticeStatus(accessToken, { id, status }));
+
+  const handleClick = () => {
+    mutate({
+      accessToken: accessToken,
+      id: '18',
+      status: false,
+    });
+  };
+
+  let pageGroups = usePagination(notices?.data);
+  console.log(pageGroups);
+
+  let pageMembersList = pageGroups[activePage - 1];
+  // let pageMembersList = numbering.map((number) => notices?.data[number]);
 
   return (
     <Content title="공지사항">
-      <Link href={'/community/notice/new'}>등록</Link>
-      <TableStyle>
-        <thead>
-          <tr>
-            {heads.map((head: string, index: number) => (
-              <th key={index}>{head}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {/* {!isLoading &&
-            notices?.map((notice, index) => {
+      <Wrapper>
+        <NewButton>
+          <Link className="new" href={'/community/notice/new'}>
+            <Button_Send text={'신규 등록하기'} />
+          </Link>
+        </NewButton>
+        <TableStyle>
+          <thead>
+            <tr>
+              {heads.map((head: string, index: number) => (
+                <th key={index}>{head}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {pageMembersList?.map((notice, index) => (
               <tr key={index}>
-                <td>{notice.title}</td>
-                <td>{notice.adminName}</td>
-                <td>{notice.state}</td>
-              </tr>;
-            })} */}
-        </tbody>
-      </TableStyle>
+                <td>{notice?.title}</td>
+                <td>{notice?.adminName}</td>
+                <td>
+                  <Link href="/community/notice/[noticeId]" as={`/community/notice/${notice.id}`}>
+                    <Button_Send text={'view'} />
+                  </Link>
+                </td>
+                <td></td>
+              </tr>
+            ))}
+          </tbody>
+        </TableStyle>
+        <div className="pagination">
+          <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
+        </div>
+      </Wrapper>
     </Content>
   );
 }
 
+const Wrapper = styled.div`
+  .pagination {
+    width: 100%;
+  }
+`;
+
+const NewButton = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-bottom: 3rem;
+`;
+
 const TableStyle = styled.table`
   width: 100%;
+  thead {
+    th {
+      color: var(--color-gray400);
+      font-weight: 600;
+      text-align: left;
+    }
+    margin-bottom: 40px;
+  }
+  tbody {
+    tr {
+      font-weight: 700;
+      color: var(--color-gray600)
+      text-align: left;
+      height: 80px;
+      border-bottom: 1px solid rgba(156, 163, 175, 0.2);
+    }
+    a {
+      align-items: center;
+    }
+  }
+`;
+
+const LinkStyle = styled.div``;
+
+const ToggleBtn = styled.button<StyledProps>`
+  width: 130px;
+  height: 50px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background-color: ${(props) => (!props.toggle ? 'none' : 'var(--color-primary)')};
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+`;
+const Circle = styled.div<StyledProps>`
+  background-color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 50px;
+  position: absolute;
+  left: 5%;
+  transition: all 0.5s ease-in-out;
+  ${(props) =>
+    props.toggle &&
+    css`
+      transform: translate(80px, 0);
+      transition: all 0.5s ease-in-out;
+    `}
 `;

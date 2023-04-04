@@ -1,22 +1,23 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import Content from '@/components/ui/Content'
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Content from '@/components/ui/Content';
+import SelectCategory from '@/components/ui/SelectCategory';
 
-type Props = {}
+type Props = {};
 interface List {
-  title: string
-  id: string
-  href: string
-  status: string
-  content: string
-  writer: string
-  date: number
+  category: string;
+  categoryId: string;
+  href?: string;
+  status?: string;
+  content?: string;
+  writer?: string;
+  date?: number;
 }
 const list: List[] = [
   {
-    title: '서비스 이용 약관',
-    id: 'service',
+    category: '서비스 이용 약관',
+    categoryId: 'service',
     href: 'service',
     status: '공개',
     content:
@@ -25,8 +26,8 @@ const list: List[] = [
     date: 221010,
   },
   {
-    title: '개인 정보 처리 방침',
-    id: 'privacy',
+    category: '개인 정보 처리 방침',
+    categoryId: 'privacy',
     href: 'privacy',
     status: '공개',
     content: 'dd',
@@ -34,8 +35,8 @@ const list: List[] = [
     date: 221010,
   },
   {
-    title: '제3자 정보 제공',
-    id: 'information',
+    category: '제3자 정보 제공',
+    categoryId: 'information',
     href: 'information',
     status: '비공개',
     content: 'dd',
@@ -43,23 +44,26 @@ const list: List[] = [
     date: 221010,
   },
   {
-    title: '개인정보 마케팅 이용',
-    id: 'marketing',
+    category: '개인정보 마케팅 이용',
+    categoryId: 'marketing',
     href: 'marketing',
     status: '비공개',
     content: 'dd',
     writer: '우지수',
     date: 221010,
   },
-]
+];
 
 export default function New(props: Props) {
-  const router = useRouter()
-  const [select, setSelect] = useState(0)
-  const handleSelect = (idx: number) => {
-    setSelect(idx)
-    console.log(idx)
-  }
+  const router = useRouter();
+  const [select, setSelect] = useState('service');
+  // const [content, setContent] = useState('');
+  const handleSelect = (value) => {
+    setSelect(value);
+    console.log(value);
+  };
+
+  const handlePostTerm = async () => {};
   return (
     <Container>
       <Content title="약관 등록">
@@ -69,13 +73,7 @@ export default function New(props: Props) {
         <Info>
           <Category>
             <p>약관 종류</p>
-            <div className="wrap">
-              {list.map((item, idx) => (
-                <div key={idx} className={idx === select ? 'select' : null} onClick={() => handleSelect(idx)}>
-                  {item.title}
-                </div>
-              ))}
-            </div>
+            <SelectCategory width={'100px'} categories={list} currentValue={select} setCurrentValue={setSelect} />
           </Category>
           <Title>
             <p>약관 제목</p>
@@ -100,7 +98,7 @@ export default function New(props: Props) {
         </div>
       </Inner>
     </Container>
-  )
+  );
 }
 
 const Container = styled.section`
@@ -109,7 +107,7 @@ const Container = styled.section`
   width: 100%;
   height: 100%;
   align-content: flex-start;
-`
+`;
 
 const Inner = styled.div`
   width: 100%;
@@ -139,14 +137,14 @@ const Inner = styled.div`
       }
     }
   }
-`
+`;
 
-const Info = styled.div`
+const Info = styled.form`
   width: 100%;
   border-radius: 10px;
   background-color: var(--color-lightgray);
   padding: 30px;
-`
+`;
 
 const Category = styled.div`
   width: 100%;
@@ -162,37 +160,7 @@ const Category = styled.div`
     color: var(--color-primary);
     border-right: 2px solid var(--color-gray400);
   }
-  .wrap {
-    display: flex;
-    width: 100%;
-    padding: 5px 40px;
-    div {
-      min-width: 180px;
-      user-select: none;
-      cursor: pointer;
-      color: var(--color-gray500);
-      border-radius: 10px;
-      padding: 15px 20px;
-      margin: 0 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--color-gray200);
-      :hover {
-        color: var(--color-primary);
-        font-weight: 700;
-        background-color: var(--color-point);
-        transition: 0.2s;
-      }
-      &.select {
-        color: var(--color-primary);
-        font-weight: 700;
-        background-color: var(--color-point);
-        transition: 0.2s;
-      }
-    }
-  }
-`
+`;
 
 const Title = styled.div`
   width: 100%;
@@ -219,7 +187,7 @@ const Title = styled.div`
     margin: 0 60px;
     background-color: transparent;
   }
-`
+`;
 
 const Version = styled.div`
   width: 100%;
@@ -246,7 +214,7 @@ const Version = styled.div`
     margin: 0 60px;
     background-color: transparent;
   }
-`
+`;
 
 const Write = styled.div`
   width: 100%;
@@ -271,4 +239,4 @@ const Write = styled.div`
     border-radius: 10px;
     resize: none;
   }
-`
+`;
