@@ -562,6 +562,7 @@ class Axios {
 
   /** 약관 리스트 출력 (admin) ok */
   async getTerms(accessToken, type: 'service' | 'privacy' | 'information' | 'marketing'): Promise<IGetTerms> {
+    if (!accessToken) return;
     try {
       const res = await this.axiosClient.get(`/terms?type=${type}`, {
         headers: {
@@ -624,13 +625,14 @@ class Axios {
   }
   /** 약관 상세보기 (admin) ok*/
   async getTermsDetail(accessToken, id): Promise<ItermsDetail> {
+    if (!accessToken) return;
     try {
       const res = await this.axiosClient.get(`/terms/detail/${id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log('getTerms>>', res.data);
+      console.log('getTermsDetail>>', res.data);
       return res.data;
     } catch (err) {
       console.error(err?.response?.data?.errorMessage);
