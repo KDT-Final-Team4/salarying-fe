@@ -7,6 +7,8 @@ import Avatar, { genConfig } from 'react-nice-avatar';
 import { useRouter } from 'next/router';
 import CustomLink from './CustomLink';
 import AccordionMenu from './AccordionMenu';
+import useAccessToken from '@/libs/hooks/useAccessToken';
+import { MdOutlineQuestionAnswer, MdOutlineAnnouncement, MdManageAccounts, MdChromeReaderMode } from 'react-icons/md';
 
 const subNavs = [
   {
@@ -21,6 +23,7 @@ export default function SideNav() {
   const config = genConfig('admin@email.com');
   const router = useRouter();
   const [pathname, setPathname] = useState('');
+  const { isAdmin, accessToken } = useAccessToken();
 
   useEffect(() => {
     setPathname(router.pathname);
@@ -28,16 +31,23 @@ export default function SideNav() {
 
   return (
     <Wrapper>
+      <span style={{ position: 'absolute', color: `var(--color-green700)` }}>{!accessToken ? '로그인필요' : isAdmin ? '관리자계정' : '기업회원'}</span>
       <Logo>{<img src="/logo_dark.png" alt="" />}</Logo>
 
       <NavMenues>
-        <AccordionMenu title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
+        <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
 
-        <CustomLink href="/admin/company-membership">기업 회원관리</CustomLink>
+        <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
+          기업 회원관리
+        </CustomLink>
 
-        <CustomLink href="/community/notice">공지사항</CustomLink>
+        <CustomLink Icon={MdOutlineAnnouncement} href="/community/notice">
+          공지사항
+        </CustomLink>
 
-        <CustomLink href="/community/faq">FAQ</CustomLink>
+        <CustomLink Icon={MdOutlineQuestionAnswer} href="/community/faq">
+          FAQ
+        </CustomLink>
       </NavMenues>
       <DevLinks>
         <div>
@@ -151,8 +161,14 @@ const DevLinks = styled.div`
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    &:hover {
+      background-color: var(--color-orange50);
+    }
     a {
       color: var(--color-gray600);
+      &:hover {
+        background-color: var(--color-orange200);
+      }
     }
   }
 `;

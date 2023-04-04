@@ -10,9 +10,9 @@ type Props = {
   dark?: boolean;
 };
 
-export default function Card_1({ Icon, title, content, dark, ...others }: Props) {
+export default function Card_1({ Icon, title, content, dark, ...props }: Props) {
   return (
-    <Card {...others} dark={dark}>
+    <Card {...props} dark={dark}>
       <Circle dark={dark}>{Icon ? <Icon size="24" /> : <AiFillNotification size="24" />}</Circle>
       <Content dark={dark}>
         <h3>{title}</h3>

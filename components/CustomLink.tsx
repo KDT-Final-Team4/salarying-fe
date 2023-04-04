@@ -1,19 +1,26 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import { IconType } from 'react-icons';
 
-type Props = {};
+type Props = {
+  href: string;
+  children: ReactNode;
+  Icon?: IconType;
+};
 
-export default function CustomLink({ href, children }) {
+export default function CustomLink({ href, children, Icon }: Props) {
   const router = useRouter();
   const isActive = router.isReady && router.asPath === href;
   return (
     <StyledLink onClick={() => router.push(href)} isActive={isActive}>
+      {Icon && <Icon style={{ marginRight: '10px', position: 'relative', top: '2px' }} size="20" />}
       {children}
     </StyledLink>
   );
 }
+
 const StyledLink = styled.span<{ isActive: boolean }>`
   display: flex;
   align-items: center;
@@ -23,7 +30,7 @@ const StyledLink = styled.span<{ isActive: boolean }>`
   cursor: pointer;
   border-radius: 10px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 15px;
   font-weight: 700;
   transition: all 0.2s;
   background-color: ${({ isActive }) => (isActive ? 'var(--color-point)' : 'transparent')};

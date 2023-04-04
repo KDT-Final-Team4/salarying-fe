@@ -483,7 +483,7 @@ class Axios {
   }
   // progress-controller
   /** 채용공고별 전형단계 출력 (user) */
-  async postRecruitingProgress(accessToken, id) {
+  async postRecruitingProgress(accessToken, id): Promise<Data> {
     try {
       const res = await this.axiosClient.post(`/recruiting/progress/${id}`, {
         headers: {
@@ -498,7 +498,7 @@ class Axios {
   }
 
   /** 채용공고 리스트 출력 */
-  async getRecruiting(accessToken) {
+  async getRecruiting(accessToken): Promise<IGetRecruiting> {
     try {
       const res = await this.axiosClient.get(`/recruiting`, {
         headers: {
@@ -512,7 +512,7 @@ class Axios {
     }
   }
   /** 기업별 채용공고 status 변경 (user) ok */
-  async putRecruitingStatus(accessToken, { recruitingId, status }) {
+  async putRecruitingStatus(accessToken, { recruitingId, status }: { recruitingId: unknown; status: '서류전형' | '1차전형' | '2차전형' | '최종전형' }) {
     try {
       const res = await this.axiosClient.put(
         `/recruiting`,
@@ -609,7 +609,7 @@ class Axios {
   }
 
   /** 약관 삭제 (admin) ok */
-  async deleteTerms(accessToken, id) {
+  async deleteTerms(accessToken, id): Promise<Data> {
     try {
       const res = await this.axiosClient.delete(`/terms/${id}`, {
         headers: {
@@ -637,7 +637,7 @@ class Axios {
     }
   }
   /** 약관 status 변경: 최소 1개 공개해야함, (admin) ok*/
-  async postTermsStatus(accessToken, { status, id }) {
+  async postTermsStatus(accessToken, { status, id }: { status: '공개' | '비공개'; id: unknown }) {
     try {
       const res = await this.axiosClient.post(
         `/terms/status`,
