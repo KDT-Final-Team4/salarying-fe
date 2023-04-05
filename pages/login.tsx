@@ -115,7 +115,7 @@ export default function Login() {
         </Inner>
       </LoginSection>
       <KVSection>
-        <Image src={clockPic} alt="clockPic" quality={100} fill />
+        <Image src={clockPic} alt="clockPic" quality={100} placeholder="blur" />
       </KVSection>
     </Wrapper>
   );
@@ -135,7 +135,6 @@ const Wrapper = styled.section`
   display: flex;
   align-items: center;
   color: var(--color-gray600);
-  padding: 0 10px;
 `;
 
 const LoginSection = styled.section`
@@ -157,10 +156,14 @@ const KVSection = styled.section`
   flex-direction: column;
   background-color: var(--color-indigo100);
   background-size: cover;
+  overflow: hidden;
+  position: relative;
   img {
-    object-position: right;
-    object-fit: contain;
-    right: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 `;
 

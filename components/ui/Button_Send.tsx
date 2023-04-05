@@ -10,7 +10,7 @@ interface StyledProps {
   height: number;
 }
 
-const Button_Send = ({ text, height, width }: Props) => {
+const Button_Send = ({ text, height, width, ...props }: Props) => {
   return (
     <SendBtn height={height} width={width}>
       {text}
