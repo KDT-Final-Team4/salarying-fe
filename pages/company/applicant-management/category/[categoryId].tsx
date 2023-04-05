@@ -2,6 +2,7 @@ import Button_1 from '@/components/ui/Button_1';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button_2 from '@/components/ui/Button_2';
+import { useRouter } from 'next/router';
 
 const users = [
   {
@@ -37,7 +38,7 @@ const users = [
 const CategoryId = () => {
   const [checked, setChecked] = useState(false); // 전체 체크박스의 체크 여부
   const [childChecked, setChildChecked] = useState(users); // 자식 체크박스들의 체크 여부
-
+  const router = useRouter();
   // 전체 체크박스가 변경되었을 때 호출되는 함수
   // const handleCheckAll = (event) => {
   //   const masterChecked = event.target.checked;

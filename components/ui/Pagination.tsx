@@ -4,7 +4,7 @@ import styled from 'styled-components';
 type Props = {
   activePage: number;
   pages: number;
-  setActivePage: (i: number) => void;
+  setActivePage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Pagination = ({ activePage, pages, setActivePage }: Props) => {
