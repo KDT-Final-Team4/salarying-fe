@@ -15,7 +15,7 @@ type ICategory = {
 type ICategoryComponent = {
   categories: Array<ICategory>;
   currentValue: string | number;
-  setCurrentValue: (newValue: any) => void;
+  setCurrentValue?: (newValue: any) => void;
   onClick?: React.MouseEventHandler<HTMLLIElement>;
 };
 
@@ -26,7 +26,7 @@ export default function SelectCategory({ width, height, categories, currentValue
     console.log(value);
   };
   return (
-    <WrapStyle>
+    <WrapStyle width={width} height={height}>
       {categories.map((item) => (
         <div key={item.categoryId} className={currentValue === item.categoryId ? 'select' : null} onClick={() => handleSelect(item.categoryId)}>
           {item.category}
@@ -37,17 +37,20 @@ export default function SelectCategory({ width, height, categories, currentValue
 }
 
 const WrapStyle = styled.div<ICategoryStyle>`
-  display: flex;
-  width: ${({ width }) => width};
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 5px 10px;
+  width: ${(props) => (props.width ? `${props.width}` : 'inherit')};
   padding: 5px 40px;
   div {
-    min-width: 180px;
+    width: 200px;
+    box-sizing: border-box;
     user-select: none;
     cursor: pointer;
     color: var(--color-gray500);
     border-radius: 10px;
     padding: 15px 20px;
-    margin: 0 20px;
+    margin: 5px 20px;
     display: flex;
     justify-content: center;
     align-items: center;

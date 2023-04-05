@@ -1,17 +1,21 @@
-import React, { Children, useState } from 'react'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import Link from 'next/link'
-import Content from '@/components/ui/Content'
+import React, { Children, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
+import Link from 'next/link';
+import Content from '@/components/ui/Content';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
+import { displayValue } from '@tanstack/react-query-devtools/build/lib/utils';
 
 interface List {
-  title: string
-  id: string
-  href: string
-  status: string
-  content: string
-  writer: string
-  date: number
+  title: string;
+  id: string;
+  href: string;
+  status: string;
+  content: string;
+  writer: string;
+  date: number;
 }
 
 const list: List[] = [
@@ -52,13 +56,39 @@ const list: List[] = [
     writer: '우지수',
     date: 221010,
   },
-]
+];
+
+interface StyledProps {
+  toggle: boolean;
+}
+
+type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
+const headerArray = ['약관제목', '약관 버전', '약관 작성자', '게시 중'];
 
 export default function TermsId() {
-  const router = useRouter()
-  const { termsId } = router.query
+  const router = useRouter();
+  const [terms, setTerms] = useState([]);
+  // const token = useCookies();
+  // const { data: terms, isLoading } = useQuery(['terms'], () => {
+  //   api.getTerms(token, 'service');
+  // });
+  const token = process.env.NEXT_PUBLIC_TOKEN_JISOO;
+  const { termsId } = router.query as { termsId: TermsId };
 
-  console.log(termsId)
+  useEffect(() => {
+    const getTermList = async () => {
+      if (termsId) {
+        const res = await api.getTerms(token, termsId);
+        setTerms(res.data);
+        console.log(res);
+        return res;
+      } else console.log('약관 타입 없음');
+    };
+    getTermList();
+  }, [termsId]);
+
+  console.log('termsId', termsId);
+  console.log('terms', terms);
 
   return (
     <Container>
@@ -73,17 +103,38 @@ export default function TermsId() {
             </Link>
           ))}
         </Nav>
-        <List></List>
-        <Link href="edit/termsId">
-          <button>수정하기</button>
-        </Link>
-        <button>삭제하기</button>
-        <Link href="new">
-          <button>등록하기</button>
-        </Link>
+        <List>
+          <TableTitle>
+            <input type="checkbox" />
+            <p>약관 제목</p>
+            <p>약관 버전</p>
+            <p>약관 작성자</p>
+            <p>약관 게시 상태</p>
+            <p>미리 보기</p>
+          </TableTitle>
+          {terms.map((term) => (
+            <TableBody key={term.id}>
+              <input type="checkbox" />
+              <p>{term.title}</p>
+              <p>{term.version}</p>
+              <p>{term.name}</p>
+              <p>{term.status}</p>
+              <button>view</button>
+            </TableBody>
+          ))}
+        </List>
+        <ButtonArea>
+          <Link href="edit/termsId">
+            <button>수정하기</button>
+          </Link>
+          <button>삭제하기</button>
+          <Link href="new">
+            <button className="submit">등록하기</button>
+          </Link>
+        </ButtonArea>
       </Inner>
     </Container>
-  )
+  );
 }
 const Container = styled.section`
   display: flex;
@@ -91,12 +142,12 @@ const Container = styled.section`
   width: 100%;
   height: 100%;
   align-content: flex-start;
-`
+`;
 
 const Inner = styled.div`
   width: 100%;
   margin: 0 50px;
-`
+`;
 
 const Nav = styled.ul`
   width: 100%;
@@ -128,6 +179,106 @@ const Nav = styled.ul`
       box-sizing: border-box;
     }
   }
-`
+`;
 
-const List = styled.div``
+const List = styled.div`
+  width: inherit;
+  padding: 40px 20px 40px 20px;
+  box-sizing: border-box;
+  height: 600px;
+`;
+
+const TableTitle = styled.div`
+  display: flex;
+  width: inherit;
+  padding: 20px 40px 40px 40px;
+  justify-content: flex-start;
+  font-weight: 700;
+  color: var(--color-gray600);
+  border-radius: 10px;
+  p {
+    padding: 10px 0;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    :nth-child(2) {
+      padding-left: 30px;
+      width: 40%;
+      justify-content: flex-start;
+    }
+    :nth-child(5) {
+      margin-right: 20px;
+    }
+    :nth-child(6) {
+      width: 10%;
+      box-sizing: border-box;
+      padding: 10px 20px;
+    }
+  }
+`;
+const TableBody = styled.div`
+  width: inherit;
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--color-gray300);
+  gap: 10px;
+  color: var(--color-gray600);
+  p {
+    padding: 10px 0;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    :nth-child(2) {
+      padding-left: 30px;
+      width: 40%;
+      justify-content: flex-start;
+    }
+    :nth-child(5) {
+      margin-right: 20px;
+    }
+  }
+  button {
+    width: 10%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    color: var(--color-primary);
+    background-color: var(--color-point);
+    cursor: pointer;
+    :hover {
+      color: var(--color-point);
+      background-color: var(--color-primary);
+      transition: 0.2s;
+    }
+  }
+`;
+
+const ButtonArea = styled.div`
+  width: inherit;
+  margin-bottom: 100px;
+  button {
+    width: 170px;
+    height: 50px;
+    background-color: transparent;
+    margin: 20px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid var(--color-gray300);
+    &.cancel {
+      :hover {
+        font-weight: 700;
+        box-shadow: 3px 5px 3px var(--color-lightgray);
+      }
+    }
+    &.submit {
+      background-color: var(--color-point);
+      border: none;
+      :hover {
+        box-shadow: 10px 10px 10px var(--color-lightgray);
+        font-weight: 700;
+      }
+    }
+  }
+`;
