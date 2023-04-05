@@ -383,6 +383,7 @@ class Axios {
   ////// NOTICE-CONTROLLER
   /** 공지사항 리스트 조회 (admin,user) ok */
   async getNotice(accessToken): Promise<Data> {
+    if (!accessToken) return;
     try {
       const res = await this.axiosClient.get('/notice', {
         headers: {
@@ -458,13 +459,13 @@ class Axios {
         },
       });
       console.log('getNoticeDetail>>', res.data);
-      return res.data;
+      return res.data.data;
     } catch (err) {
       console.error(err?.response?.data?.errorMessage);
     }
   }
   /** 공지사항 status 수정 (admin) ok */
-  async putNoticeStatus(accessToken, { id, status }: { id: string | number; status: boolean }): Promise<Data> {
+  async putNoticeStatus(accessToken, { id, status }): Promise<Data> {
     try {
       const res = await this.axiosClient.put(
         `/notice/status`,

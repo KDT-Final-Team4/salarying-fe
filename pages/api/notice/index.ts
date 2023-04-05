@@ -19,15 +19,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
           {
             id: 1,
             title: '공지사항 제목 1',
-            edit_id: 'aaa@aaa.com',
-            date: 'YYYY-MM-DD HH-MM-SS',
+            adminName: 'aaa@aaa.com',
             state: true,
           },
           {
             id: 2,
             title: '공지사항 제목 2',
-            edit_id: 'aaa@aaa.com',
-            date: 'YYYY-MM-DD HH-MM-SS',
+            adminName: 'aaa@aaa.com',
             state: false,
           },
         ],
