@@ -49,8 +49,7 @@ const getNotices = async () => {
 
 export default function NoticeList() {
   const [activePage, setActivePage] = useState<number>(1);
-
-  const accessToken = useCookies();
+  const { accessToken } = useCookies();
   const { data: notices } = useQuery(['notices'], () => api.getNotice(accessToken));
 
   const heads = ['제목', '작성자', '상세보기', '게시중'];
@@ -65,6 +64,7 @@ export default function NoticeList() {
     });
   };
 
+  console.log(notices);
   let pageGroups = usePagination(notices?.data);
 
   let pageMembersList = pageGroups[activePage - 1];
