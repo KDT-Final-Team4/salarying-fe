@@ -112,8 +112,8 @@ export default function TermsId() {
               <Th>
                 <input type="checkbox" />
               </Th>
-              {heads.map((title) => (
-                <Th>{title}</Th>
+              {heads.map((title, idx) => (
+                <Th key={idx}>{title}</Th>
               ))}
             </Tr>
           </Thead>

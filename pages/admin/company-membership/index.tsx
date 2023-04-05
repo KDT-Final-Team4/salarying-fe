@@ -15,17 +15,17 @@ const list = [
 
 export default function CompanyMembership() {
   const { accessToken } = useCookies();
-  useEffect(() => {
-    const getCorporations = async () => {
-      if (accessToken) {
-        const res = await api.getCorporations(accessToken);
-        // setTerms(res?.data);
-        console.log(res);
-        return res;
-      } else console.log('약관 타입 없음');
-    };
-    getCorporations();
-  }, []);
+  // useEffect(() => {
+  //   const getCorporations = async () => {
+  //     if (accessToken) {
+  //       const res = await api.getCorporations(accessToken);
+  //       // setTerms(res?.data);
+  //       console.log(res);
+  //       return res;
+  //     } else console.log('약관 타입 없음');
+  //   };
+  //   getCorporations();
+  // }, []);
 
   return (
     <Container>
