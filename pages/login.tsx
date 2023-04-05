@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import api from '@/libs/client/axiosClient';
 import useAccessToken from '@/libs/hooks/useAccessToken';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 export default function Login() {
   const textRef = useRef(null);
   const {
@@ -78,7 +79,7 @@ export default function Login() {
       <LoginSection>
         <Inner>
           <Title>
-            <img src="/logo.png" />
+            <Image src="/logo.png" alt="logo"  />
           </Title>
           <TitleDescription>Welcome back! Please enter your details</TitleDescription>
 

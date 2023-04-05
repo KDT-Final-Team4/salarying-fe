@@ -9,6 +9,7 @@ import CustomLink from './CustomLink';
 import AccordionMenu from './AccordionMenu';
 import useAccessToken from '@/libs/hooks/useAccessToken';
 import { MdOutlineQuestionAnswer, MdOutlineAnnouncement, MdManageAccounts, MdChromeReaderMode } from 'react-icons/md';
+import Image from 'next/image';
 
 const subNavs = [
   {
@@ -32,7 +33,7 @@ export default function SideNav() {
   return (
     <Wrapper>
       <span style={{ position: 'absolute', color: `var(--color-green700)` }}>{!accessToken ? '로그인필요' : isAdmin ? '관리자계정' : '기업회원'}</span>
-      <Logo>{<img src="/logo_dark.png" alt="" />}</Logo>
+      <Logo>{<Image src="/logo_dark.png" alt="logo-dark" width={10} height={10} />}</Logo>
 
       <NavMenues>
         <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
