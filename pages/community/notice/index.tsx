@@ -49,7 +49,6 @@ type NoticeStatusMutationParams = {
 
 export default function NoticeList() {
   const [activePage, setActivePage] = useState<number>(1);
-
   const { accessToken } = useCookies();
   const { data: notices } = useQuery(['notices'], () => api.getNotice(accessToken));
 

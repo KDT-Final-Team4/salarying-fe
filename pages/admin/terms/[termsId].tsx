@@ -1,18 +1,33 @@
-import React, { Children, useState } from 'react'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import Link from 'next/link'
-import Content from '@/components/ui/Content'
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
+import Link from 'next/link';
+import Content from '@/components/ui/Content';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
+import Button_Send from '@/components/ui/Button_Send';
+import usePagination from '@/libs/hooks/usePagination';
+import Pagination from '@/components/ui/Pagination';
+import Button_2 from '@/components/ui/Button_2';
+import { useQuery } from '@tanstack/react-query';
 
 interface List {
-  title: string
-  id: string
-  href: string
-  status: string
-  content: string
-  writer: string
-  date: number
+  title: string;
+  id: string;
+  href: string;
+  status: string;
+  content: string;
+  writer: string;
+  date: number;
 }
+
+type IObject = {
+  status: '공개' | '비공개';
+  title: string;
+  version: string;
+  name: string;
+  id: number;
+};
 
 const list: List[] = [
   {
@@ -52,51 +67,89 @@ const list: List[] = [
     writer: '우지수',
     date: 221010,
   },
-]
+];
+
+interface StyledProps {
+  toggle: boolean;
+}
+
+type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
+const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
 
 export default function TermsId() {
-  const router = useRouter()
-  const { termsId } = router.query
+  const router = useRouter();
+  const [activePage, setActivePage] = useState<number>(1);
+  const { accessToken } = useCookies();
+  const { termsId } = router.query as { termsId: TermsId };
 
-  console.log(termsId)
+  const { data, isLoading } = useQuery({
+    queryKey: ['terms', termsId],
+    queryFn: () => api.getTerms(accessToken, termsId),
+  });
+
+  console.log('termsId', termsId);
+  console.log('data', data);
+
+  // 페이지네이션
+  let pageGroups = usePagination(data, 5);
+  let pageMembersList = pageGroups[activePage - 1];
+  console.log(pageMembersList);
 
   return (
-    <Container>
-      <Content title="약관 등록">
-        <div></div>
-      </Content>
-      <Inner>
-        <Nav>
-          {list.map((item) => (
-            <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
-              <li id={item.id}>{item.title}</li>
-            </Link>
-          ))}
-        </Nav>
-        <List></List>
+    <Content title="약관별 관리">
+      <span>{isLoading && '로딩중'}</span>
+      <Nav>
+        {list.map((item) => (
+          <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
+            <li id={item.id}>{item.title}</li>
+          </Link>
+        ))}
+      </Nav>
+      <Wrapper>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>
+                <input type="checkbox" />
+              </Th>
+              {heads.map((title, idx) => (
+                <Th key={idx}>{title}</Th>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {data?.data?.map((term, index) => (
+              <Tr key={index}>
+                <Td>
+                  <input type="checkbox" />
+                </Td>
+                <Td>{term.title}</Td>
+                <Td>{term.version}</Td>
+                <Td>{term.name}</Td>
+                <Td>{term.status}</Td>
+                <Td>
+                  <Button_Send text={'view'} height={null} width={100} />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+        <div className="pagination">
+          <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
+        </div>
+      </Wrapper>
+      <ButtonArea>
+        <Button_Send text={'삭제하기'} height={null} width={100} />
         <Link href="edit/termsId">
-          <button>수정하기</button>
+          <Button_Send text={'수정하기'} height={null} width={100} color={'point'} />
         </Link>
-        <button>삭제하기</button>
         <Link href="new">
-          <button>등록하기</button>
+          <Button_Send text={'등록하기'} height={null} width={100} />
         </Link>
-      </Inner>
-    </Container>
-  )
+      </ButtonArea>
+    </Content>
+  );
 }
-const Container = styled.section`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 100%;
-  align-content: flex-start;
-`
-
-const Inner = styled.div`
-  width: 100%;
-  margin: 0 50px;
-`
 
 const Nav = styled.ul`
   width: 100%;
@@ -128,6 +181,143 @@ const Nav = styled.ul`
       box-sizing: border-box;
     }
   }
-`
+`;
 
-const List = styled.div``
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 0;
+  margin: 0 auto;
+  h1 {
+    color: var(--color-gray700);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
+`;
+
+const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+`;
+
+const Thead = styled.thead`
+  tr {
+    th {
+      table-layout: fixed;
+      border-top: 1px solid var(--color-gray100);
+      text-align: center;
+      padding: 22px 12px;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--color-gray400);
+      :nth-child(1) {
+        width: 5%;
+        text-align: left;
+      }
+      :nth-child(2) {
+        width: 50%;
+        text-align: left;
+      }
+      :nth-child(3) {
+        width: 10%;
+      }
+      :nth-child(4) {
+        width: 10%;
+      }
+      :nth-child(5) {
+        width: 10%;
+      }
+      :nth-child(6) {
+        width: 15%;
+      }
+    }
+  }
+`;
+const Tbody = styled.tbody`
+  tr:hover {
+    cursor: pointer;
+    background-color: var(--color-gray50);
+  }
+  tr {
+    td {
+      text-align: center;
+      padding: 22px 12px;
+      :nth-child(1) {
+        width: 5%;
+        text-align: left;
+      }
+      :nth-child(2) {
+        width: 50%;
+        text-align: left;
+      }
+      :nth-child(3) {
+        width: 10%;
+      }
+      :nth-child(4) {
+        width: 10%;
+      }
+      :nth-child(5) {
+        width: 10%;
+      }
+      :nth-child(6) {
+        width: 15%;
+      }
+    }
+  }
+`;
+
+const Th = styled.th`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 22px 12px;
+  font-weight: 500;
+  color: var(--color-gray400);
+`;
+
+const Td = styled.td`
+  border-top: 1px solid var(--color-gray100);
+  text-align: left;
+  padding: 20px 12px;
+  padding-right: 40px;
+  color: var(--color-gray600);
+  p {
+    font-size: 12px;
+    margin-top: 10px;
+    color: var(--color-gray400);
+  }
+`;
+
+const Tr = styled.tr`
+  &:last-child {
+    border-bottom: 1px solid var(--color-gray100);
+  }
+`;
+
+const ButtonArea = styled.div`
+  width: inherit;
+  margin-bottom: 100px;
+  button {
+    width: 170px;
+    height: 50px;
+    background-color: transparent;
+    margin: 20px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid var(--color-gray300);
+    &.cancel {
+      :hover {
+        font-weight: 700;
+        box-shadow: 3px 5px 3px var(--color-lightgray);
+      }
+    }
+    &.submit {
+      background-color: var(--color-point);
+      border: none;
+      :hover {
+        box-shadow: 10px 10px 10px var(--color-lightgray);
+        font-weight: 700;
+      }
+    }
+  }
+`;

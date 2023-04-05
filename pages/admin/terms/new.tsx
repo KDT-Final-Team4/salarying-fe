@@ -73,7 +73,7 @@ export default function New(props: Props) {
         <Info>
           <Category>
             <p>약관 종류</p>
-            <SelectCategory width={'100px'} categories={list} currentValue={select} setCurrentValue={setSelect} />
+            <SelectCategory width={'100%'} categories={list} currentValue={select} setCurrentValue={setSelect} />
           </Category>
           <Title>
             <p>약관 제목</p>
@@ -91,6 +91,7 @@ export default function New(props: Props) {
           </div>
         </Write>
         <div>
+          <button className="submit">미리보기</button>
           <button className="submit">등록</button>
           <button className="cancel" onClick={() => router.push('-1')}>
             취소
@@ -111,7 +112,7 @@ const Container = styled.section`
 
 const Inner = styled.div`
   width: 100%;
-  margin: 0 50px;
+  margin: 0 50px 0 50px;
   padding-bottom: 60px;
   display: flex;
   flex-wrap: wrap;
@@ -186,6 +187,7 @@ const Title = styled.div`
     width: 70%;
     margin: 0 60px;
     background-color: transparent;
+    width: 100%;
   }
 `;
 
@@ -213,6 +215,7 @@ const Version = styled.div`
     width: 70%;
     margin: 0 60px;
     background-color: transparent;
+    width: 100%;
   }
 `;
 

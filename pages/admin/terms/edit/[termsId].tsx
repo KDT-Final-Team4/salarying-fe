@@ -1,22 +1,23 @@
-import React, { Children, useState } from 'react'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import Content from '@/components/ui/Content'
+import React, { Children, useState } from 'react';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
+import Content from '@/components/ui/Content';
+import SelectCategory from '@/components/ui/SelectCategory';
 
 interface List {
-  title: string
-  id: string
-  href: string
-  status: string
-  content: string
-  writer: string
-  date: number
+  category: string;
+  categoryId: string;
+  href?: string;
+  status?: string;
+  content?: string;
+  writer?: string;
+  date?: number;
 }
 
 const list: List[] = [
   {
-    title: '서비스 이용 약관',
-    id: 'service',
+    category: '서비스 이용 약관',
+    categoryId: 'service',
     href: 'service',
     status: '공개',
     content:
@@ -25,8 +26,8 @@ const list: List[] = [
     date: 221010,
   },
   {
-    title: '개인 정보 처리 방침',
-    id: 'privacy',
+    category: '개인 정보 처리 방침',
+    categoryId: 'privacy',
     href: 'privacy',
     status: '공개',
     content: 'dd',
@@ -34,8 +35,8 @@ const list: List[] = [
     date: 221010,
   },
   {
-    title: '제3자 정보 제공',
-    id: 'information',
+    category: '제3자 정보 제공',
+    categoryId: 'information',
     href: 'information',
     status: '비공개',
     content: 'dd',
@@ -43,23 +44,24 @@ const list: List[] = [
     date: 221010,
   },
   {
-    title: '개인정보 마케팅 이용',
-    id: 'marketing',
+    category: '개인정보 마케팅 이용',
+    categoryId: 'marketing',
     href: 'marketing',
     status: '비공개',
     content: 'dd',
     writer: '우지수',
     date: 221010,
   },
-]
+];
 
 export default function TermsIdEdit() {
-  const router = useRouter()
-  const { termsId } = router.query
+  const router = useRouter();
+  const { termsId } = router.query;
+  const [select, setSelect] = useState('service');
 
   return (
     <Container>
-      <Content title="약관 등록">
+      <Content title="약관 수정">
         <div></div>
       </Content>
       <Inner>
@@ -67,18 +69,16 @@ export default function TermsIdEdit() {
           <Category>
             <p>약관 종류</p>
             <div className="wrap">
-              {list.map((item, idx) => (
-                <div key={idx}>{item.title}</div>
-              ))}
+              <div>type</div>
             </div>
           </Category>
           <Title>
             <p>약관 제목</p>
-            <input type="text" placeholder="제목을 입력하세요." />
+            <input type="text" placeholder="이미 작성해두었던 약관 제목" />
           </Title>
           <Version>
             <p>약관 버전</p>
-            <input type="text" placeholder="버전을 입력하세요. 숫자와 '.'으로만 표기 가능합니다." />
+            <input type="text" placeholder="이미 작성해두었던 약관 버전" />
           </Version>
         </Info>
         <Write>
@@ -89,13 +89,13 @@ export default function TermsIdEdit() {
         </Write>
         <div>
           <button className="submit">등록</button>
-          <button className="cancel" onClick={() => router.push('/admin/terms/service')}>
+          <button className="cancel" onClick={() => router.push('-1')}>
             취소
           </button>
         </div>
       </Inner>
     </Container>
-  )
+  );
 }
 
 const Container = styled.section`
@@ -104,11 +104,11 @@ const Container = styled.section`
   width: 100%;
   height: 100%;
   align-content: flex-start;
-`
+`;
 
 const Inner = styled.div`
   width: 100%;
-  margin: 0 50px;
+  margin: 0 50px 0 50px;
   padding-bottom: 60px;
   display: flex;
   flex-wrap: wrap;
@@ -118,9 +118,8 @@ const Inner = styled.div`
     height: 50px;
     background-color: transparent;
     margin: 20px 10px;
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
-    border: 1px solid var(--color-primary);
     &.cancel {
       :hover {
         font-weight: 700;
@@ -135,15 +134,14 @@ const Inner = styled.div`
       }
     }
   }
-`
+`;
 
-const Info = styled.div`
+const Info = styled.form`
   width: 100%;
-  border: 1px solid var(--color-gray400);
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: var(--color-lightgray);
   padding: 30px;
-`
+`;
 
 const Category = styled.div`
   width: 100%;
@@ -160,41 +158,22 @@ const Category = styled.div`
     border-right: 2px solid var(--color-gray400);
   }
   .wrap {
-    display: flex;
-    width: 100%;
     padding: 5px 40px;
     div {
-      min-width: 180px;
+      width: 200px;
       user-select: none;
-      cursor: pointer;
-      color: var(--color-gray500);
-      border: 1px solid var(--color-gray300);
-      border-radius: 40px;
-      padding: 15px 20px;
-      margin: 0 20px;
+      border-radius: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: var(--color-gray200);
-      :hover {
-        color: var(--color-primary);
-        font-weight: 700;
-        border: 1px solid transparent;
-        background-color: var(--color-point);
-        transition: 0.2s;
-        border: 1px solid var(--color-primary);
-      }
-      &.select {
-        color: var(--color-primary);
-        font-weight: 700;
-        border: 1px solid transparent;
-        background-color: var(--color-point);
-        transition: 0.2s;
-        border: 1px solid var(--color-primary);
-      }
+      color: var(--color-primary);
+      font-weight: 700;
+      background-color: var(--color-point);
+      padding: 15px 20px;
+      margin: 5px 20px;
     }
   }
-`
+`;
 
 const Title = styled.div`
   width: 100%;
@@ -220,8 +199,9 @@ const Title = styled.div`
     width: 70%;
     margin: 0 60px;
     background-color: transparent;
+    width: 100%;
   }
-`
+`;
 
 const Version = styled.div`
   width: 100%;
@@ -247,13 +227,13 @@ const Version = styled.div`
     width: 70%;
     margin: 0 60px;
     background-color: transparent;
+    width: 100%;
   }
-`
+`;
 
 const Write = styled.div`
   width: 100%;
-  border: 1px solid var(--color-gray400);
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: var(--color-lightgray);
   padding: 30px;
   margin-top: 20px;
@@ -271,7 +251,7 @@ const Write = styled.div`
     padding: 30px;
     border: none;
     outline: none;
-    border-radius: 20px;
+    border-radius: 10px;
     resize: none;
   }
-`
+`;
