@@ -1,64 +1,104 @@
-import React from "react";
-import { useRouter } from "next/router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import React, { useCallback } from 'react';
+import { Router, useRouter } from 'next/router';
+import { QueryClient } from '@tanstack/react-query';
+import styled from 'styled-components';
+import Link from 'next/link';
+import Content from '@/components/ui/Content';
+import Button_Send from '@/components/ui/Button_Send';
 
-export default function NoticeNew() {
-	const router = useRouter();
-	const { noticeId } = router.query;
+type Props = {};
 
-	const queryClient = useQueryClient();
-
-	const fetchNotice = () => {
-		const adminId = "aaa@aaa.com";
-		axios({
-			url: "/notice",
-			method: "get",
-			data: adminId,
-		})
-			.then(response => console.log(response))
-			.catch(error =>
-				fetch("/notice")
-					.then(response => response.json)
-					.then(data => console.log("data", data)),
-			);
-	};
-	const updateNotice = values => {
-		axios({
-			url: "/notice",
-			method: "post",
-			data: values,
-		})
-			.then(response => {
-				console.log(response);
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-
-	const { data } = useQuery({
-		queryKey: ["notice", noticeId],
-		queryFn: () => fetchNotice(),
-	});
-
-	// const { mutate } = useMutation(
-	// 	values => {
-	// 		updateNotice(values);
-	// 	},
-	// 	{
-	// 		onSuccess: () => {
-	// 			queryClient.invalidateQueries(["notice", noticeId]);
-	// 		},
-	// 	},
-	// );
-
-	const handleSubmit = event => {
-		event.preventDefault();
-	};
-
-	// if (data) {
-	// 	return <form onSubmit={handleSubmit(mutate)}></form>;
-	// }
-	return <div>New</div>;
+interface noticeDetail {
+  title: string;
+  content: string;
 }
+
+export default function NoticeEdit(props: Props) {
+  const router = useRouter();
+  const noticeId = router.isReady ? router.query.noticeId : null;
+  console.log(noticeId);
+  const queryClient = new QueryClient();
+  const queryKey = ['notice', noticeId];
+  const data: noticeDetail = queryClient.getQueryData(queryKey);
+
+  const changeHandler = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <Content title={'공지사항 등록하기'}>
+      <Wrapper>
+        <FlexStyle>
+          <Table className="static">
+            <h3>제목</h3>
+            <textarea className="title">{data?.title}</textarea>
+            <h3>내용</h3>
+            <textarea className="content">{data?.content}</textarea>
+          </Table>
+          <BtnWrapper>
+            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
+              <Button_Send text={'등록'} height={50} width={150} />
+            </Link>
+            <div onClick={() => router.back()}>
+              <Button_Send text={'취소'} height={50} width={150} />
+            </div>
+          </BtnWrapper>
+        </FlexStyle>
+      </Wrapper>
+    </Content>
+  );
+}
+
+const Wrapper = styled.div`
+  margin: 50px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+`;
+
+const FlexStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+`;
+
+const Table = styled.div`
+  display: grid;
+  grid-template-columns: 100px 1000px;
+  grid-template-rows: 100px 1fr;
+  color: var(--color-primary);
+  font-weight: 700;
+  h3 {
+    font-size: 20px;
+    padding-top: 20px;
+  }
+  textarea {
+    font-size: 18px;
+    color: var(--color-gray500);
+    border: 2px solid var(--color-gray300);
+    border-radius: 10px;
+    padding: 10px 20px;
+    line-height: 1.8;
+    overflow-y: scroll;
+    &.title {
+      height: 60px;
+    }
+    &.content {
+      min-height: 300px;
+    }
+  }
+`;
+const BtnWrapper = styled.div`
+  position: relative;
+  width: 500px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin: 50px 0 0;
+  bottom: 0;
+  right: 0;
+`;

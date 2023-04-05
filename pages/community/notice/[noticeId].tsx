@@ -4,17 +4,19 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import styled from 'styled-components';
-import Button_Point from '@/components/ui/Button_Point';
+import Button_Send from '@/components/ui/Button_Send';
 import Content from '@/components/ui/Content';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
 
 interface content {
-  noticeId: string;
-  title: string;
-  adminId: string;
-  date: string;
-  edit_date: string;
+  adminEmail: string;
+  adminName: string;
   content: string;
-  state: boolean;
+  id: number;
+  postDate: string;
+  status: boolean;
+  title: string;
 }
 
 const getNotice = async (noticeId: string | string[]) => {
@@ -35,69 +37,94 @@ const getNotice = async (noticeId: string | string[]) => {
 
 export default function NoticeDetail() {
   const router = useRouter();
-  const noticeId = router.isReady ? router.query.noticeId : null;
-  console.log(noticeId);
+  const [id, setId] = useState<number>();
 
-  const { data } = useQuery(['notice', noticeId], () => getNotice(noticeId));
+  useEffect(() => {
+    if (!router.isReady) return;
+    setId(Number(router.query.noticeId));
+  }, [router.isReady, router.query]);
+
+  const accessToken = useCookies();
+
+  const { data, isLoading } = useQuery(['notice', id], () => api.getNoticeDetail(accessToken, id), {
+    enabled: !!id,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <Content title={'공지사항 상세정보'}>
       <Wrapper>
-        <Table className="static">
-          <h3>제목</h3>
-          <span className="title">{data?.title}</span>
-          <h3>내용</h3>
-          <span className="content">{data?.content}</span>
-        </Table>
-        <BtnWrapper>
-          <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
-            <Button_Point name={'수정'}></Button_Point>
-          </Link>
-          <Button_Point name={'삭제'} />
-        </BtnWrapper>
+        <FlexStyle>
+          <Table className="static">
+            <h3>제목</h3>
+            <span className="title">{data?.title}</span>
+            <div className="write-info">
+              <h3>작성자</h3>
+              <span className="adminName">
+                {data?.adminName}/{data?.adminEmail}
+              </span>
+              <h3>작성날짜</h3>
+              <span className="postDate">{data?.postDate}</span>
+            </div>
+            <h3>내용</h3>
+            <span className="content">{data?.content}</span>
+          </Table>
+          <BtnWrapper>
+            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${id}`}>
+              <Button_Send text={'수정'} height={50} width={150} />
+            </Link>
+            <div>
+              <Button_Send text={'삭제'} height={50} width={150} />
+            </div>
+          </BtnWrapper>
+        </FlexStyle>
       </Wrapper>
     </Content>
   );
 }
 
 const Wrapper = styled.div`
-  margin: 50px auto 0;
-  padding: 0 50px;
-  box-sizing: border-box;
+  margin: 50px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
   h2 {
     font-size: 20px;
     margin-bottom: 20px;
   }
-  position: absolute;
+`;
+
+const FlexStyle = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: end;
 `;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 100px 1000px;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: 100px 100px 1fr;
   color: var(--color-primary);
+  font-weight: 700;
+  .write-info {
+    display: flex;
+    gap: 80px;
+  }
   h3 {
     font-size: 20px;
-    font-weight: 700;
     padding-top: 20px;
   }
   span {
     font-size: 18px;
     color: var(--color-gray500);
-    font-weight: 700;
     border: 2px solid var(--color-gray300);
     border-radius: 10px;
     padding: 10px 20px;
     line-height: 1.8;
-    overflow-y: scroll;
     &.title {
       height: 60px;
     }
     &.content {
+      overflow-y: scroll;
       min-height: 300px;
     }
   }

@@ -7,7 +7,7 @@ type contentProps = {
   children: ReactNode;
 };
 
-const Content = ({title, children, ...others}: contentProps) => {
+const Content = ({ title, children, ...others }: contentProps) => {
   return (
     <Wrapper {...others}>
       <h1>{title}</h1>
@@ -29,6 +29,7 @@ const Wrapper = styled.section`
   }
   .output {
     margin: auto;
+    margin-top: 5%;
   }
 `;
 

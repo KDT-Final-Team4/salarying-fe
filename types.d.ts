@@ -143,15 +143,13 @@ interface IPostApplicantsMessage {
 }
 
 interface INoticeDetail extends Data {
-  data: {
-    adminEmail: string;
-    adminName: string;
-    content: string;
-    id: number;
-    postDate: string;
-    status: boolean;
-    title: string;
-  };
+  adminEmail: string;
+  adminName: string;
+  content: string;
+  id: number;
+  postDate: string;
+  status: boolean;
+  title: string;
 }
 
 interface IFAQ {
