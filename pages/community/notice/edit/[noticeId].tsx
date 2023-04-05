@@ -1,37 +1,35 @@
-import React, { useCallback } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
+import { Router, useRouter } from 'next/router';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Button_Point from '@/components/ui/Button_Point';
 import Content from '@/components/ui/Content';
+import Button_Send from '@/components/ui/Button_Send';
+import useCookies from '@/libs/hooks/useCookies';
+import api from '@/libs/client/axiosClient';
 
 type Props = {};
 
-const getNotice = async (noticeId: string | string[]) => {
-  const result = await axios
-    .request({
-      method: 'get',
-      url: `/api/notice/${noticeId}`,
-    })
-    .then((response) => {
-      console.log(response.data.data.noticeId);
-      return response.data.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return result;
-};
+interface noticeDetail {
+  title: string;
+  content: string;
+}
 
 export default function NoticeEdit(props: Props) {
   const router = useRouter();
-  const noticeId = router.isReady ? router.query.noticeId : null;
-  console.log(noticeId);
+  const [id, setId] = useState<number>();
+  const accessToken = useCookies();
 
-  const { data } = useQuery(['notice', noticeId], () => getNotice(noticeId));
+  useEffect(() => {
+    if (!router.isReady) return;
+    setId(Number(router.query.noticeId));
+  }, [router.isReady, router.query]);
 
+  const queryClient = new QueryClient();
+  const { data, isLoading } = useQuery(['notice', id], () => api.getNoticeDetail(accessToken, id), {
+    enabled: !!id,
+    refetchOnWindowFocus: false,
+  });
   const changeHandler = (e) => {
     e.preventDefault();
   };
@@ -39,75 +37,70 @@ export default function NoticeEdit(props: Props) {
   return (
     <Content title={'공지사항 수정하기'}>
       <Wrapper>
-        <div className="flex-wrapper">
-          <Table id="editNotice" className="static">
+        <FlexStyle>
+          <Table className="static">
             <h3>제목</h3>
-            <textarea form="editNotice" className="title">
-              {data?.title}
-            </textarea>
+            <textarea className="title" defaultValue={data?.title} required></textarea>
             <h3>내용</h3>
-            <textarea form="editNotice" className="content">
+            <textarea className="content" defaultValue={data?.content} required>
               {data?.content}
             </textarea>
           </Table>
           <BtnWrapper>
-            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
-              <Button_Point name={'확인'}></Button_Point>
+            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${id}`}>
+              <Button_Send text={'저장'} height={50} width={150} />
             </Link>
-            <Button_Point name={'취소'} />
+            <div onClick={() => router.back()}>
+              <Button_Send text={'취소'} height={50} width={150} />
+            </div>
           </BtnWrapper>
-        </div>
+        </FlexStyle>
       </Wrapper>
     </Content>
   );
 }
 
 const Wrapper = styled.div`
-  margin: 50px auto 0;
-  padding: 0 50px;
-  box-sizing: border-box;
+  margin: 50px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
   h2 {
     font-size: 20px;
     margin-bottom: 20px;
   }
-  .flex-wrapper {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: flex-end;
-  }
 `;
 
-const Table = styled.form`
+const FlexStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+`;
+
+const Table = styled.div`
   display: grid;
   grid-template-columns: 100px 1000px;
   grid-template-rows: 100px 1fr;
   color: var(--color-primary);
+  font-weight: 700;
   h3 {
     font-size: 20px;
-    font-weight: 700;
     padding-top: 20px;
   }
   textarea {
     font-size: 18px;
     color: var(--color-gray500);
-    font-weight: 700;
     border: 2px solid var(--color-gray300);
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 10px 20px;
     line-height: 1.8;
-    min-height: 60px;
-    overflow-y: hidden;
-    resize: none;
+    overflow-y: scroll;
     &.title {
       height: 60px;
-      overflow-y: scroll;
     }
-  }
-  textarea:last-child {
-    min-height: 300px;
-    overflow-y: scroll;
+    &.content {
+      min-height: 300px;
+    }
   }
 `;
 const BtnWrapper = styled.div`

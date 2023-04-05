@@ -30,6 +30,7 @@ const Wrapper = styled.section`
   }
   .output {
     margin: auto;
+    margin-top: 5%;
   }
 `;
 
