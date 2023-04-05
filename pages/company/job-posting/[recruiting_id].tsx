@@ -6,38 +6,50 @@ import styled from 'styled-components';
 import Button_2 from '@/components/ui/Button_2';
 import Button_1 from '@/components/ui/Button_1';
 import Pagination from '@/components/ui/Pagination';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
 
 type Props = {};
-const applicants = [
-  {
-    applicantNm: '박혁거세',
-    applicantTel: '01012341234',
-    applicantEmail: 'test@email.com',
-    progress: '서류전형',
-    status: '불합격',
-  },
-  {
-    applicantNm: '우지수',
-    applicantTel: '01012345678',
-    applicantEmail: 'yaa3323@naver.com',
-    progress: '서류전형',
-    status: '합격',
-  },
-  {
-    applicantNm: '이삭',
-    applicantTel: '010-1234-1234',
-    applicantEmail: 'hwisaac0@gmail.com',
-    progress: '서류전형',
-    status: '불합격',
-  },
-];
+// GET /getApplicants by recruiting_id=2
+// const applicants = [
+//   {
+//     applicantNm: '박혁거세',
+//     applicantTel: '01012341234',
+//     applicantEmail: 'test@email.com',
+//     progress: '서류전형',
+//     status: '불합격',
+//   },
+//   {
+//     applicantNm: '우지수',
+//     applicantTel: '01012345678',
+//     applicantEmail: 'yaa3323@naver.com',
+//     progress: '서류전형',
+//     status: '합격',
+//   },
+//   {
+//     applicantNm: '이삭',
+//     applicantTel: '010-1234-1234',
+//     applicantEmail: 'hwisaac0@gmail.com',
+//     progress: '서류전형',
+//     status: '불합격',
+//   },
+// ];
 export default function RecruitingId({}: Props) {
+  const { accessToken } = useCookies();
   const router = useRouter();
-  const { recruiting_id } = router.query;
+  const { recruiting_id }: any = router.query;
+  const { data, isLoading } = useQuery({
+    queryKey: ['recruit'],
+    queryFn: () => api.getApplicants(accessToken, { recruiting_id }),
+  });
   const handleClick = () => console.log('clicked!');
   const [activePage, setActivePage] = useState(1);
+
+  console.log('useQuery의 Data', data);
   return (
     <Wrapper>
+      <span>{data?.message}</span>
       <h1>
         지원자 리스트
         <Button_1 name={recruiting_id as string} />
@@ -54,7 +66,7 @@ export default function RecruitingId({}: Props) {
           </Tr>
         </Thead>
         <Tbody>
-          {applicants.map((applicant, index) => (
+          {data?.data?.map((applicant, index) => (
             <Tr key={index}>
               <Td>{index}</Td>
               <Td>{applicant.applicantNm}</Td>
