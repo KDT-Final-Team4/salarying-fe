@@ -4,11 +4,9 @@ import Avatar, { genConfig } from 'react-nice-avatar';
 import SNBLayout from '@/components/layout/SNBLayout';
 import { getSNBLayout } from '@/libs/client/getLayout';
 
-import firebase, { db, auth } from '@/firebase';
 import { useState } from 'react';
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(auth.currentUser);
   const handleClick = async () => {
     // console.log(auth.);
   };
