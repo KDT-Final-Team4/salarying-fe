@@ -27,20 +27,20 @@ type NoticeStatusMutationParams = {
   status: boolean;
 };
 
-const getNotices = async () => {
-  const result = await axios
-    .request({
-      method: 'get',
-      url: '/api/notice',
-    })
-    .then((response) => {
-      return response.data.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return result;
-};
+// const getNotices = async () => {
+//   const result = await axios
+//     .request({
+//       method: 'get',
+//       url: '/api/notice',
+//     })
+//     .then((response) => {
+//       return response.data.data;
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+//   return result;
+// };
 
 // const useNoticeStatusMutation = (): UseMutationResult<Data, unknown, NoticeStatusMutationParams> => {
 
@@ -65,7 +65,7 @@ export default function NoticeList() {
     });
   };
 
-  let pageGroups = usePagination(notices?.data);
+  let pageGroups = usePagination(notices?.data, 5);
 
   let pageMembersList = pageGroups[activePage - 1];
 
