@@ -13,7 +13,7 @@ type Props = {
 export default function Card_1({ Icon, title, content, dark, ...props }: Props) {
   return (
     <Card {...props} dark={dark}>
-      <Circle dark={dark}>{Icon ? <Icon size="24" /> : <AiFillNotification size="24" />}</Circle>
+      <Circle dark={dark}>{Icon ? <Icon size="24" /> : <AiFillNotification size="18" />}</Circle>
       <Content dark={dark}>
         <h3>{title}</h3>
         <span>{content}</span>
@@ -24,7 +24,7 @@ export default function Card_1({ Icon, title, content, dark, ...props }: Props) 
 
 const Card = styled.div<{ dark }>`
   display: flex;
-  width: 250px;
+  width: 220px;
   height: 110px;
   align-items: center;
   justify-content: space-between;
@@ -32,16 +32,16 @@ const Card = styled.div<{ dark }>`
   gap: 20px;
   border-radius: 10px;
   flex-shrink: 0;
-  background-color: ${(props) => (props.dark ? 'var(--color-zinc900)' : 'var(--color-zinc100)')};
+  background-color: ${(props) => (props.dark ? 'var(--color-zinc700)' : 'var(--color-zinc100)')};
 `;
 
 const Circle = styled.div<{ dark }>`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.dark ? 'var(--color-zinc700)' : 'var(--color-zinc200)')};
+  background-color: ${(props) => (props.dark ? 'var(--color-zinc600)' : 'var(--color-zinc200)')};
   border-radius: 100%;
   flex-shrink: 0;
   svg {
@@ -52,14 +52,15 @@ const Content = styled.div<{ dark }>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   h3 {
     font-weight: 500;
     color: ${(props) => (props.dark ? 'var(--color-zinc400)' : 'var(--color-zinc400)')};
+    font-size: 12px;
   }
   span {
-    color: ${(props) => (props.dark ? 'var(--color-zinc300)' : 'var(--color-zinc900)')};
+    color: ${(props) => (props.dark ? 'var(--color-zinc100)' : 'var(--color-zinc700)')};
     font-weight: 800;
-    font-size: 25px;
+    font-size: 22px;
   }
 `;

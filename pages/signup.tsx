@@ -71,7 +71,6 @@ const Wrapper = styled.section`
 `;
 
 const LoginSection = styled.section`
-  border: 1px solid red;
   /* overflow: scroll; */
   width: 50%;
   height: 100%;
@@ -90,6 +89,8 @@ const KVSection = styled.section`
   align-items: center;
   flex-direction: column;
   background-color: var(--color-indigo100);
+  background-image: url('/startup.jpg');
+  background-size: cover;
 `;
 const Title = styled.h1`
   font-weight: 700;

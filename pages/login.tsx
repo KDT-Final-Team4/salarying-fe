@@ -151,6 +151,8 @@ const KVSection = styled.section`
   align-items: center;
   flex-direction: column;
   background-color: var(--color-indigo100);
+  background-image: url('/clocks.jpg');
+  background-size: cover;
 `;
 const Title = styled.h1`
   font-weight: 400;

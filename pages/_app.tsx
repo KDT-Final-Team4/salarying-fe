@@ -1,6 +1,7 @@
 import Header from '@/components/Header/Header';
 import SideNav from '@/components/SideNav';
 import '@/styles/reset.css';
+import 'react-toggle/style.css';
 import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

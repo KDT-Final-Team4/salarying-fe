@@ -9,7 +9,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { GrFormAdd } from 'react-icons/gr';
 
-const listData = [{ title: '알바직 모집' }, { title: '인턴 모집' }, { title: 'CEO 모집' }, { title: '총무 모집' }];
 const res = {
   stateCode: 200,
   success: true,

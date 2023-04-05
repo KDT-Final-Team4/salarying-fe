@@ -66,9 +66,7 @@ export default function SideNav() {
 
         <div>
           <Link href="/company">/company</Link>
-          <Link href="/company/mypage">/company/mypage</Link>
           <Link href="/company/job-posting">/company/job-posting</Link>
-          <Link href="/company/job-posting/1">/company/job-posting/1</Link>
           <Link href="/company/job-posting/new">/company/job-posting/new</Link>
           <Link href="/company/applicant-management">/company/applicant-management</Link>
           <Link href="/company/applicant-management/category/1">/company/applicant-management/category/1</Link>
