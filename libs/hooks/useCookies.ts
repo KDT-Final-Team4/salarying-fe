@@ -2,7 +2,8 @@ import React from 'react';
 
 export default function useCookies() {
   const accessToken = getCookie('accessToken');
-  return accessToken;
+  const isAdmin = getCookie('isAdmin');
+  return { accessToken, isAdmin };
 }
 
 // Document.cookie에서 key에 해당하는 값을 반환하는 함수
@@ -38,11 +39,4 @@ function deleteCookie(key: string) {
   }
 
   window.document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/`;
-}
-
-function getToken() {
-  return getCookie('accessToken');
-}
-function getIsAdmin() {
-  return getCookie('isAdmin');
 }

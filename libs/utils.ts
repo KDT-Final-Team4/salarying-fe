@@ -17,3 +17,31 @@ export function randomFromSeed(seed: string, arr: any[]): any {
   const index = newSeed % arr.length;
   return arr[index];
 }
+
+
+export function btnColorFromSeed(seed) {
+  const colors = [
+    'gray',
+    'zinc',
+    'stone',
+    'red',
+    'orange',
+    'amber',
+    'yellow',
+    'lime',
+    'green',
+    'emerald',
+    'teal',
+    'cyan',
+    'sky',
+    'blue',
+    'indigo',
+    'violet',
+    'purple',
+    'fuchsia',
+    'pink',
+    'rose',
+    'point',
+  ];
+  return randomFromSeed(seed, colors);
+}
