@@ -1,106 +1,80 @@
-import Button_1 from '@/components/ui/Button_1';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+// import Button_Send from '@/components/ui/Button_send';
+import Button_Send from '@/components/ui/Button_Send';
 import styled from 'styled-components';
 import Button_2 from '@/components/ui/Button_2';
-import { useRouter } from 'next/router';
+import Button_1 from '@/components/ui/Button_1';
+import Pagination from '@/components/ui/Pagination';
 
-const users = [
+type Props = {};
+const applicants = [
   {
-    id: 1,
-    name: '황이삭',
-    email: 'abcd@naver.com',
-    progress: '서류 심사',
+    applicantNm: '박혁거세',
+    applicantTel: '01012341234',
+    applicantEmail: 'test@email.com',
+    progress: '서류전형',
     status: '불합격',
   },
   {
-    id: 2,
-    name: '황이삭',
-    email: 'abcd@naver.com',
-    progress: '서류 합격',
+    applicantNm: '우지수',
+    applicantTel: '01012345678',
+    applicantEmail: 'yaa3323@naver.com',
+    progress: '서류전형',
     status: '합격',
   },
   {
-    id: 3,
-    name: '황이삭',
-    email: 'abcd@naver.com',
-    progress: '서류 심사',
+    applicantNm: '이삭',
+    applicantTel: '010-1234-1234',
+    applicantEmail: 'hwisaac0@gmail.com',
+    progress: '서류전형',
     status: '불합격',
-  },
-  {
-    id: 4,
-    name: '황이삭',
-    email: 'abcd@naver.com',
-    progress: '서류 심사',
-    status: '합격',
   },
 ];
-
-const CategoryId = () => {
-  const [checked, setChecked] = useState(false); // 전체 체크박스의 체크 여부
-  const [childChecked, setChildChecked] = useState(users); // 자식 체크박스들의 체크 여부
+export default function RecruitingId({}: Props) {
   const router = useRouter();
-  // 전체 체크박스가 변경되었을 때 호출되는 함수
-  // const handleCheckAll = (event) => {
-  //   const masterChecked = event.target.checked;
-  //   setChecked(masterChecked);
-  //   const newChild = childChecked.map((child) => {
-  //     child.checked = masterChecked;
-  //     return child;
-  //   });
-  //   setChildChecked(newChild);
-  // };
-
-  // 자식 체크박스 중 하나가 변경되었을 때 호출되는 함수
-  // const handleCheckChild = (event, id) => {
-  // const newChildChecked = [...childChecked];
-  // newChildChecked[index] = event.target.checked;
-  // const newChildChecked = childChecked.map((mail) => {
-  //   if (mail.id === id) {
-  //     mail.checked = event.target.checked;
-  //   }
-  //   return mail;
-  // });
-  // setChildChecked(newChildChecked);
-  // setChecked(newChildChecked.every((mail) => mail.checked === true));
-  // };
-
+  const { recruiting_id } = router.query;
+  const handleClick = () => console.log('clicked!');
+  const [activePage, setActivePage] = useState(1);
   return (
     <Wrapper>
-      <h1 onClick={() => console.log(childChecked)}>지원자 리스트</h1>
+      <h1>
+        지원자 리스트
+        <Button_1 name={recruiting_id as string} />
+      </h1>
       <Table>
         <Thead>
           <Tr>
-            <Th>Index</Th>
+            <Th>ID</Th>
             <Th>이름</Th>
             <Th>이메일</Th>
+            <Th>전화번호</Th>
             <Th>진행 상황</Th>
             <Th>상태</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {users.map((user, index) => (
+          {applicants.map((applicant, index) => (
             <Tr key={index}>
               <Td>{index}</Td>
-              <Td>{user.name}</Td>
-              <Td>{user.email}</Td>
-              <Td>{user.progress}</Td>
+              <Td>{applicant.applicantNm}</Td>
+              <Td>{applicant.applicantEmail}</Td>
+              <Td>{applicant.applicantTel}</Td>
+              <Td>{applicant.progress}</Td>
               <Td>
-                <Button_2 name={user.status} color={user.status === '합격' ? 'indigo' : 'pink'} />
+                <Button_2 name={applicant.status} color={applicant.status === '합격' ? 'indigo' : 'pink'} />
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
+
       <Pages>
-        <li className="active">1</li>
-        <li>2</li>
-        <li>3</li>
+        <Pagination activePage={activePage} setActivePage={setActivePage} pages={1} />
       </Pages>
     </Wrapper>
   );
-};
-
-export default CategoryId;
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -108,6 +82,9 @@ const Wrapper = styled.div`
   padding: 3rem;
   margin: 0 auto;
   h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     color: var(--color-gray700);
     font-size: 18px;
     font-weight: 700;

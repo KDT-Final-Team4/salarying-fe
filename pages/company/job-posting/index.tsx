@@ -85,8 +85,8 @@ const JobPosting = () => {
         <AddCard>
           <GrFormAdd size="50" />
         </AddCard>
-        {res.data.map((post) => (
-          <PostCard key={post.title} jobPost={post} />
+        {res.data.map((post, index) => (
+          <PostCard key={post.title + index} jobPost={post} />
         ))}
       </PostList>
     </Wrapper>
