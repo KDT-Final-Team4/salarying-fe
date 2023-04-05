@@ -16,18 +16,18 @@
 //   return pageGroups;
 // };
 
-const usePagination = (arr) => {
-  const length = 5;
-  const start = 0;
-  const res = [];
-  const max = Math.ceil(arr?.length / 5);
+const usePagination = (arr, itemsPerPage) => {
+  if (!arr) return [];
+  const totalPages = Math.ceil(arr.length / itemsPerPage);
+  let pages = [];
 
-  for (let i = 0; i < max; i++) {
-    const page = arr.slice(start + i * length, start + i * length + length);
-    res.push(page);
+  for (let page = 0; page < totalPages; page++) {
+    const start = page * itemsPerPage;
+    const end = start + itemsPerPage;
+    pages.push(arr.slice(start, end));
   }
 
-  return res;
+  return pages;
 };
 
 export default usePagination;
