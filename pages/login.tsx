@@ -7,6 +7,10 @@ import { useRouter } from 'next/router';
 import api from '@/libs/client/axiosClient';
 import useAccessToken from '@/libs/hooks/useAccessToken';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
+import logoPic from '../public/logo.png';
+import clockPic from '../public/clocks.jpg';
+
 export default function Login() {
   const textRef = useRef(null);
   const {
@@ -78,7 +82,7 @@ export default function Login() {
       <LoginSection>
         <Inner>
           <Title>
-            <img src="/logo.png" />
+            <Image src={logoPic} alt="logo" quality={100} width={200} placeholder="blur" />
           </Title>
           <TitleDescription>Welcome back! Please enter your details</TitleDescription>
 
@@ -110,7 +114,9 @@ export default function Login() {
           </LoginForm>
         </Inner>
       </LoginSection>
-      <KVSection></KVSection>
+      <KVSection>
+        <Image src={clockPic} alt="clockPic" quality={100} fill />
+      </KVSection>
     </Wrapper>
   );
 }
@@ -150,22 +156,26 @@ const KVSection = styled.section`
   align-items: center;
   flex-direction: column;
   background-color: var(--color-indigo100);
-  background-image: url('/clocks.jpg');
   background-size: cover;
+  img {
+    object-position: right;
+    object-fit: contain;
+    right: 0;
+  }
 `;
+
 const Title = styled.h1`
   font-weight: 400;
   font-size: 30px;
   color: var(--color-gray800);
   margin-bottom: 10px;
-  img {
-    width: 50%;
-  }
 `;
+
 const TitleDescription = styled.span`
   color: var(--color-gray400);
   display: flex-inline;
 `;
+
 const LoginForm = styled.form`
   /* width: 422px; */
 
@@ -175,6 +185,7 @@ const LoginForm = styled.form`
   gap: 20px;
   margin-top: 30px;
 `;
+
 const InputDiv = styled.div`
   width: 100%;
   display: flex;
@@ -189,12 +200,14 @@ const InputDiv = styled.div`
     font-size: 20px;
   }
 `;
+
 const SubTitle = styled.h3`
   font-weight: 600;
   line-height: 100%;
   font-size: 12px;
   color: var(--color-gray700);
 `;
+
 const SubmitPanel = styled.div`
   display: flex;
   flex-direction: column;

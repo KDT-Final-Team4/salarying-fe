@@ -20,6 +20,7 @@ type ICategoryComponent = {
 };
 
 type ICombined = ICategoryStyle & ICategoryComponent;
+
 export default function SelectCategory({ width, height, categories, currentValue, setCurrentValue, onClick }: ICombined) {
   const handleSelect = (value) => {
     setCurrentValue(value);

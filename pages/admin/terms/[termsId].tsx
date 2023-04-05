@@ -9,6 +9,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import Button_2 from '@/components/ui/Button_2';
+import { useQuery } from '@tanstack/react-query';
 
 interface List {
   title: string;
@@ -73,37 +74,30 @@ interface StyledProps {
 }
 
 type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
-const heads = ['약관제목', '약관 버전', '약관 작성자', '게시 상태', '미리보기'];
+const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
 
 export default function TermsId() {
   const router = useRouter();
   const [activePage, setActivePage] = useState<number>(1);
-  const [terms, setTerms] = useState([]);
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
 
-  console.log('termsId', termsId);
-  console.log('terms', terms);
+  const { data, isLoading } = useQuery({
+    queryKey: ['terms', termsId],
+    queryFn: () => api.getTerms(accessToken, termsId),
+  });
 
-  useEffect(() => {
-    const getTermList = async () => {
-      if (termsId) {
-        const res = await api.getTerms(accessToken, termsId);
-        setTerms(res?.data);
-        console.log(res);
-        return res;
-      } else console.log('약관 타입 없음');
-    };
-    getTermList();
-  }, [termsId]);
+  console.log('termsId', termsId);
+  console.log('data', data);
 
   // 페이지네이션
-  let pageGroups = usePagination(terms);
+  let pageGroups = usePagination(data, 5);
   let pageMembersList = pageGroups[activePage - 1];
   console.log(pageMembersList);
 
   return (
     <Content title="약관별 관리">
+      <span>{isLoading && '로딩중'}</span>
       <Nav>
         {list.map((item) => (
           <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
@@ -118,15 +112,13 @@ export default function TermsId() {
               <Th>
                 <input type="checkbox" />
               </Th>
-              <Th>약관 제목</Th>
-              <Th>약관 버전</Th>
-              <Th>약관 작성자</Th>
-              <Th>상태</Th>
-              <Th>미리보기</Th>
+              {heads.map((title) => (
+                <Th>{title}</Th>
+              ))}
             </Tr>
           </Thead>
           <Tbody>
-            {terms.map((term, index) => (
+            {data?.data?.map((term, index) => (
               <Tr key={index}>
                 <Td>
                   <input type="checkbox" />
@@ -146,6 +138,15 @@ export default function TermsId() {
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
       </Wrapper>
+      <ButtonArea>
+        <Button_Send text={'삭제하기'} height={null} width={100} />
+        <Link href="edit/termsId">
+          <Button_Send text={'수정하기'} height={null} width={100} color={'point'} />
+        </Link>
+        <Link href="new">
+          <Button_Send text={'등록하기'} height={null} width={100} />
+        </Link>
+      </ButtonArea>
     </Content>
   );
 }
@@ -185,7 +186,7 @@ const Nav = styled.ul`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 3rem 0;
   margin: 0 auto;
   h1 {
     color: var(--color-gray700);
@@ -199,21 +200,70 @@ const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
 `;
+
 const Thead = styled.thead`
   tr {
     th {
+      table-layout: fixed;
       border-top: 1px solid var(--color-gray100);
-      text-align: left;
+      text-align: center;
       padding: 22px 12px;
       font-weight: 500;
       font-size: 14px;
       color: var(--color-gray400);
+      :nth-child(1) {
+        width: 5%;
+        text-align: left;
+      }
+      :nth-child(2) {
+        width: 50%;
+        text-align: left;
+      }
+      :nth-child(3) {
+        width: 10%;
+      }
+      :nth-child(4) {
+        width: 10%;
+      }
+      :nth-child(5) {
+        width: 10%;
+      }
+      :nth-child(6) {
+        width: 15%;
+      }
     }
   }
 `;
 const Tbody = styled.tbody`
   tr:hover {
+    cursor: pointer;
     background-color: var(--color-gray50);
+  }
+  tr {
+    td {
+      text-align: center;
+      padding: 22px 12px;
+      :nth-child(1) {
+        width: 5%;
+        text-align: left;
+      }
+      :nth-child(2) {
+        width: 50%;
+        text-align: left;
+      }
+      :nth-child(3) {
+        width: 10%;
+      }
+      :nth-child(4) {
+        width: 10%;
+      }
+      :nth-child(5) {
+        width: 10%;
+      }
+      :nth-child(6) {
+        width: 15%;
+      }
+    }
   }
 `;
 
@@ -223,9 +273,6 @@ const Th = styled.th`
   padding: 22px 12px;
   font-weight: 500;
   color: var(--color-gray400);
-  :nth-child(2) {
-    width: 40%;
-  }
 `;
 
 const Td = styled.td`
@@ -247,22 +294,30 @@ const Tr = styled.tr`
   }
 `;
 
-const Pages = styled.ul`
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-
-  margin: 50px 0;
-  color: var(--color-gray400);
-  li {
+const ButtonArea = styled.div`
+  width: inherit;
+  margin-bottom: 100px;
+  button {
+    width: 170px;
+    height: 50px;
+    background-color: transparent;
+    margin: 20px 10px;
+    border-radius: 10px;
     cursor: pointer;
-    padding: 5px;
-    &.active {
-      color: var(--color-gray800);
-      background-color: var(--color-point);
+    border: 1px solid var(--color-gray300);
+    &.cancel {
+      :hover {
+        font-weight: 700;
+        box-shadow: 3px 5px 3px var(--color-lightgray);
+      }
     }
-    &:hover {
-      text-decoration: underline;
+    &.submit {
+      background-color: var(--color-point);
+      border: none;
+      :hover {
+        box-shadow: 10px 10px 10px var(--color-lightgray);
+        font-weight: 700;
+      }
     }
   }
 `;
