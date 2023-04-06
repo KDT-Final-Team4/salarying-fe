@@ -1,5 +1,8 @@
 import Card_1 from '@/components/ui/Card_1';
 import TableUI from '@/components/ui/TableUI';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
 import { AiFillCar } from 'react-icons/ai';
@@ -66,6 +69,12 @@ const resData = [
 ];
 
 const Company = () => {
+  const { accessToken } = useCookies();
+  const { data, isLoading } = useQuery({
+    queryKey: ['recruitList'],
+    queryFn: () => api.getRecruiting(accessToken),
+    onSuccess: (data) => console.log(data),
+  });
   return (
     <Wrapper>
       <Title>Dashboard</Title>
@@ -85,7 +94,7 @@ const Company = () => {
           <H2>최신 공고</H2>
           <Link href="/company/job-posting">바로가기</Link>
         </div>
-        <TableUI dataList={resData.slice(0, 4)} titles={['id', '이름', 'date', 'progress', 'stats']} />
+        <TableUI dataList={data?.data?.slice(0, 4)} titles={['id', '이름', 'date', 'progress', 'stats']} />
       </RecentNotices>
     </Wrapper>
   );
