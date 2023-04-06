@@ -129,7 +129,7 @@ const Nav = styled.ul`
   display: flex;
   color: var(--color-primary);
   justify-content: space-between;
-  margin-top: -30px;
+  margin-top: 25px;
   margin-bottom: 10px;
   a {
     width: 100%;
