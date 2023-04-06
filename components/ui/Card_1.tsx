@@ -52,11 +52,11 @@ const Content = styled.div<{ dark }>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  /* gap: 5px; */
   h3 {
-    font-weight: 500;
-    color: ${(props) => (props.dark ? 'var(--color-zinc400)' : 'var(--color-zinc400)')};
-    font-size: 12px;
+    font-weight: 600;
+    color: ${(props) => (props.dark ? 'var(--color-zinc400)' : 'var(--color-zinc500)')};
+    font-size: 14px;
   }
   span {
     color: ${(props) => (props.dark ? 'var(--color-zinc100)' : 'var(--color-zinc700)')};
