@@ -5,6 +5,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { BsCheckLg } from 'react-icons/bs';
 import HeadLayout from '@/components/layout/HeadLayout';
 import Link from 'next/link';
+import StartupImg from '../public/startup.jpg';
+import Image from 'next/image';
 import api from '@/libs/client/axiosClient';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -79,7 +81,9 @@ export default function SignUp() {
           </LoginForm>
         </Inner>
       </LoginSection>
-      <KVSection></KVSection>
+      <KVSection>
+        <Image src={StartupImg} alt="rightPic" quality={100} />
+      </KVSection>
     </Wrapper>
   );
 }
@@ -114,8 +118,16 @@ const KVSection = styled.section`
   align-items: center;
   flex-direction: column;
   background-color: var(--color-indigo100);
-  background-image: url('/startup.jpg');
   background-size: cover;
+  overflow: hidden;
+  position: relative;
+  img {
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
 `;
 const Title = styled.h1`
   font-weight: 700;

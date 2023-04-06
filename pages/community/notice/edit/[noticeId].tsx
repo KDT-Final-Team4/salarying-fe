@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Router, useRouter } from 'next/router';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Content from '@/components/ui/Content';
 import Button_Send from '@/components/ui/Button_Send';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
+import { title } from 'process';
 
 type Props = {};
 
@@ -16,22 +17,25 @@ interface noticeDetail {
 }
 
 export default function NoticeEdit(props: Props) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   const router = useRouter();
-  const [id, setId] = useState<number>();
-  const accessToken = useCookies();
+  const { accessToken, isAdmin } = useCookies();
+  const { noticeId }: any = router.query;
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    setId(Number(router.query.noticeId));
-  }, [router.isReady, router.query]);
-
-  const queryClient = new QueryClient();
-  const { data, isLoading } = useQuery(['notice', id], () => api.getNoticeDetail(accessToken, id), {
-    enabled: !!id,
+  const { data, isLoading } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
+    enabled: !!noticeId,
     refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      setTitle(data.title), setContent(data.content);
+    },
   });
-  const changeHandler = (e) => {
-    e.preventDefault();
+
+  const { mutate: putNotice } = useMutation(() => api.putNotice(accessToken, { id: noticeId, title, content }));
+
+  const clickHandler = () => {
+    putNotice();
   };
 
   return (
@@ -40,16 +44,14 @@ export default function NoticeEdit(props: Props) {
         <FlexStyle>
           <Table className="static">
             <h3>제목</h3>
-            <textarea className="title" defaultValue={data?.title} required></textarea>
+            <textarea className="title" value={title} onChange={(event) => setTitle(event.target.value)} required></textarea>
             <h3>내용</h3>
-            <textarea className="content" defaultValue={data?.content} required>
+            <textarea className="content" value={content} onChange={(event) => setContent(event.target.value)} required>
               {data?.content}
             </textarea>
           </Table>
           <BtnWrapper>
-            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${id}`}>
-              <Button_Send text={'저장'} height={50} width={150} />
-            </Link>
+            <Button_Send text={'저장'} height={50} width={150} onClick={clickHandler} />
             <div onClick={() => router.back()}>
               <Button_Send text={'취소'} height={50} width={150} />
             </div>
@@ -103,6 +105,7 @@ const Table = styled.div`
     }
   }
 `;
+
 const BtnWrapper = styled.div`
   position: relative;
   width: 500px;
