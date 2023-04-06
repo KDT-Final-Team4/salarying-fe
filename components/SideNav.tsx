@@ -9,18 +9,62 @@ import CustomLink from './CustomLink';
 import AccordionMenu from './AccordionMenu';
 import useAccessToken from '@/libs/hooks/useAccessToken';
 import { MdOutlineQuestionAnswer, MdOutlineAnnouncement, MdManageAccounts, MdChromeReaderMode } from 'react-icons/md';
+import { FaUserTie } from 'react-icons/fa';
+import { AiFillNotification } from 'react-icons/ai';
 import Image from 'next/image';
 import logoDarkPic from '../public/logo_dark.png';
 
-const subNavs = [
+const termsNavs = [
   {
     title: '최종 약관',
     href: '/admin/terms',
   },
   { title: '약관별', href: '/admin/terms/service' },
-  { title: '테스트', href: '/company/mypage' },
 ];
 
+const companyNav = [
+  {
+    title: '대쉬보드',
+    href: '/company',
+  },
+  { title: '공고 리스트', href: '/company/job-posting' },
+  { title: '(job-posting/2)', href: '/company/job-posting/2' },
+  { title: '지원자 관리', href: '/company/applicant-management' },
+  { title: '(지원자 관리/category/1)', href: '/company/applicant-management/category/1' },
+  {
+    title: '이메일 알림',
+    href: '/company/notification',
+  },
+];
+const communityNav = [
+  {
+    title: 'faq',
+    href: '/community/faq',
+  },
+  {
+    title: 'notice',
+    href: '/community/notice',
+  },
+  {
+    title: 'notice/1',
+    href: '/community/notice/1',
+  },
+  {
+    title: 'notice/new',
+    href: '/community/notice/new',
+  },
+  {
+    title: 'notice/edit/1',
+    href: '/community/notice/edit/1',
+  },
+];
+const adminNav = [
+  { title: '/admin', href: '/admin' },
+  { title: '/admin/terms', href: '/admin/terms' },
+  { title: '/admin/terms/1', href: '/admin/terms/1' },
+  { title: '/admin/company-membership', href: '/admin/company-membership' },
+  { title: '/admin/mypage', href: '/admin/mypage' },
+];
 export default function SideNav() {
   const config = genConfig('admin@email.com');
   const router = useRouter();
@@ -37,7 +81,7 @@ export default function SideNav() {
       <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
 
       <NavMenues>
-        <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={subNavs} />
+        <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={termsNavs} />
 
         <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
           기업 회원관리
@@ -50,6 +94,9 @@ export default function SideNav() {
         <CustomLink Icon={MdOutlineQuestionAnswer} href="/community/faq">
           FAQ
         </CustomLink>
+        <AccordionMenu Icon={FaUserTie} title={'Company'} activeURL="/company" subNavs={companyNav} />
+        <AccordionMenu Icon={AiFillNotification} title={'Community'} activeURL="/community" subNavs={communityNav} />
+        <AccordionMenu Icon={AiFillNotification} title={'Admin'} activeURL="/admin" subNavs={adminNav} />
       </NavMenues>
       <DevLinks>
         <div>
@@ -57,15 +104,15 @@ export default function SideNav() {
           <Link href="/signup">/signup</Link>
         </div>
 
-        <div>
+        {/* <div>
           <Link href="/admin">/admin</Link>
           <Link href="/admin/terms">/admin/terms</Link>
           <Link href="/admin/terms/1">/admin/terms/1</Link>
           <Link href="/admin/company-membership">/admin/company-membership</Link>
           <Link href="/admin/mypage">/admin/mypage</Link>
-        </div>
+        </div> */}
 
-        <div>
+        {/* <div>
           <Link href="/company">/company</Link>
           <Link href="/company/job-posting">/company/job-posting</Link>
           <Link href="/company/job-posting/2">/company/job-posting/2</Link>
@@ -73,14 +120,14 @@ export default function SideNav() {
           <Link href="/company/applicant-management">/company/applicant-management</Link>
           <Link href="/company/applicant-management/category/1">/company/applicant-management/category/1</Link>
           <Link href="/company/notification">/company/notification</Link>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <Link href="/community/faq">/community/faq</Link>
           <Link href="/community/notice">/community/notice</Link>
           <Link href="/community/notice/1">/community/notice/1</Link>
           <Link href="/community/notice/new">/community/notice/new</Link>
           <Link href="/community/notice/edit/1">/community/notice/edit/1</Link>
-        </div>
+        </div> */}
       </DevLinks>
 
       {/* <Profile>

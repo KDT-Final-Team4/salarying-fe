@@ -40,7 +40,7 @@ type Props = {
 // const titles = ['id', '이름', '메일', '과정', '상태'];
 
 export default function TableUI({ dataList, titles }: Props) {
-  const arrLength = dataList.length;
+  const arrLength = dataList?.length;
   return (
     <Wrapper>
       <Table>
@@ -54,7 +54,7 @@ export default function TableUI({ dataList, titles }: Props) {
           </Thead>
         )}
         <Tbody>
-          {dataList.map((data, index) => (
+          {dataList?.map((data, index) => (
             <Tr key={index}>
               {Object.keys(data).map((key, index) => (
                 <Td key={key + index}>{data[key]}</Td>

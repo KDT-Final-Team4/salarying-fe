@@ -16,31 +16,20 @@ const list = [
 ];
 
 export default function Terms() {
-  // const { accessToken: token } = useAccessToken();
   const token = useCookies();
   console.log(token);
-  // const token ='eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJ1c2VySWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGVtYWlsLmNvbVwiLFwicm9sZVwiOlwiQURNSU5cIixcImp3dFR5cGVcIjpcIkFDQ0VTU1wiLFwiZW5hYmxlZFwiOmZhbHNlLFwidXNlcm5hbWVcIjpcImFkbWluQGVtYWlsLmNvbVwiLFwicGFzc3dvcmRcIjpudWxsLFwiYXV0aG9yaXRpZXNcIjpbe1wiYXV0aG9yaXR5XCI6XCJBRE1JTlwifV0sXCJhY2NvdW50Tm9uRXhwaXJlZFwiOmZhbHNlLFwiY3JlZGVudGlhbHNOb25FeHBpcmVkXCI6ZmFsc2UsXCJhY2NvdW50Tm9uTG9ja2VkXCI6ZmFsc2V9IiwiaXNzIjoiNCB0ZWFtIGJhY2tlbmQiLCJpYXQiOjE2ODA1OTA5MDUsImV4cCI6MTY4MDY3NzMwNX0.xIkNeyvg8jCJPlmgnB5s-be8uXJGldzuELNgOvKbPUw';
   const fetcher = () => api.getTerms(token, 'service');
   const { data: terms, isLoading } = useQuery(['terms'], fetcher);
 
-  if (!token) {
-    return <div>Loading...</div>;
-  }
+  // if (!token) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  // const { accessToken: token, isAdmin } = useAccessToken();
-  // const fetcher = () => api.getTerms(token, 'service');
-  // const { data: terms, isLoading } = useQuery(['terms'], fetcher);
   console.log(terms);
-
-  // const handleTermList = async () => {
-  //   const termRes = await api.getTerms(token, 'service');
-  //   console.log(termRes);
-  // };
-  // handleTermList();
   return (
     <Container>
       <Content title="최종 약관">
