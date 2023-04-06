@@ -65,13 +65,13 @@ export default function TermsId() {
   console.log('data', data);
 
   // 페이지네이션
-  let pageGroups = usePagination(data, 5);
+  let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
   console.log(pageMembersList);
 
   return (
     <Content title="약관별 관리">
-      <span>{isLoading && '로딩중'}</span>
+      {/* <span>{isLoading && '로딩중'}</span> */}
       <Nav>
         {list.map((item) => (
           <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
@@ -92,7 +92,7 @@ export default function TermsId() {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.data?.map((term, index) => (
+            {pageMembersList?.map((term, index) => (
               <Tr key={index}>
                 <Td>
                   <input type="checkbox" />
@@ -108,16 +108,13 @@ export default function TermsId() {
             ))}
           </Tbody>
         </Table>
-        <div className="pagination">
-          <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
-        </div>
       </Wrapper>
       <ButtonArea>
         <Button_2 name={'삭제'} />
+        <div className="pagination">
+          <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
+        </div>
         <div>
-          <Link href="edit/termsId">
-            <Button_2 name={'수정'} color={'point'} />
-          </Link>
           <Link href="new">
             <Button_2 name={'등록'} color={'point'} />
           </Link>
@@ -132,7 +129,8 @@ const Nav = styled.ul`
   display: flex;
   color: var(--color-primary);
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-top: -30px;
+  margin-bottom: 10px;
   a {
     width: 100%;
     display: flex;
@@ -161,9 +159,13 @@ const Nav = styled.ul`
 
 const Wrapper = styled.div`
   display: flex;
+  height: 552px;
   flex-direction: column;
-  padding: 3rem 0;
+  padding: 2rem 0;
   margin: 0 auto;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
   h1 {
     color: var(--color-gray700);
     font-size: 18px;
@@ -281,9 +283,10 @@ const ButtonArea = styled.div`
     margin: 20px 10px;
     border-radius: 10px;
     cursor: pointer;
-    border: 1px solid var(--color-gray300);
   }
-  div {
+  .pagination {
     display: flex;
+    justify-content: center;
+    margin-top: -10px;
   }
 `;
