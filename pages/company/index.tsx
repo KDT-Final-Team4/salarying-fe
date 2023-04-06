@@ -68,6 +68,21 @@ const resData = [
   },
 ];
 
+const countStatus = (arr, status: string): number => {
+  const filtered = arr.filter((el) => el.status === status);
+  return filtered.length;
+};
+function getStatusObj(arr) {
+  const statusCount = {};
+  arr.forEach((item) => {
+    if (statusCount.hasOwnProperty(item.status)) {
+      statusCount[item.status]++;
+    } else {
+      statusCount[item.status] = 1;
+    }
+  });
+  return statusCount;
+}
 const Company = () => {
   const { accessToken } = useCookies();
   const { data, isLoading } = useQuery({
@@ -75,6 +90,8 @@ const Company = () => {
     queryFn: () => api.getRecruiting(accessToken),
     onSuccess: (data) => console.log(data),
   });
+  const statusObj: any = getStatusObj(data?.data);
+
   return (
     <Wrapper>
       <Title>Dashboard</Title>
@@ -83,9 +100,16 @@ const Company = () => {
           <H2>Overviews</H2>
         </div>
         <div>
-          <Card_1 title="활성화 공고" content="4 건" dark={true} />
-          <Card_1 title="비활성화 공고" content="2 건" Icon={AiFillCar} />
-          <Card_1 title="total" content="content" Icon={AiFillCar} />
+          <Card_1 title="총 공고" content={`${data?.data?.length}`} Icon={AiFillCar} dark={true} />
+          {Object.keys(statusObj).map((status) => (
+            <Card_1 key={status} title={status} content={`${statusObj[status]} 건`} />
+          ))}
+          {/* {countStatus(data.data, '서류전형') ? <Card_1 title="서류 전형" content={`${countStatus(data.data, '서류전형')} 건`} /> : null}
+          {countStatus(data?.data, '1차전형') ? <Card_1 title="1차전형" Icon={AiFillCar} content={`${countStatus(data?.data, '1차전형')} 건`} dark={false} /> : null}
+          {countStatus(data?.data, '2차전형') ? <Card_1 title="2차 전형" Icon={AiFillCar} content={`${countStatus(data?.data, '2차전형')} 건`} dark={false} /> : null}
+          {countStatus(data?.data, '3차전형') ? (
+            <Card_1 title="3차 전형" Icon={AiFillCar} content={`${countStatus(data?.data, '3차전형')} 건`} dark={false} />
+          ) : null} */}
         </div>
       </Overviews>
       <Chart></Chart>
@@ -105,8 +129,10 @@ export default Company;
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: fit-content;
   padding: 50px;
+  border: 1px solid red;
+  margin: 0 auto;
 `;
 const Title = styled.h1`
   font-weight: 700;
