@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Content from '@/components/ui/Content';
 import SelectCategory from '@/components/ui/SelectCategory';
 import { useForm } from 'react-hook-form';
 import Button_2 from '@/components/ui/Button_2';
 import Link from 'next/link';
-import { useMutation } from '@tanstack/react-query';
 import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
 
 interface IList {
   category: string;
@@ -33,35 +33,62 @@ const list: IList[] = [
   },
 ];
 
-interface IFormValue {
-  type: string;
-  title: string;
-  version: string;
-  content: string;
-}
-
 export default function New() {
   const router = useRouter();
-  const [select, setSelect] = useState('service');
+  const [select, setSelect] = useState();
+  const { accessToken } = useCookies();
   const {
     register,
     getValues,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormValue>();
+  } = useForm<ITermsWithType>();
 
-  const mutation = useMutation(api.postTerms);
+  // const onSubmit = async () => {
+  //   const values = getValues();
+  //   api.postTerms(accessToken, values);
+  // };
 
-  const onSubmit = async () => {};
+  useEffect(() => {
+    setValue('type', select);
+  }, [select]);
 
+  // const values = getValues();
+  // console.log(values);
+
+  const onValid = async () => {
+    console.log('onValid');
+    try {
+      const res = await api.postTerms(accessToken, getValues());
+      if (res.stateCode === 200) {
+        router.push(`/admin/terms/${getValues().type}`);
+      }
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const inValid = async (a) => {
+    console.log(a);
+    console.log('inValid');
+  };
   return (
     <Content title="약관 등록">
-      <Inner onSubmit={handleSubmit(onSubmit)}>
+      <Inner onSubmit={handleSubmit(onValid, inValid)}>
         <Info>
           <Category>
             <p>약관 종류</p>
-            <SelectCategory width={'100%'} categories={list} currentValue={select} setCurrentValue={setSelect} />
+            <SelectCategory
+              width={'100%'}
+              categories={list}
+              currentValue={select}
+              setCurrentValue={setSelect}
+              {...register('type', {
+                required: true,
+              })}
+            />
           </Category>
           <Title>
             <p>약관 제목</p>
@@ -80,7 +107,7 @@ export default function New() {
               placeholder="버전을 입력하세요. 숫자와 '.'으로만 표기 가능합니다."
               {...register('version', {
                 required: true,
-                pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){2}(?:[0-9]?[0-9][0-9]?)$/,
               })}
             />
             <Error className={errors.version ? 'show' : 'hide'}>숫자와 '.'을 사용하여 버전을 입력해 주세요.</Error>
@@ -98,20 +125,29 @@ export default function New() {
             ></textarea>
           </div>
         </Write>
-      </Inner>
-      <ButtonArea>
-        <div onClick={() => router.back()}>
-          <Button_2 name={'취소'} />
-        </div>
-        <div>
-          <Link href="edit/termsId">
-            <Button_2 name={'수정'} color={'point'} />
-          </Link>
-          <Link href="new">
+        <ButtonArea>
+          <div onClick={() => router.back()}>
+            <Button_2
+              name={'취소'}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            />
+          </div>
+          <div>
+            <Link href="edit/termsId">
+              <Button_2
+                name={'미리보기'}
+                color={'point'}
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              />
+            </Link>
             <Button_2 name={'등록'} color={'point'} />
-          </Link>
-        </div>
-      </ButtonArea>
+          </div>
+        </ButtonArea>
+      </Inner>
     </Content>
   );
 }
@@ -232,7 +268,7 @@ const Write = styled.div`
 `;
 
 const ButtonArea = styled.div`
-  width: inherit;
+  width: 100%;
   margin-bottom: 100px;
   display: flex;
   justify-content: space-between;
@@ -242,24 +278,22 @@ const ButtonArea = styled.div`
     margin: 20px 10px;
     border-radius: 10px;
     cursor: pointer;
-    border: 1px solid var(--color-gray300);
   }
   div {
     display: flex;
   }
 `;
 
-const Error = styled.div`
+const Error = styled.span`
   position: absolute;
   top: 30px;
   right: 100px;
-  .show {
-    opacity: 0;
+  &.show {
+    opacity: 1;
     font-size: 14px;
     color: var(--color-rose500);
   }
-  .hide {
+  &.hide {
     opacity: 0;
-    display: none;
   }
 `;
