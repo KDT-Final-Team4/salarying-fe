@@ -36,7 +36,7 @@ export default function Button_2({ name, color, ...buttonProps }: IProps) {
 
   if (color === 'point') {
     colors.bgColor = `var(--color-point)`;
-    colors.bgHoverColor = `var(--color-point)`;
+    colors.bgHoverColor = `var(--color-point-sub)`;
     colors.spanColor = `var(--color-sub)`;
     colors.hoverColor = `var(--color-primary)`;
   } else if (color) {
