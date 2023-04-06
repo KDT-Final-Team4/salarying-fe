@@ -7,10 +7,38 @@ import HeadLayout from '@/components/layout/HeadLayout';
 import Link from 'next/link';
 import StartupImg from '../public/startup.jpg';
 import Image from 'next/image';
+import api from '@/libs/client/axiosClient';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 export default function SignUp() {
-  const { register, handleSubmit } = useForm();
-  const onValid = () => {};
+  const router = useRouter();
+  const {
+    register,
+    formState: { isSubmitting, isValid, errors },
+    watch,
+    handleSubmit,
+    reset,
+    getValues,
+    setError,
+    setValue,
+    clearErrors,
+    getFieldState,
+  } = useForm();
+  const onValid = async () => {
+    try {
+      const res = await api.postSignup(getValues());
+      if (res.stateCode === 200) {
+        toast.success('회원가입: ' + res?.message);
+        router.push('/login');
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (err) {
+      // toast.error(err?.message);
+      console.log('err', err);
+    }
+  };
   return (
     <Wrapper>
       <LoginSection>
@@ -25,11 +53,7 @@ export default function SignUp() {
             </InputDiv>
             <InputDiv>
               <SubTitle>Password</SubTitle>
-              <TextInput type="text" {...register('password')} placeholder="Enter your password" />
-            </InputDiv>
-            <InputDiv>
-              <SubTitle>Password2</SubTitle>
-              <TextInput type="text" {...register('password2')} placeholder="Enter your password" />
+              <TextInput type="password" {...register('password')} placeholder="Enter your password" />
             </InputDiv>
             <InputDiv>
               <SubTitle>Name</SubTitle>
@@ -42,7 +66,7 @@ export default function SignUp() {
 
             <InputDiv>
               <SubTitle>Company phone number</SubTitle>
-              <TextInput type="text" {...register('companyPhoneNumber')} placeholder="Enter your company phone number" />
+              <TextInput type="text" {...register('companyPhoneNumber')} placeholder="숫자와 '-'만 입력하세요" />
             </InputDiv>
             <InputDiv>
               <SubTitle>Position</SubTitle>
@@ -75,6 +99,7 @@ const Wrapper = styled.section`
 `;
 
 const LoginSection = styled.section`
+  z-index: 9999;
   /* overflow: scroll; */
   width: 50%;
   height: 100%;

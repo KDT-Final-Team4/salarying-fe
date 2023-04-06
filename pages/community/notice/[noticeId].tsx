@@ -8,6 +8,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import Content from '@/components/ui/Content';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import { IoChevronBack } from 'react-icons/io5';
 
 interface content {
   adminEmail: string;
@@ -48,9 +49,17 @@ export default function NoticeDetail() {
     refetchOnWindowFocus: false,
   });
 
+  const deleteHandler = () => {
+    api.deleteNotice(accessToken, noticeId);
+    router.back();
+  };
+
   return (
     <Content title={'공지사항 상세정보'}>
       <Wrapper>
+        <div className="back">
+          <IoChevronBack size={40} onClick={() => router.back()} />
+        </div>
         <FlexStyle>
           <Table className="static">
             <div className="flex">
@@ -75,7 +84,7 @@ export default function NoticeDetail() {
               <Button_Send text={'수정'} height={50} width={150} />
             </Link>
             <div>
-              <Button_Send text={'삭제'} height={50} width={150} />
+              <Button_Send text={'삭제'} height={50} width={150} onClick={deleteHandler} />
             </div>
           </BtnWrapper>
         </FlexStyle>
@@ -85,13 +94,16 @@ export default function NoticeDetail() {
 }
 
 const Wrapper = styled.div`
-  margin: 50px;
-  width: 90%;
+  margin: 50px auto;
+  width: 100%;
   display: flex;
   justify-content: center;
   h2 {
     font-size: 20px;
     margin-bottom: 20px;
+  }
+  .back {
+    margin-right: 40px;
   }
 `;
 
@@ -99,6 +111,9 @@ const FlexStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+  background-color: var(--color-lightgray);
+  border-radius: 10px;
+  padding: 60px;
 `;
 
 const Table = styled.div`

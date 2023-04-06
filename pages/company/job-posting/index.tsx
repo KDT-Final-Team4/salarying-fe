@@ -1,7 +1,6 @@
 import PostCard from '@/components/company/job-posting/PostCard';
 import Button_3 from '@/components/ui/Button_3';
 import Button_Point from '@/components/ui/Button_Point';
-import ax from '@/libs/client/axiosClient';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,6 +8,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { GrFormAdd } from 'react-icons/gr';
 
+// GEt /recruiting  채용공고리스트
 const res = {
   stateCode: 200,
   success: true,
@@ -85,8 +85,8 @@ const JobPosting = () => {
         <AddCard>
           <GrFormAdd size="50" />
         </AddCard>
-        {res.data.map((post) => (
-          <PostCard key={post.title} jobPost={post} />
+        {res.data.map((post, index) => (
+          <PostCard key={post.title + index} jobPost={post} />
         ))}
       </PostList>
     </Wrapper>

@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import { Router, useRouter } from 'next/router';
 import { QueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Content from '@/components/ui/Content';
 import Button_Send from '@/components/ui/Button_Send';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
 
 type Props = {};
 
@@ -14,15 +16,16 @@ interface noticeDetail {
 }
 
 export default function NoticeEdit(props: Props) {
-  const router = useRouter();
-  const noticeId = router.isReady ? router.query.noticeId : null;
-  console.log(noticeId);
-  const queryClient = new QueryClient();
-  const queryKey = ['notice', noticeId];
-  const data: noticeDetail = queryClient.getQueryData(queryKey);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
-  const changeHandler = (e) => {
-    e.preventDefault();
+  const { accessToken } = useCookies();
+
+  const router = useRouter();
+  const queryClient = new QueryClient();
+
+  const clickHandler = () => {
+    api.postNotice(accessToken, { title, content });
   };
 
   return (
@@ -31,14 +34,14 @@ export default function NoticeEdit(props: Props) {
         <FlexStyle>
           <Table className="static">
             <h3>제목</h3>
-            <textarea className="title">{data?.title}</textarea>
+            <textarea className="title" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
             <h3>내용</h3>
-            <textarea className="content">{data?.content}</textarea>
+            <textarea className="content" onChange={(e) => setContent(e.target.value)}></textarea>
           </Table>
           <BtnWrapper>
-            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
-              <Button_Send text={'등록'} height={50} width={150} />
-            </Link>
+            <div>
+              <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
+            </div>
             <div onClick={() => router.back()}>
               <Button_Send text={'취소'} height={50} width={150} />
             </div>

@@ -22,33 +22,36 @@ export default function NoticeEdit(props: Props) {
 
   const router = useRouter();
   const { accessToken, isAdmin } = useCookies();
+  const { noticeId }: any = router.query;
 
-  const id = router.query.noticeId;
-
-  const { data, isLoading } = useQuery(['notice', id], () => api.getNoticeDetail(accessToken, id), {
-    enabled: !!id,
+  const { data, isLoading } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
+    enabled: !!noticeId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
       setTitle(data.title), setContent(data.content);
     },
   });
 
-  const mutation = useMutation(() => api.putNotice(accessToken, { id, title, content }));
+  const { mutate: putNotice } = useMutation(() => api.putNotice(accessToken, { id: noticeId, title, content }));
+
+  const clickHandler = () => {
+    putNotice();
+  };
 
   return (
     <Content title={'공지사항 수정하기'}>
       <Wrapper>
         <FlexStyle>
-          <Form className="static">
+          <Table className="static">
             <h3>제목</h3>
             <textarea className="title" value={title} onChange={(event) => setTitle(event.target.value)} required></textarea>
             <h3>내용</h3>
             <textarea className="content" value={content} onChange={(event) => setContent(event.target.value)} required>
               {data?.content}
             </textarea>
-          </Form>
+          </Table>
           <BtnWrapper>
-            <Button_Send text={'저장'} height={50} width={150} />
+            <Button_Send text={'저장'} height={50} width={150} onClick={clickHandler} />
             <div onClick={() => router.back()}>
               <Button_Send text={'취소'} height={50} width={150} />
             </div>
@@ -76,7 +79,7 @@ const FlexStyle = styled.div`
   align-items: end;
 `;
 
-const Form = styled.form`
+const Table = styled.div`
   display: grid;
   grid-template-columns: 100px 1000px;
   grid-template-rows: 100px 1fr;
@@ -102,6 +105,7 @@ const Form = styled.form`
     }
   }
 `;
+
 const BtnWrapper = styled.div`
   position: relative;
   width: 500px;

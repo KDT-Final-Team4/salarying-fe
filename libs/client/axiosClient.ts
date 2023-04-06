@@ -85,14 +85,14 @@ class Axios {
   /** 회원가입 (user) ok */
   async postSignup({
     email,
-    password = 'test@email.com',
+    password = 'test@1234',
     companyName = '익명회사',
     companyPhoneNumber = '010-1234-5678',
     name = '익명',
     position = '대표',
   }: {
     [key: string]: string;
-  }) {
+  }): Promise<Data> {
     try {
       const res = await this.axiosClient.post('/signup', {
         email,
@@ -105,7 +105,7 @@ class Axios {
       console.log('postSignup', res.data);
       return res.data;
     } catch (e) {
-      console.log(e);
+      return e;
     }
   }
   /** 로그인 (user) ok */
