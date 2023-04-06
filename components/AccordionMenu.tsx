@@ -82,23 +82,24 @@ const AccordionWrapper = styled.div<{ isOpen: boolean; isActiveWrapper: boolean;
     }
   }
   div:nth-child(2) {
-    height: ${({ isOpen, length }) => (isOpen ? `${length * 25}px` : '0')};
+    height: ${({ isOpen, length }) => (isOpen ? `${length * 30}px` : '0')};
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     list-style: none;
     margin-left: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     box-sizing: content-box;
-    padding: ${({ isOpen }) => (isOpen ? '10px 0' : '0')};
+    /* padding: ${({ isOpen }) => (isOpen ? '10px 0' : '0')}; */
+    /* border: 1px solid blue; */
   }
 `;
 
 const SubNav = styled.button<{ isActive: boolean }>`
   cursor: pointer;
   display: flex;
-  height: 40px;
+  height: 30px;
+  /* border: 1px solid red; */
   align-items: center;
   background-color: transparent;
   font-weight: 600;
