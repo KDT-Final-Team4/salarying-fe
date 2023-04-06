@@ -25,7 +25,7 @@ export default function AccordionMenu({ title, subNavs, activeURL, Icon, ...othe
   };
 
   return (
-    <AccordionWrapper isOpen={isOpen} {...others} isActiveWrapper={isActiveWrapper(activeURL)}>
+    <AccordionWrapper isOpen={isOpen} {...others} isActiveWrapper={isActiveWrapper(activeURL)} length={subNavs.length}>
       <div onClick={toggleAccordion}>
         <h3>
           {Icon && <Icon style={{ marginRight: '10px', position: 'relative', top: '2px' }} size="20" />}
@@ -44,7 +44,7 @@ export default function AccordionMenu({ title, subNavs, activeURL, Icon, ...othe
   );
 }
 
-const AccordionWrapper = styled.div<{ isOpen: boolean; isActiveWrapper: boolean }>`
+const AccordionWrapper = styled.div<{ isOpen: boolean; isActiveWrapper: boolean; length: number }>`
   display: flex;
   /* align-items: center; */
   cursor: pointer;
@@ -82,14 +82,16 @@ const AccordionWrapper = styled.div<{ isOpen: boolean; isActiveWrapper: boolean 
     }
   }
   div:nth-child(2) {
-    max-height: ${({ isOpen }) => (isOpen ? '100px' : '0')};
+    height: ${({ isOpen, length }) => (isOpen ? `${length * 25}px` : '0')};
     overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     list-style: none;
     margin-left: 1rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    box-sizing: content-box;
+    padding: ${({ isOpen }) => (isOpen ? '10px 0' : '0')};
   }
 `;
 

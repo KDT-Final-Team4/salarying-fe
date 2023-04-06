@@ -1,19 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Toggle from 'react-toggle';
 import styled from 'styled-components';
+import Toggle from 'react-toggle';
 
-const ReqPostRecruit = {
-  title: '새로운공고',
-  task: '경영',
-  document: true, // 서류전형
-  firstRound: true,
-  secondRound: true,
-  finalRound: true,
-};
-
-export default function New() {
+export default function AddModal({ setOpenModal }: any) {
   const router = useRouter();
   const [document, setDocument] = useState(false);
   const [firstRound, setFirstRound] = useState(false);
@@ -24,48 +15,68 @@ export default function New() {
     const payload = Object.assign(getValues(), { document, firstRound, secondRound, finalRound });
     console.log(payload);
   };
+
+  const onCancel = (event) => {
+    console.log('cancel 클릭');
+    event.preventDefault();
+    setOpenModal(false);
+  };
   return (
     <Wrapper>
-      <H1>공고 추가하기 </H1>
-      <Form onSubmit={handleSubmit(onValid)}>
-        <InputDiv>
-          <SubTitle>공고명</SubTitle>
-          <TextInput type="text" {...register('title')} placeholder="공고명" />
-        </InputDiv>
-        <InputDiv>
-          <SubTitle>Task</SubTitle>
-          <TextInput type={'text'} {...register('task')} placeholder="Task" />
-        </InputDiv>
-        <ToggleDiv>
-          <Toggle id="document" name="document" defaultChecked={document} onChange={() => setDocument((prev) => !prev)} />
-          <label htmlFor="document">서류전형 토글</label>
-        </ToggleDiv>
-        <ToggleDiv>
-          <Toggle id="firstRound" name="firstRound" defaultChecked={firstRound} onChange={() => setFirstRound((prev) => !prev)} />
-          <label htmlFor="document">1차 전형</label>
-        </ToggleDiv>
-        <ToggleDiv>
-          <Toggle id="secondRound" name="secondRound" defaultChecked={secondRound} onChange={() => setSecondRound((prev) => !prev)} />
-          <label htmlFor="secondRound">2차 전형</label>
-        </ToggleDiv>
-        <ToggleDiv>
-          <Toggle id="finalRound" name="finalRound" defaultChecked={finalRound} onChange={() => setFinalRound((prev) => !prev)} />
-          <label htmlFor="finalRound">3차 전형</label>
-        </ToggleDiv>
-        <SubmitBtn>Submit</SubmitBtn>
-      </Form>
+      <Modal>
+        <H1>공고 추가하기 </H1>
+        <Form onSubmit={handleSubmit(onValid)}>
+          <InputDiv>
+            <SubTitle>공고명</SubTitle>
+            <TextInput type="text" {...register('title')} placeholder="공고명" />
+          </InputDiv>
+          <InputDiv>
+            <SubTitle>Task</SubTitle>
+            <TextInput type={'text'} {...register('task')} placeholder="Task" />
+          </InputDiv>
+          <ToggleDiv>
+            <Toggle id="document" name="document" defaultChecked={document} onChange={() => setDocument((prev) => !prev)} />
+            <label htmlFor="document">서류전형 토글</label>
+          </ToggleDiv>
+          <ToggleDiv>
+            <Toggle id="firstRound" name="firstRound" defaultChecked={firstRound} onChange={() => setFirstRound((prev) => !prev)} />
+            <label htmlFor="document">1차 전형</label>
+          </ToggleDiv>
+          <ToggleDiv>
+            <Toggle id="secondRound" name="secondRound" defaultChecked={secondRound} onChange={() => setSecondRound((prev) => !prev)} />
+            <label htmlFor="secondRound">2차 전형</label>
+          </ToggleDiv>
+          <ToggleDiv>
+            <Toggle id="finalRound" name="finalRound" defaultChecked={finalRound} onChange={() => setFinalRound((prev) => !prev)} />
+            <label htmlFor="finalRound">3차 전형</label>
+          </ToggleDiv>
+          <SubmitBtn>Submit</SubmitBtn>
+          <CancelBtn onClick={onCancel}>Cancel</CancelBtn>
+        </Form>
+      </Modal>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const Modal = styled.div`
   width: auto;
-  padding: 20px;
-  margin: 20px auto;
+  height: fit-content;
+  padding: 30px;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  border-radius: 15px;
-
+  border-radius: 5px;
+  background-color: #fff;
   border: 1px solid var(--color-gray200);
   gap: 20px;
   div {
@@ -139,10 +150,22 @@ const Button = styled.button`
   transition: all 0.2s;
 `;
 const SubmitBtn = styled(Button)`
+  margin-top: 50px;
   background-color: var(--color-point);
   font-weight: 700;
   color: var(--color-gray700);
   &:hover {
     filter: brightness(1.05);
+  }
+`;
+
+const CancelBtn = styled(Button)`
+  background-color: var(--color-gray50);
+
+  font-weight: 700;
+  color: var(--color-gray700);
+  border: 1px solid var(--color-gray200);
+  &:hover {
+    filter: brightness(0.95);
   }
 `;
