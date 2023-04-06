@@ -2,8 +2,8 @@ import signUp from '@/pages/api/signUp';
 // import request from 'supertest';
 // import handler from './[route-name]';
 
-describe('handler', () => {
-  it('should return a success message with the correct input', async () => {
+describe('핸들러', () => {
+  it('성공메세지 받기', async () => {
     const data = {
       email: 'test@example.com',
       password: 'password',

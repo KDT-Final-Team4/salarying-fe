@@ -12,7 +12,7 @@ type Props = {
 
 export default function CustomLink({ href, children, Icon }: Props) {
   const router = useRouter();
-  const isActive = router.isReady && router.asPath === href;
+  const isActive = router.isReady && router.asPath.startsWith(href);
   return (
     <StyledLink onClick={() => router.push(href)} isActive={isActive}>
       {Icon && <Icon style={{ marginRight: '10px', position: 'relative', top: '2px' }} size="20" />}

@@ -35,14 +35,17 @@ type Props = {};
 //     status: '불합격',
 //   },
 // ];
-export default function RecruitingId({}: Props) {
+export default function RecruitingId({ params }) {
+  console.log('params', params);
   const { accessToken } = useCookies();
   const router = useRouter();
   const { recruiting_id }: any = router.query;
+
   const { data, isLoading } = useQuery({
-    queryKey: ['recruit'],
+    queryKey: ['recruit', recruiting_id],
     queryFn: () => api.getApplicants(accessToken, { recruiting_id }),
   });
+
   const handleClick = () => console.log('clicked!');
   const [activePage, setActivePage] = useState(1);
 
