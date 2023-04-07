@@ -1,4 +1,5 @@
 // __tests__/axios.test.ts
+import '@types/jest';
 
 import api from '../libs/client/axiosClient';
 
