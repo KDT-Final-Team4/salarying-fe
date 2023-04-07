@@ -607,6 +607,8 @@ class Axios {
       return res.data;
     } catch (err) {
       console.error(err?.response?.data?.errorMessage);
+      throw err;
+      // throw new Error('에러가 왔어요');
     }
   }
 
