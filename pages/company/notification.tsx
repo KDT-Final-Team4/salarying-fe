@@ -33,6 +33,29 @@ const users = [
   },
 ];
 
+const emails = [
+  {
+    recruitingName: '2023 상반기 신입사원',
+    applicantEmail: 'hwisaac0@gmail.com',
+    sendDate: '2023-03-31T07:44:38.044+00:00',
+    progress: '서류 심사',
+    status: '합격',
+  },
+  {
+    recruitingName: '2023 상반기 신입사원',
+    applicantEmail: 'hwisaac0@gmail.com',
+    sendDate: '2023-04-01T17:32:52.965+00:00',
+    progress: '서류 심사',
+    status: '합격',
+  },
+  {
+    recruitingName: '2023 상반기 신입사원',
+    applicantEmail: 'hwisaac0@gmail.com',
+    sendDate: '2023-04-01T17:33:31.981+00:00',
+    progress: '서류 심사',
+    status: '합격',
+  },
+];
 export default function Notification() {
   return (
     <Wrapper>

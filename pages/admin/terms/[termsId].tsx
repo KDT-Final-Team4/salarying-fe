@@ -11,15 +11,29 @@ import Pagination from '@/components/ui/Pagination';
 import Button_2 from '@/components/ui/Button_2';
 import { useQuery } from '@tanstack/react-query';
 
-interface List {
+interface IList {
   title: string;
   id: string;
-  href: string;
-  status: string;
-  content: string;
-  writer: string;
-  date: number;
 }
+
+const list: IList[] = [
+  {
+    title: '서비스 이용 약관',
+    id: 'service',
+  },
+  {
+    title: '개인 정보 처리 방침',
+    id: 'privacy',
+  },
+  {
+    title: '제3자 정보 제공',
+    id: 'information',
+  },
+  {
+    title: '개인정보 마케팅 이용',
+    id: 'marketing',
+  },
+];
 
 type IObject = {
   status: '공개' | '비공개';
@@ -28,46 +42,6 @@ type IObject = {
   name: string;
   id: number;
 };
-
-const list: List[] = [
-  {
-    title: '서비스 이용 약관',
-    id: 'service',
-    href: 'service',
-    status: '공개',
-    content:
-      '모든 국민은 법률이 정하는 바에 의하여 국방의 의무를 진다. 헌법재판소 재판관은 탄핵 또는 금고 이상의 형의 선고에 의하지 아니하고는 파면되지 아니한다. 위원은 정당에 가입하거나 정치에 관여할 수 없다. 대통령이 제1항의 기간내에 공포나 재의의 요구를 하지 아니한 때에도 그 법률안은 법률로서 확정된다.국회는 의장 1인과 부의장 2인을 선출한다. 공무원인 근로자는 법률이 정하는 자에 한하여 단결권·단체교섭권 및 단체행동권을 가진다. 국회나 그 위원회의 요구가 있을 때에는 국무총리·국무위원 또는 정부위원은 출석·답변하여야 하며, 국무총리 또는 국무위원이 출석요구를 받은 때에는 국무위원 또는 정부위원으로 하여금 출석·답변하게 할 수 있다.국가는 농수산물의 수급균형과 유통구조의 개선에 노력하여 가격안정을 도모함으로써 농·어민의 이익을 보호한다. 모든 국민은 근로의 권리를 가진다. 국가는 사회적·경제적 방법으로 근로자의 고용의 증진과 적정임금의 보장에 노력하여야 하며, 법률이 정하는 바에 의하여 최저임금제를 시행하여야 한다.',
-    writer: '우지수',
-    date: 221010,
-  },
-  {
-    title: '개인 정보 처리 방침',
-    id: 'privacy',
-    href: 'privacy',
-    status: '공개',
-    content: 'dd',
-    writer: '황이삭',
-    date: 221010,
-  },
-  {
-    title: '제3자 정보 제공',
-    id: 'information',
-    href: 'information',
-    status: '비공개',
-    content: 'dd',
-    writer: '우지수',
-    date: 221010,
-  },
-  {
-    title: '개인정보 마케팅 이용',
-    id: 'marketing',
-    href: 'marketing',
-    status: '비공개',
-    content: 'dd',
-    writer: '우지수',
-    date: 221010,
-  },
-];
 
 interface StyledProps {
   toggle: boolean;
@@ -91,13 +65,13 @@ export default function TermsId() {
   console.log('data', data);
 
   // 페이지네이션
-  let pageGroups = usePagination(data, 5);
+  let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
   console.log(pageMembersList);
 
   return (
     <Content title="약관별 관리">
-      <span>{isLoading && '로딩중'}</span>
+      {/* <span>{isLoading && '로딩중'}</span> */}
       <Nav>
         {list.map((item) => (
           <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
@@ -118,7 +92,7 @@ export default function TermsId() {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.data?.map((term, index) => (
+            {pageMembersList?.map((term, index) => (
               <Tr key={index}>
                 <Td>
                   <input type="checkbox" />
@@ -134,18 +108,17 @@ export default function TermsId() {
             ))}
           </Tbody>
         </Table>
+      </Wrapper>
+      <ButtonArea>
+        <Button_2 name={'삭제'} />
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
-      </Wrapper>
-      <ButtonArea>
-        <Button_Send text={'삭제하기'} height={null} width={100} />
-        <Link href="edit/termsId">
-          <Button_Send text={'수정하기'} height={null} width={100} color={'point'} />
-        </Link>
-        <Link href="new">
-          <Button_Send text={'등록하기'} height={null} width={100} />
-        </Link>
+        <div>
+          <Link href="new">
+            <Button_2 name={'등록'} color={'point'} />
+          </Link>
+        </div>
       </ButtonArea>
     </Content>
   );
@@ -156,7 +129,8 @@ const Nav = styled.ul`
   display: flex;
   color: var(--color-primary);
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-top: 25px;
+  margin-bottom: 10px;
   a {
     width: 100%;
     display: flex;
@@ -185,9 +159,13 @@ const Nav = styled.ul`
 
 const Wrapper = styled.div`
   display: flex;
+  height: 552px;
   flex-direction: column;
-  padding: 3rem 0;
+  padding: 2rem 0;
   margin: 0 auto;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
   h1 {
     color: var(--color-gray700);
     font-size: 18px;
@@ -297,27 +275,18 @@ const Tr = styled.tr`
 const ButtonArea = styled.div`
   width: inherit;
   margin-bottom: 100px;
+  display: flex;
+  justify-content: space-between;
   button {
     width: 170px;
     height: 50px;
-    background-color: transparent;
     margin: 20px 10px;
     border-radius: 10px;
     cursor: pointer;
-    border: 1px solid var(--color-gray300);
-    &.cancel {
-      :hover {
-        font-weight: 700;
-        box-shadow: 3px 5px 3px var(--color-lightgray);
-      }
-    }
-    &.submit {
-      background-color: var(--color-point);
-      border: none;
-      :hover {
-        box-shadow: 10px 10px 10px var(--color-lightgray);
-        font-weight: 700;
-      }
-    }
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: -10px;
   }
 `;
