@@ -7,6 +7,7 @@ import Content from '@/components/ui/Content';
 import Button_Send from '@/components/ui/Button_Send';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import SelectCategory from '@/components/ui/SelectCategory';
 
 type Props = {};
 
@@ -18,34 +19,42 @@ export default function FaqAddModal({ setOpenModal }: any) {
   const [category, setCategory] = useState('');
 
   const { accessToken } = useCookies();
+  const categories = [
+    { categoryId: '로그인', category: '로그인' },
+    { categoryId: '회원가입', category: '회원가입' },
+    { categoryId: '채용공고', category: '채용공고' },
+    { categoryId: '지원자', category: '지원자' },
+    { categoryId: '전형절차', category: '전형절차' },
+  ];
 
   const clickHandler = () => {
     api.postFAQ(accessToken, { question, answer, category });
+    setOpenModal(false);
   };
 
   return (
-    <Content title={'공지사항 등록하기'}>
-      <Wrapper>
-        <FlexStyle>
-          <Table className="static">
-            <h3>카테고리</h3>
-            <textarea className="title" value={category} onChange={(e) => setCategory(e.target.value)}></textarea>
-            <h3>질문</h3>
-            <textarea className="title" value={question} onChange={(e) => setQuestion(e.target.value)}></textarea>
-            <h3>답변</h3>
-            <textarea className="content" value={answer} onChange={(e) => setAnswer(e.target.value)}></textarea>
-          </Table>
-          <BtnWrapper>
-            <div>
-              <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
-            </div>
-            <div onClick={() => setOpenModal(false)}>
-              <Button_Send text={'취소'} height={50} width={150} />
-            </div>
-          </BtnWrapper>
-        </FlexStyle>
-      </Wrapper>
-    </Content>
+    <Wrapper>
+      <FlexStyle>
+        <Table className="static">
+          <h3>카테고리</h3>
+          <Category>
+            <SelectCategory categories={categories} currentValue={category} setCurrentValue={setCategory} />
+          </Category>
+          <h3>질문</h3>
+          <textarea className="title" value={question} onChange={(e) => setQuestion(e.target.value)}></textarea>
+          <h3>답변</h3>
+          <textarea className="content" value={answer} onChange={(e) => setAnswer(e.target.value)}></textarea>
+        </Table>
+        <BtnWrapper>
+          <div>
+            <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
+          </div>
+          <div onClick={() => setOpenModal(false)}>
+            <Button_Send text={'취소'} height={50} width={150} />
+          </div>
+        </BtnWrapper>
+      </FlexStyle>
+    </Wrapper>
   );
 }
 
@@ -53,6 +62,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
+  /* z-index: 1000; */
   left: 0;
   top: 0;
   display: flex;
@@ -78,7 +88,7 @@ const FlexStyle = styled.div`
 const Table = styled.div`
   display: grid;
   grid-template-columns: 100px 800px;
-  grid-template-rows: 100px 100px 1fr;
+  grid-template-rows: 150px 100px 1fr;
   color: var(--color-primary);
   font-weight: 700;
   h3 {
@@ -101,6 +111,19 @@ const Table = styled.div`
     }
   }
 `;
+
+const Category = styled.div`
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+`;
+
 const BtnWrapper = styled.div`
   position: relative;
   width: 500px;

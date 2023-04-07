@@ -18,34 +18,30 @@ export default function NoticeAddModal({ setOpenModal }: any) {
 
   const { accessToken } = useCookies();
 
-  const router = useRouter();
-  const queryClient = new QueryClient();
-
   const clickHandler = () => {
     api.postNotice(accessToken, { title, content });
+    setOpenModal(false);
   };
 
   return (
-    <Content title={'공지사항 등록하기'}>
-      <Wrapper>
-        <FlexStyle>
-          <Table className="static">
-            <h3>제목</h3>
-            <textarea className="title" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
-            <h3>내용</h3>
-            <textarea className="content" onChange={(e) => setContent(e.target.value)}></textarea>
-          </Table>
-          <BtnWrapper>
-            <div>
-              <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
-            </div>
-            <div onClick={() => setOpenModal(false)}>
-              <Button_Send text={'취소'} height={50} width={150} />
-            </div>
-          </BtnWrapper>
-        </FlexStyle>
-      </Wrapper>
-    </Content>
+    <Wrapper>
+      <FlexStyle>
+        <Table className="static">
+          <h3>제목</h3>
+          <textarea className="title" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
+          <h3>내용</h3>
+          <textarea className="content" onChange={(e) => setContent(e.target.value)}></textarea>
+        </Table>
+        <BtnWrapper>
+          <div>
+            <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
+          </div>
+          <div onClick={() => setOpenModal(false)}>
+            <Button_Send text={'취소'} height={50} width={150} />
+          </div>
+        </BtnWrapper>
+      </FlexStyle>
+    </Wrapper>
   );
 }
 

@@ -251,11 +251,11 @@ class Axios {
   }
 
   /** FAQ 정보 수정 (admin) ok */
-  async putFAQ(accessToken: string, { id, question, answer }): Promise<Data> {
+  async putFAQ(accessToken: string, { id, question, answer, category }): Promise<Data> {
     try {
       const res = await this.axiosClient.put(
         '/faq',
-        { id, question, answer },
+        { id, question, answer, category },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -320,14 +320,13 @@ class Axios {
   }
 
   /** FAQ Status 수정 (admin) ok */
-  async putFAQStatus(accessToken: string, { id, question, answer }): Promise<Data> {
+  async putFAQStatus(accessToken: string, { id, status }): Promise<Data> {
     try {
       const res = await this.axiosClient.put(
         `/faq/status`,
         {
           id,
-          question,
-          answer,
+          status,
         },
         {
           headers: {

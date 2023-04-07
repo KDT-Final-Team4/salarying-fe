@@ -7,7 +7,7 @@ import Content from '@/components/ui/Content';
 import Button_Send from '@/components/ui/Button_Send';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
-import { title } from 'process';
+import { IoChevronBack } from 'react-icons/io5';
 
 type Props = {};
 
@@ -22,7 +22,7 @@ export default function NoticeEdit(props: Props) {
 
   const router = useRouter();
   const { accessToken, isAdmin } = useCookies();
-  const { noticeId }: any = router.query;
+  const { noticeId } = router.query;
 
   const { data, isLoading } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
     enabled: !!noticeId,
@@ -36,11 +36,16 @@ export default function NoticeEdit(props: Props) {
 
   const clickHandler = () => {
     putNotice();
+    router.replace;
+    router.back();
   };
 
   return (
     <Content title={'공지사항 수정하기'}>
       <Wrapper>
+        <div className="back">
+          <IoChevronBack size={40} onClick={() => router.back()} />
+        </div>
         <FlexStyle>
           <Table className="static">
             <h3>제목</h3>
@@ -63,25 +68,33 @@ export default function NoticeEdit(props: Props) {
 }
 
 const Wrapper = styled.div`
-  margin: 50px;
-  width: 90%;
+  margin: 50px auto;
+  width: 100%;
   display: flex;
   justify-content: center;
   h2 {
     font-size: 20px;
     margin-bottom: 20px;
   }
+  .back {
+    margin-right: 40px;
+  }
 `;
 
 const FlexStyle = styled.div`
+  position: relative;
+  width: 80%;
+  height: 700px;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  background-color: var(--color-lightgray);
+  border-radius: 10px;
+  padding: 60px;
 `;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 100px 1000px;
+  grid-template-columns: 1fr 6fr;
   grid-template-rows: 100px 1fr;
   color: var(--color-primary);
   font-weight: 700;
@@ -90,6 +103,7 @@ const Table = styled.div`
     padding-top: 20px;
   }
   textarea {
+    height: 100%;
     font-size: 18px;
     color: var(--color-gray500);
     border: 2px solid var(--color-gray300);
@@ -107,12 +121,10 @@ const Table = styled.div`
 `;
 
 const BtnWrapper = styled.div`
-  position: relative;
-  width: 500px;
+  position: absolute;
   display: flex;
-  justify-content: flex-end;
   gap: 20px;
-  margin: 50px 0 0;
+  margin: 50px;
   bottom: 0;
   right: 0;
 `;

@@ -69,9 +69,7 @@ export default function NoticeDetail() {
             <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
               <Button_Send text={'수정'} height={50} width={150} />
             </Link>
-            <div>
-              <Button_Send text={'삭제'} height={50} width={150} onClick={deleteHandler} />
-            </div>
+            <Button_Send text={'삭제'} height={50} width={150} onClick={deleteHandler} />
           </BtnWrapper>
         </FlexStyle>
       </Wrapper>
@@ -96,7 +94,7 @@ const Wrapper = styled.div`
 
 const FlexStyle = styled.div`
   position: relative;
-  width: 90%;
+  width: 80%;
   height: 700px;
   display: flex;
   flex-direction: column;
@@ -135,6 +133,7 @@ const Table = styled.div`
     border-radius: 10px;
     padding: 10px 20px;
     line-height: 1.8;
+    text-overflow: ellipsis;
 
     &.content {
       overflow-y: scroll;
@@ -144,11 +143,9 @@ const Table = styled.div`
 `;
 const BtnWrapper = styled.div`
   position: absolute;
-  /* width: 500px; */
   display: flex;
   gap: 20px;
   margin: 50px;
-
   bottom: 0;
   right: 0;
 `;

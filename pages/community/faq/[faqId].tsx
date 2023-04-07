@@ -34,17 +34,18 @@ export default function FaqDetail(props: Props) {
             <div className="write-info">
               <h3>작성자</h3>
               <div className="write-detail">
-                <span className="right">{data?.data?.adminName}</span>
+                <span>{data?.data?.adminName}</span>
                 <h3>작성날짜</h3>
-                <span className="right">{data?.data?.postDate}</span>
+                <span>{data?.data?.postDate}</span>
               </div>
             </div>
+
             <div className="flex">
-              <h3>제목</h3>
-              <span className="right">{data?.data?.question}</span>
+              <h3>질문</h3>
+              <span className="content">{data?.data?.question}</span>
             </div>
             <div className="flex">
-              <h3>내용</h3>
+              <h3>답변</h3>
               <span className="content">{data?.data?.answer}</span>
             </div>
           </Table>
@@ -52,9 +53,7 @@ export default function FaqDetail(props: Props) {
             <Link href="/community/faq/edit/[faqId]" as={`/community/faq/edit/${faqId}`}>
               <Button_Send text={'수정'} height={50} width={150} />
             </Link>
-            <div>
-              <Button_Send text={'삭제'} height={50} width={150} onClick={deleteHandler} />
-            </div>
+            <Button_Send text={'삭제'} height={50} width={150} />
           </BtnWrapper>
         </FlexStyle>
       </Wrapper>
@@ -77,13 +76,14 @@ const Wrapper = styled.div`
 `;
 
 const FlexStyle = styled.div`
+  position: relative;
+  width: 80%;
+  height: 700px;
   display: flex;
   flex-direction: column;
-  align-items: end;
   background-color: var(--color-lightgray);
   border-radius: 10px;
   padding: 60px;
-  width: 80%;
 `;
 
 const Table = styled.div`
@@ -91,6 +91,7 @@ const Table = styled.div`
   gap: 10px;
   color: var(--color-primary);
   font-weight: 700;
+
   .write-info {
     display: grid;
     grid-template-columns: 1fr 6fr;
@@ -116,20 +117,19 @@ const Table = styled.div`
     padding: 10px 20px;
     line-height: 1.8;
     text-overflow: ellipsis;
+    overflow-y: scroll;
 
     &.content {
-      overflow-y: scroll;
-      min-height: 300px;
+      min-height: 180px;
+      margin-bottom: 20px;
     }
   }
 `;
 const BtnWrapper = styled.div`
-  position: relative;
-  width: 500px;
+  position: absolute;
   display: flex;
-  justify-content: flex-end;
   gap: 20px;
-  margin: 50px 0 0;
+  margin: 50px;
   bottom: 0;
   right: 0;
 `;

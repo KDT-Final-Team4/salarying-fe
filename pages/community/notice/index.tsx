@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useMutation, useQuery, UseMutationResult } from '@tanstack/react-query';
 import Content from '@/components/ui/Content';
@@ -10,6 +10,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import NoticeAddModal from '@/components/community/NoticeAddModal';
+import Toggle from 'react-toggle';
 
 interface Object {
   id: number;
@@ -24,23 +25,33 @@ interface StyledProps {
 
 type NoticeStatusMutationParams = {
   accessToken: string;
-  id: string | number;
+  id: number;
   status: boolean;
 };
 
 export default function NoticeList() {
   const [activePage, setActivePage] = useState<number>(1);
   const [openModal, setOpenModal] = useState(false);
+  const [status, setStatus] = useState(false);
+
   const { accessToken } = useCookies();
-  const { data: notices } = useQuery(['notices'], () => api.getNotice(accessToken));
+  const { data: notices, refetch } = useQuery(['notices'], () => api.getNotice(accessToken));
 
   const heads = ['제목', '작성자', '상세보기', '게시중'];
 
-  const { mutate } = useMutation<Data, unknown, NoticeStatusMutationParams>(({ accessToken, id, status }) => api.putNoticeStatus(accessToken, { id, status }));
-
   let pageGroups = usePagination(notices?.data, 5);
-
   let pageMembersList = pageGroups[activePage - 1];
+
+  const { mutate } = useMutation<Data, unknown, NoticeStatusMutationParams>({
+    mutationFn: ({ accessToken, id, status }) => api.putNoticeStatus(accessToken, { id, status: !status }),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const toggleHandler = (id, status) => {
+    mutate({ accessToken, id, status });
+  };
 
   return (
     <Content title="공지사항">
@@ -61,10 +72,12 @@ export default function NoticeList() {
                   <td>{notice?.adminName}</td>
                   <td>
                     <Link href="/community/notice/[noticeId]" as={`/community/notice/${notice.id}`}>
-                      <Button_Send text={'view'} height={null} width={null} />
+                      <Button_Send text={'view'} />
                     </Link>
                   </td>
-                  <td></td>
+                  <td>
+                    <Toggle id="onBoard" name="onBoard" checked={notice?.status} onChange={() => toggleHandler(notice?.id, notice?.status)} />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -75,7 +88,7 @@ export default function NoticeList() {
         </SectionStyle>
         <NewButton>
           {openModal && <NoticeAddModal setOpenModal={setOpenModal} />}
-          <Button_Send text={'등록'} height={null} width={null} onClick={() => setOpenModal(true)} />
+          <Button_Send text={'등록'} onClick={() => setOpenModal(true)} />
         </NewButton>
       </Wrapper>
     </Content>
