@@ -157,6 +157,7 @@ const Wrapper = styled.section`
   top: 0;
   left: 0;
   background-color: var(--color-lightgray);
+  z-index: 99;
 `;
 
 const NavMenues = styled.div`

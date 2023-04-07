@@ -9,6 +9,8 @@ import Pagination from '@/components/ui/Pagination';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import MailModal from '@/components/company/job-posting/MailModal';
+import Button_3 from '@/components/ui/Button_3';
 
 type Props = {};
 // GET /getApplicants by recruiting_id=2
@@ -41,18 +43,36 @@ export default function RecruitingId({ params }) {
   const router = useRouter();
   const { recruiting_id }: any = router.query;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['recruit', recruiting_id],
     queryFn: () => api.getApplicants(accessToken, { recruiting_id }),
   });
 
-  const handleClick = () => console.log('clicked!');
   const [activePage, setActivePage] = useState(1);
+  const [openMail, setOpenMail] = useState(false); //모달
 
-  console.log('useQuery의 Data', data);
+  const [applicantEmail, setApplicantEmail] = useState('');
+  const [status, setStatus] = useState('');
+  const [progress, setProgress] = useState('');
+
+  const setPayload = (event, { recruitingId, applicantEmail, status, progress }) => {
+    setOpenMail(true); // 모달열기
+    setApplicantEmail(applicantEmail);
+    setStatus(status);
+    setProgress(progress);
+  };
   return (
     <Wrapper>
-      <span>{data?.message}</span>
+      {openMail && (
+        <MailModal
+          onCancel={() => setOpenMail(false)}
+          recruitingId={recruiting_id}
+          applicantEmail={applicantEmail}
+          status={status}
+          progress={progress}
+          refetch={refetch}
+        />
+      )}
       <h1>
         지원자 리스트
         <Button_1 name={recruiting_id as string} />
@@ -66,6 +86,7 @@ export default function RecruitingId({ params }) {
             <Th>전화번호</Th>
             <Th>진행 상황</Th>
             <Th>상태</Th>
+            <Th>이메일</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -78,6 +99,21 @@ export default function RecruitingId({ params }) {
               <Td>{applicant.progress}</Td>
               <Td>
                 <Button_2 name={applicant.status} color={applicant.status === '합격' ? 'indigo' : 'pink'} />
+              </Td>
+              <Td>
+                <ClickableBtn
+                  onClick={(event) =>
+                    setPayload(event, {
+                      recruitingId: recruiting_id,
+                      applicantEmail: applicant.applicantEmail,
+                      status: applicant.status,
+                      progress: applicant.progress,
+                    })
+                  }
+                  name={'Send'}
+                >
+                  Send
+                </ClickableBtn>
               </Td>
             </Tr>
           ))}
@@ -174,4 +210,8 @@ const Pages = styled.ul`
       text-decoration: underline;
     }
   }
+`;
+
+const ClickableBtn = styled(Button_3)`
+  cursor: pointer;
 `;
