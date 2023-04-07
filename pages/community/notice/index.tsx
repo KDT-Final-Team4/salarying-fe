@@ -9,6 +9,7 @@ import useCookies from '@/libs/hooks/useCookies';
 import Button_Send from '@/components/ui/Button_Send';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
+import NoticeAddModal from '@/components/community/NoticeAddModal';
 
 interface Object {
   id: number;
@@ -27,42 +28,15 @@ type NoticeStatusMutationParams = {
   status: boolean;
 };
 
-// const getNotices = async () => {
-//   const result = await axios
-//     .request({
-//       method: 'get',
-//       url: '/api/notice',
-//     })
-//     .then((response) => {
-//       return response.data.data;
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-//   return result;
-// };
-
-// const useNoticeStatusMutation = (): UseMutationResult<Data, unknown, NoticeStatusMutationParams> => {
-
-//   return mutation;
-// };
-
 export default function NoticeList() {
   const [activePage, setActivePage] = useState<number>(1);
+  const [openModal, setOpenModal] = useState(false);
   const { accessToken } = useCookies();
   const { data: notices } = useQuery(['notices'], () => api.getNotice(accessToken));
 
   const heads = ['제목', '작성자', '상세보기', '게시중'];
 
   const { mutate } = useMutation<Data, unknown, NoticeStatusMutationParams>(({ accessToken, id, status }) => api.putNoticeStatus(accessToken, { id, status }));
-
-  const handleClick = () => {
-    mutate({
-      accessToken: accessToken,
-      id: '18',
-      status: false,
-    });
-  };
 
   let pageGroups = usePagination(notices?.data, 5);
 
@@ -71,11 +45,6 @@ export default function NoticeList() {
   return (
     <Content title="공지사항">
       <Wrapper>
-        <NewButton>
-          <Link className="new" href={'/community/notice/new'}>
-            <Button_Send text={'신규 등록하기'} height={null} width={null} />
-          </Link>
-        </NewButton>
         <SectionStyle>
           <TableStyle>
             <thead>
@@ -104,13 +73,16 @@ export default function NoticeList() {
             <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
           </div>
         </SectionStyle>
+        <NewButton>
+          {openModal && <NoticeAddModal setOpenModal={setOpenModal} />}
+          <Button_Send text={'등록'} height={null} width={null} onClick={() => setOpenModal(true)} />
+        </NewButton>
       </Wrapper>
     </Content>
   );
 }
 
 const Wrapper = styled.div`
-  width: 90%;
   margin: auto;
 `;
 
@@ -119,6 +91,7 @@ const SectionStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 25px;
   .pagination {
     display: flex;
     justify-content: center;
@@ -150,9 +123,15 @@ const TableStyle = styled.table`
     tr {
       font-weight: 700;
       color: var(--color-gray600);
-      height: 80px;
       /* text-align: center; */
+      height: 80px;
       border-bottom: 1px solid rgba(156, 163, 175, 0.2);
+    }
+    td {
+      max-height: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     td + td {
       text-align: center;
@@ -178,6 +157,7 @@ const ToggleBtn = styled.button<StyledProps>`
   align-items: center;
   transition: all 0.5s ease-in-out;
 `;
+
 const Circle = styled.div<StyledProps>`
   background-color: white;
   width: 38px;

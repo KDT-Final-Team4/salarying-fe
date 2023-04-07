@@ -20,22 +20,6 @@ interface content {
   title: string;
 }
 
-// const getNotice = async (noticeId: string | string[]) => {
-//   const result = await axios
-//     .request({
-//       method: 'get',
-//       url: `/api/notice/${noticeId}`,
-//     })
-//     .then((response) => {
-//       console.log(response.data.data.noticeId);
-//       return response.data.data;
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-//   return result;
-// };
-
 export default function NoticeDetail() {
   const router = useRouter();
 
@@ -62,17 +46,19 @@ export default function NoticeDetail() {
         </div>
         <FlexStyle>
           <Table className="static">
-            <div className="flex">
-              <h3>제목</h3>
-              <span className="right">{data?.title}</span>
-            </div>
             <div className="write-info">
               <h3>작성자</h3>
-              <span className="right">
-                {data?.adminName}/{data?.adminEmail}
-              </span>
-              <h3>작성날짜</h3>
-              <span className="right">{data?.postDate}</span>
+              <div className="write-detail">
+                <span className="admin-name">
+                  {data?.adminName}/{data?.adminEmail}
+                </span>
+                <h3>작성날짜</h3>
+                <span>{data?.postDate}</span>
+              </div>
+            </div>
+            <div className="flex">
+              <h3>제목</h3>
+              <span>{data?.title}</span>
             </div>
             <div className="flex">
               <h3>내용</h3>
@@ -96,6 +82,7 @@ export default function NoticeDetail() {
 const Wrapper = styled.div`
   margin: 50px auto;
   width: 100%;
+  height: 600px;
   display: flex;
   justify-content: center;
   h2 {
@@ -108,9 +95,11 @@ const Wrapper = styled.div`
 `;
 
 const FlexStyle = styled.div`
+  position: relative;
+  width: 90%;
+  height: 700px;
   display: flex;
   flex-direction: column;
-  align-items: end;
   background-color: var(--color-lightgray);
   border-radius: 10px;
   padding: 60px;
@@ -118,13 +107,17 @@ const FlexStyle = styled.div`
 
 const Table = styled.div`
   display: grid;
-  grid-template-rows: 100px 70px 1fr;
   gap: 10px;
   color: var(--color-primary);
   font-weight: 700;
+
   .write-info {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+  }
+  .write-detail {
     display: flex;
-    gap: 80px;
+    gap: 50px;
   }
   .flex {
     display: grid;
@@ -135,15 +128,14 @@ const Table = styled.div`
     padding-top: 20px;
   }
   span {
+    height: 100%;
     font-size: 18px;
     color: var(--color-gray500);
     border: 2px solid var(--color-gray300);
     border-radius: 10px;
     padding: 10px 20px;
     line-height: 1.8;
-    &.right {
-      height: 60px;
-    }
+
     &.content {
       overflow-y: scroll;
       min-height: 300px;
@@ -151,12 +143,12 @@ const Table = styled.div`
   }
 `;
 const BtnWrapper = styled.div`
-  position: relative;
-  width: 500px;
+  position: absolute;
+  /* width: 500px; */
   display: flex;
-  justify-content: flex-end;
   gap: 20px;
-  margin: 50px 0 0;
+  margin: 50px;
+
   bottom: 0;
   right: 0;
 `;

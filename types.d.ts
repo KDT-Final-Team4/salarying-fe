@@ -153,11 +153,14 @@ interface INoticeDetail extends Data {
 }
 
 interface IFAQ {
+  id: number;
   question: string;
   answer: string;
   category: string;
+  status: boolean;
 }
-interface IGetFAQ {
+
+interface IGetFAQ extends Data {
   data: IFAQ[];
 }
 
