@@ -68,7 +68,7 @@ export default function SideNav() {
   const config = genConfig('admin@email.com');
   const router = useRouter();
   const [pathname, setPathname] = useState('');
-  const { isAdmin, accessToken } = useAccessToken();
+  const { isAdmin, accessToken, removeAccessToken, removeIsAdmin } = useAccessToken();
   const textRef = useRef(null);
   useEffect(() => {
     setPathname(router.pathname);
@@ -141,6 +141,17 @@ export default function SideNav() {
           마이페이지
         </Mypage>
       </Profile> */}
+      <button
+        type="button"
+        onClick={() => {
+          console.log('로그아웃 버튼 클릭');
+          removeAccessToken();
+          removeIsAdmin();
+          router.push('/login');
+        }}
+      >
+        로그아웃
+      </button>
     </Wrapper>
   );
 }
