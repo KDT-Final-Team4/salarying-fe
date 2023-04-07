@@ -69,14 +69,14 @@ export default function Login() {
       toast.error(err.message);
     }
   };
-  const handleTest = async () => {
-    console.log(token);
-    await api.putFAQStatus(token, {
-      id: 36,
-      question: 'putfaqstatus',
-      answer: 'asdfadfs',
-    });
-  };
+  // const handleTest = async () => {
+  //   console.log(token);
+  //   await api.putFAQStatus(token, {
+  //     id: 36,
+  //     question: 'putfaqstatus',
+  //     answer: 'asdfadfs',
+  //   });
+  // };
   return (
     <Wrapper>
       <LoginSection>
