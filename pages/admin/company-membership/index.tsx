@@ -2,6 +2,7 @@ import Content from '@/components/ui/Content';
 import Pagination from '@/components/ui/Pagination';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
@@ -14,73 +15,34 @@ const list = [
 ];
 
 export default function CompanyMembership() {
+  const heads = ['기업 이름', '기업 담당자'];
   const { accessToken } = useCookies();
-  // useEffect(() => {
-  //   const getCorporations = async () => {
-  //     if (accessToken) {
-  //       const res = await api.getCorporations(accessToken);
-  //       // setTerms(res?.data);
-  //       console.log(res);
-  //       return res;
-  //     } else console.log('약관 타입 없음');
-  //   };
-  //   getCorporations();
-  // }, []);
+  const { data } = useQuery(['corporations'], () => api.getCorporations(accessToken));
 
   return (
     <Container>
-      <Content title="기업 회원 관리">
-        <div></div>
-      </Content>
-      <Inner>
-        <Nav>
-          {/* {list.map((item) => (
-            <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
-              <li id={item.id}>{item.title}</li>
-            </Link>
-          ))} */}
-        </Nav>
+      <Content title="기업 회원 조회">
         <Wrapper>
           <Table>
             <Thead>
               <Tr>
-                <Th>
-                  <input type="checkbox" />
-                </Th>
-                <Th>기업 이름</Th>
-                <Th>담당자 이름</Th>
-                <Th>담당자 직급</Th>
+                {heads.map((title, idx) => (
+                  <Th key={idx}>{title}</Th>
+                ))}
               </Tr>
             </Thead>
             <Tbody>
-              {/* {terms.map((term, index) => (
+              {data?.data?.map((corporation, index) => (
                 <Tr key={index}>
-                  <Td>
-                    <input type="checkbox" />
-                  </Td>
-                  <Td>{term.title}</Td>
-                  <Td>{term.version}</Td>
-                  <Td>{term.name}</Td>
-                  <Td>{term.status}</Td>
-                  <Td>
-                    <Button_Send text={'view'} height={null} width={100} />
-                  </Td>
+                  <Td>{corporation.company_name}</Td>
+                  <Td>{`${corporation.name}/${corporation.position}`}</Td>
                 </Tr>
-              ))} */}
+              ))}
             </Tbody>
           </Table>
           <div className="pagination">{/* <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} /> */}</div>
         </Wrapper>
-        <ButtonArea>
-          <Link href="edit/termsId">
-            <button>수정하기</button>
-          </Link>
-          <button>삭제하기</button>
-          <Link href="new">
-            <button className="submit">등록하기</button>
-          </Link>
-        </ButtonArea>
-      </Inner>
+      </Content>
     </Container>
   );
 }
