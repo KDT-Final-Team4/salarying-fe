@@ -47,7 +47,6 @@ interface StyledProps {
   toggle: boolean;
 }
 
-type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
 const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
 
 export default function TermsId() {
@@ -55,6 +54,7 @@ export default function TermsId() {
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
+  const [modalOn, setModalOn] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['terms', termsId],

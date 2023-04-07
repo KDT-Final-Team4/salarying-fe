@@ -171,3 +171,19 @@ interface IRecruiting {
 interface IGetRecruiting extends Data {
   data: IRecruiting[];
 }
+
+interface IModal {
+  type: string;
+  show?: boolean;
+  onHide: () => void;
+  children?: any;
+  width?: string;
+  height?: string;
+}
+
+interface IModalStyle {
+  width?: string;
+  height?: string;
+}
+
+type TermsId = 'service' | 'privacy' | 'information' | 'marketing';

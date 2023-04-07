@@ -102,7 +102,7 @@ export default function New() {
                 pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){2}(?:[0-9]?[0-9][0-9]?)$/,
               })}
             />
-            <Error className={errors.version ? 'show' : 'hide'}>숫자와 &apos;.&apos;을 사용하여 버전을 입력해 주세요.</Error>
+            <Error className={errors.version ? 'show' : 'hide'}>숫자와 .을 사용하여 버전을 입력해 주세요.</Error>
           </Version>
         </Info>
         <Write>
