@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Notification from '../pages/company/notification';
 import { CgProfile } from 'react-icons/cg';
@@ -13,6 +13,7 @@ import { FaUserTie } from 'react-icons/fa';
 import { AiFillNotification } from 'react-icons/ai';
 import Image from 'next/image';
 import logoDarkPic from '../public/logo_dark.png';
+import { toast } from 'react-toastify';
 
 const termsNavs = [
   {
@@ -29,10 +30,8 @@ const companyNav = [
   },
   { title: '공고 리스트', href: '/company/job-posting' },
   { title: '(job-posting/2)', href: '/company/job-posting/2' },
-  { title: '지원자 관리', href: '/company/applicant-management' },
-  { title: '(지원자 관리/category/1)', href: '/company/applicant-management/category/1' },
   {
-    title: '이메일 알림',
+    title: '이메일 내역',
     href: '/company/notification',
   },
 ];
@@ -70,14 +69,19 @@ export default function SideNav() {
   const router = useRouter();
   const [pathname, setPathname] = useState('');
   const { isAdmin, accessToken } = useAccessToken();
-
+  const textRef = useRef(null);
   useEffect(() => {
     setPathname(router.pathname);
   }, [router.pathname]);
 
+  const copyToken = () => {
+    textRef.current.select();
+    document.execCommand('copy', false, accessToken);
+  };
   return (
     <Wrapper>
-      <span style={{ position: 'absolute', color: `var(--color-green700)` }}>{!accessToken ? '로그인필요' : isAdmin ? '관리자계정' : '기업회원'}</span>
+      <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
+      <CopyToken onClick={copyToken}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
       <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
 
       <NavMenues>
@@ -153,6 +157,7 @@ const Wrapper = styled.section`
   top: 0;
   left: 0;
   background-color: var(--color-lightgray);
+  z-index: 99;
 `;
 
 const NavMenues = styled.div`
@@ -219,4 +224,17 @@ const DevLinks = styled.div`
       }
     }
   }
+`;
+
+const CopyToken = styled.span`
+  position: absolute;
+  color: var(--color-green700);
+  &:active {
+    background-color: orange;
+  }
+`;
+const HiddenToken = styled.input`
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
 `;

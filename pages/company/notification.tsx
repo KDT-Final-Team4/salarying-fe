@@ -33,30 +33,62 @@ const users = [
   },
 ];
 
+const emails: {
+  applicantEmail: string;
+  progress: string;
+  recruitingName: string;
+  sendDate: string;
+  status: string;
+}[] = [
+  {
+    recruitingName: '2023 상반기 신입사원',
+    applicantEmail: 'hwisaac0@gmail.com',
+    sendDate: '2023-03-31T07:44:38.044+00:00',
+    progress: '서류 심사',
+    status: '합격',
+  },
+  {
+    recruitingName: '2023 상반기 신입사원',
+    applicantEmail: 'hwisaac0@gmail.com',
+    sendDate: '2023-04-01T17:32:52.965+00:00',
+    progress: '서류 심사',
+    status: '합격',
+  },
+  {
+    recruitingName: '2023 상반기 신입사원',
+    applicantEmail: 'hwisaac0@gmail.com',
+    sendDate: '2023-04-01T17:33:31.981+00:00',
+    progress: '서류 심사',
+    status: '합격',
+  },
+];
+
+// 이메일 전송내역
 export default function Notification() {
   return (
     <Wrapper>
-      <h1>지원자 상세</h1>
+      <h1>이메일 내역</h1>
 
       <Table>
         <Thead>
           <Tr>
-            <Th>이름</Th>
-            <Th>전화번호</Th>
+            <Th>공고명</Th>
             <Th>이메일</Th>
+            <Th>날짜</Th>
             <Th>진행 상황</Th>
-            <Th>상태</Th>
-            <Th>메일 보내기</Th>
+            <Th>합격여부</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {users.map((user, index) => (
+          {emails.map((email, index) => (
             <Tr key={index}>
-              <Td>{user.id}</Td>
-              <Td>{user.name}</Td>
-              <Td>{user.email}</Td>
-              <Td>{user.progress}</Td>
-              <Td>{user.status}</Td>
+              <Td>{email.recruitingName}</Td>
+              <Td>{email.applicantEmail}</Td>
+              <Td>{email.sendDate}</Td>
+              <Td>{email.progress}</Td>
+              <Td>
+                <Button_2 name={email.status} color={email.status === '합격' ? 'indigo' : 'rose'} />
+              </Td>
             </Tr>
           ))}
         </Tbody>

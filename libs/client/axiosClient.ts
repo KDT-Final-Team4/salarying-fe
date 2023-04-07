@@ -150,7 +150,7 @@ class Axios {
   /** 지원자 progress,status수정 (user) ok */
   async putApplicants(accessToken, { recruitingId, progress, status, email }) {
     try {
-      const res = await this.axiosClient.post(
+      const res = await this.axiosClient.put(
         '/applicants',
         {},
         {
@@ -343,6 +343,20 @@ class Axios {
   }
 
   ////// MEMBER-CONTROLLER
+  /** 기업정보 출력 */
+  async getUserMe(accessToken): Promise<IGetUserMe> {
+    try {
+      const res = await this.axiosClient.get('/users/me', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return res.data;
+    } catch (err) {
+      console.error(err?.response?.data?.errorMessage);
+      return err;
+    }
+  }
   /** 기업 비밀번호 확인 (user) ok */
   async postUsersPassword(accessToken, { password }) {
     try {
