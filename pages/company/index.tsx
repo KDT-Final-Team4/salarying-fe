@@ -1,3 +1,4 @@
+import MeCard from '@/components/company/MeCard';
 import Card_1 from '@/components/ui/Card_1';
 import TableUI from '@/components/ui/TableUI';
 import api from '@/libs/client/axiosClient';
@@ -6,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
 import { AiFillCar } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 /** 공고리스트 */
@@ -69,12 +71,12 @@ const resData = [
 ];
 
 const countStatus = (arr, status: string): number => {
-  const filtered = arr.filter((el) => el.status === status);
+  const filtered = arr?.filter((el) => el.status === status);
   return filtered.length;
 };
 function getStatusObj(arr) {
   const statusCount = {};
-  arr.forEach((item) => {
+  arr?.forEach((item) => {
     if (statusCount.hasOwnProperty(item.status)) {
       statusCount[item.status]++;
     } else {
@@ -88,31 +90,36 @@ const Company = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['recruitList'],
     queryFn: () => api.getRecruiting(accessToken),
-    onSuccess: (data) => console.log(data),
+    onSuccess: (data) => toast.success('공고리스트 받아오기 성공'),
+    refetchOnWindowFocus: false,
+  });
+  const { data: me } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => api.getUserMe(accessToken),
+    onSuccess: (data) => toast.success('유저데이터 가져오기 성공'),
+    onError: (err) => toast.error('유저 데이터 받아오기 실패'),
+    refetchOnWindowFocus: false,
   });
   const statusObj: any = getStatusObj(data?.data);
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => console.log(me)}>
       <Title>Dashboard</Title>
-      <Overviews>
-        <div>
-          <H2>Overviews</H2>
-        </div>
-        <div>
-          <Card_1 title="총 공고" content={`${data?.data?.length}`} Icon={AiFillCar} dark={true} />
-          {Object.keys(statusObj).map((status) => (
-            <Card_1 key={status} title={status} content={`${statusObj[status]} 건`} />
-          ))}
-          {/* {countStatus(data.data, '서류전형') ? <Card_1 title="서류 전형" content={`${countStatus(data.data, '서류전형')} 건`} /> : null}
-          {countStatus(data?.data, '1차전형') ? <Card_1 title="1차전형" Icon={AiFillCar} content={`${countStatus(data?.data, '1차전형')} 건`} dark={false} /> : null}
-          {countStatus(data?.data, '2차전형') ? <Card_1 title="2차 전형" Icon={AiFillCar} content={`${countStatus(data?.data, '2차전형')} 건`} dark={false} /> : null}
-          {countStatus(data?.data, '3차전형') ? (
-            <Card_1 title="3차 전형" Icon={AiFillCar} content={`${countStatus(data?.data, '3차전형')} 건`} dark={false} />
-          ) : null} */}
-        </div>
-      </Overviews>
-      <Chart></Chart>
+      <FirstRow>
+        <MeCard userData={me?.data} />
+        <Overviews>
+          <div>
+            <H2>Overviews</H2>
+          </div>
+          <div>
+            <Card_1 title="총 공고" content={`${data?.data?.length}`} Icon={AiFillCar} dark={true} />
+            {Object.keys(statusObj).map((status) => (
+              <Card_1 key={status} title={status} content={`${statusObj[status]} 건`} />
+            ))}
+          </div>
+        </Overviews>
+      </FirstRow>
+
       <RecentNotices>
         <div>
           <H2>최신 공고</H2>
@@ -131,8 +138,8 @@ const Wrapper = styled.section`
   flex-direction: column;
   width: fit-content;
   padding: 50px;
-  border: 1px solid red;
   margin: 0 auto;
+  gap: 30px;
 `;
 const Title = styled.h1`
   font-weight: 700;
@@ -147,14 +154,14 @@ const H2 = styled.h2`
 `;
 
 const Overviews = styled.div`
+  display: flex;
+  flex-direction: column;
   height: auto;
   width: fit-content;
   border-radius: 10px;
   padding: 30px;
   border: 1px solid var(--color-gray200);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   gap: 20px;
   div:first-child {
   }
@@ -163,9 +170,9 @@ const Overviews = styled.div`
     gap: 20px;
   }
 `;
-const Chart = styled.div`
-  height: 100px;
-  width: 100%;
+const FirstRow = styled.div`
+  display: flex;
+  gap: 30px;
 `;
 const RecentNotices = styled.div`
   height: fit-content;

@@ -17,7 +17,18 @@ type Data = {
   data: any;
   message: string;
 };
-
+interface IGetUserMe extends Data {
+  data: {
+    companyName: string;
+    companyPhoneNumber: string;
+    email: string;
+    name: string;
+    position: string;
+    lastSignIn: string;
+    lastModified: string;
+    status: string;
+  };
+}
 interface IPostLogin extends Data {
   data: {
     token: string;
