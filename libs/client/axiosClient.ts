@@ -150,7 +150,7 @@ class Axios {
   /** 지원자 progress,status수정 (user) ok */
   async putApplicants(accessToken, { recruitingId, progress, status, email }) {
     try {
-      const res = await this.axiosClient.post(
+      const res = await this.axiosClient.put(
         '/applicants',
         {},
         {
