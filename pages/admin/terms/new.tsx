@@ -8,6 +8,7 @@ import Button_2 from '@/components/ui/Button_2';
 import Link from 'next/link';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import { toast } from 'react-toastify';
 
 interface IList {
   category: string;
@@ -37,6 +38,8 @@ export default function New() {
   const router = useRouter();
   const [select, setSelect] = useState();
   const { accessToken } = useCookies();
+  const [duplicate, setDuplicate] = useState(false);
+  console.log(duplicate);
   const {
     register,
     getValues,
@@ -56,9 +59,10 @@ export default function New() {
       if (res.stateCode === 200) {
         router.push(`/admin/terms/${getValues().type}`);
       }
+
       return res;
     } catch (err) {
-      console.log(err);
+      toast.error(err.response.data.errorMessage);
     }
   };
 
@@ -99,7 +103,7 @@ export default function New() {
               placeholder="버전을 입력하세요. 숫자와 .으로만 표기 가능합니다."
               {...register('version', {
                 required: true,
-                pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){2}(?:[0-9]?[0-9][0-9]?)$/,
+                pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){1,2}(?:[0-9]?[0-9][0-9]?)$/,
               })}
             />
             <Error className={errors.version ? 'show' : 'hide'}>숫자와 .을 사용하여 버전을 입력해 주세요.</Error>
