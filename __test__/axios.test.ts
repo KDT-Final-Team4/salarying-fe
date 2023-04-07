@@ -1,4 +1,5 @@
 // __tests__/axios.test.ts
+import '@types/jest';
 
 import api from '../libs/client/axiosClient';
 
@@ -17,6 +18,7 @@ describe('Axios API tests', () => {
   test('기업회원 로그인 기능', async () => {
     const res = await api.postLogin(userAccount);
     accessToken = res.data.token;
+
     expect(typeof accessToken).toBe('string');
     expect(res.stateCode).toBe(200);
   });
