@@ -2,7 +2,18 @@ import React, { Children, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Content from '@/components/ui/Content';
-import SelectCategory from '@/components/ui/SelectCategory';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import useCookies from '@/libs/hooks/useCookies';
+import api from '@/libs/client/axiosClient';
+import Button_2 from '@/components/ui/Button_2';
+import { useForm } from 'react-hook-form';
+
+interface IValue {
+  id: string | string[];
+  version: string;
+  title: string;
+  content: string;
+}
 
 interface List {
   category: string;
@@ -54,45 +65,117 @@ const list: List[] = [
   },
 ];
 
+const typeName = [
+  ['서비스 이용약관', 'service'],
+  ['개인 정보 처리 방침', 'privacy'],
+  ['제3자 정보 제공', 'information'],
+  ['개인정보 마케팅 이용', 'marketing'],
+];
+
 export default function TermsIdEdit() {
   const router = useRouter();
   const { termsId } = router.query;
-  const [select, setSelect] = useState('service');
+  const { accessToken } = useCookies();
+  const {
+    register,
+    getValues,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ITermsWithType>();
 
+  const { data, isLoading } = useQuery(['term', termsId], () => api.getTermsDetail(accessToken, termsId), {
+    enabled: !!termsId,
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      setValue('title', data.data.title), setValue('version', data.data.version), setValue('content', data.data.content);
+    },
+  });
+
+  const getTypeName = (type) => {
+    const res = typeName.find((item) => item[0] === type);
+    return res[1];
+  };
+
+  const onValid = async () => {
+    console.log('onValid');
+    try {
+      const value: IPutTerms = { ...getValues(), id: Number(termsId) };
+      console.log('value : ', value);
+      const res = await api.putTerms(accessToken, value);
+      if (res.stateCode === 200) {
+        router.push(`/admin/terms/${getTypeName(data?.data?.type)}`);
+        console.log(res);
+        return res;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const inValid = async (a) => {
+    console.log(a);
+    console.log('inValid');
+  };
   return (
     <Container>
       <Content title="약관 수정">
         <div></div>
       </Content>
-      <Inner>
+      <Inner onSubmit={handleSubmit(onValid, inValid)}>
         <Info>
           <Category>
             <p>약관 종류</p>
             <div className="wrap">
-              <div>type</div>
+              <div>{data?.data?.type}</div>
             </div>
           </Category>
           <Title>
             <p>약관 제목</p>
-            <input type="text" placeholder="이미 작성해두었던 약관 제목" />
+            <input
+              type="text"
+              {...register('title', {
+                required: true,
+              })}
+              // value={title} onChange={handleTitleChange}
+            />
           </Title>
           <Version>
             <p>약관 버전</p>
-            <input type="text" placeholder="이미 작성해두었던 약관 버전" />
+            <input
+              type="text"
+              {...register('version', {
+                required: true,
+                pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){2}(?:[0-9]?[0-9][0-9]?)$/,
+              })}
+              // value={version} onChange={handleVersionChange}
+            />
+            <Error className={errors.version ? 'show' : 'hide'}>숫자와 .을 사용하여 버전을 입력해 주세요.</Error>
           </Version>
         </Info>
         <Write>
           <p>약관 내용</p>
           <div>
-            <textarea name="textCount" id="textCount"></textarea>
+            <textarea
+              name="textCount"
+              id="textCount"
+              {...register('content', {
+                required: true,
+              })}
+              // value={content} onChange={handleContentChange}
+            ></textarea>
           </div>
         </Write>
-        <div>
-          <button className="submit">등록</button>
-          <button className="cancel" onClick={() => router.push('-1')}>
-            취소
-          </button>
-        </div>
+        <BtnWrapper>
+          <Button_2 name={'수정 완료'} color={'point'} onClick={() => router.push(`/admin/terms/service`)} />
+          <div onClick={() => router.back()}>
+            <Button_2
+              name={'취소'}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            />
+          </div>
+        </BtnWrapper>
       </Inner>
     </Container>
   );
@@ -106,37 +189,16 @@ const Container = styled.section`
   align-content: flex-start;
 `;
 
-const Inner = styled.div`
+const Inner = styled.form`
   width: 100%;
   margin: 0 50px 0 50px;
   padding-bottom: 60px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  button {
-    width: 170px;
-    height: 50px;
-    background-color: transparent;
-    margin: 20px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    &.cancel {
-      :hover {
-        font-weight: 700;
-        box-shadow: 3px 5px 3px var(--color-lightgray);
-      }
-    }
-    &.submit {
-      background-color: var(--color-point);
-      :hover {
-        box-shadow: 10px 10px 10px var(--color-lightgray);
-        font-weight: 700;
-      }
-    }
-  }
 `;
 
-const Info = styled.form`
+const Info = styled.div`
   width: 100%;
   border-radius: 10px;
   background-color: var(--color-lightgray);
@@ -253,5 +315,33 @@ const Write = styled.div`
     outline: none;
     border-radius: 10px;
     resize: none;
+  }
+`;
+
+const BtnWrapper = styled.div`
+  width: inherit;
+  margin-bottom: 100px;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    width: 170px;
+    height: 50px;
+    margin: 20px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+`;
+
+const Error = styled.span`
+  position: absolute;
+  top: 30px;
+  right: 100px;
+  &.show {
+    opacity: 1;
+    font-size: 14px;
+    color: var(--color-rose500);
+  }
+  &.hide {
+    opacity: 0;
   }
 `;
