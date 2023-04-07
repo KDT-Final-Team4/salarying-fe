@@ -5,8 +5,11 @@ import Content from '@/components/ui/Content';
 import useCookies from '@/libs/hooks/useCookies';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/libs/client/axiosClient';
+import Button_2 from '@/components/ui/Button_2';
 
-type Props = {};
+type Props = {
+  termId: any;
+};
 
 const typeName = [
   ['서비스 이용약관', 'service'],
@@ -32,6 +35,7 @@ export default function TermsIdDetail({}: Props) {
   console.log(termDetail?.data);
   return (
     <Content title={'약관 조회'}>
+      <span>{isLoading && '로딩중'}</span>
       <div>약관별 관리 &gt; 서비스 이용약관 &gt; 약관 상세보기</div>
       <div>작성자 : {termDetail?.data?.name}</div>
       <Inner>
@@ -44,25 +48,23 @@ export default function TermsIdDetail({}: Props) {
           </Category>
           <Title>
             <p>약관 제목</p>
-            <input type="text" placeholder={termDetail?.data?.title} readOnly />
+            <input type="text" value={termDetail?.data?.title} readOnly />
           </Title>
           <Version>
             <p>약관 버전</p>
-            <input type="text" placeholder={termDetail?.data?.version} readOnly />
+            <input type="text" value={termDetail?.data?.version} readOnly />
           </Version>
         </Info>
         <Write>
           <p>약관 내용</p>
           <div>
-            <textarea readOnly>{termDetail?.data?.content}</textarea>
+            <textarea value={termDetail?.data?.content} readOnly></textarea>
           </div>
         </Write>
-        <div>
-          <button className="submit">수정</button>
-          <button className="cancel" onClick={() => router.push(`/admin/terms/${getTypeName(termDetail?.data?.type)}`)}>
-            목록으로
-          </button>
-        </div>
+        <ButtonArea>
+          <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
+          <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${getTypeName(termDetail?.data?.type)}`)}></Button_2>
+        </ButtonArea>
       </Inner>
     </Content>
   );
@@ -75,27 +77,6 @@ const Inner = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  button {
-    width: 170px;
-    height: 50px;
-    background-color: transparent;
-    margin: 20px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    &.cancel {
-      :hover {
-        font-weight: 700;
-        box-shadow: 3px 5px 3px var(--color-lightgray);
-      }
-    }
-    &.submit {
-      background-color: var(--color-point);
-      :hover {
-        box-shadow: 10px 10px 10px var(--color-lightgray);
-        font-weight: 700;
-      }
-    }
-  }
 `;
 
 const Info = styled.form`
@@ -143,6 +124,7 @@ const Title = styled.div`
   box-sizing: border-box;
   padding: 10px 30px;
   align-items: center;
+  user-select: none;
   p {
     min-width: 100px;
     padding-right: 10px;
@@ -162,6 +144,7 @@ const Title = styled.div`
     margin: 0 60px;
     background-color: transparent;
     width: 100%;
+    user-select: none;
   }
 `;
 
@@ -190,6 +173,7 @@ const Version = styled.div`
     margin: 0 60px;
     background-color: transparent;
     width: 100%;
+    user-select: none;
   }
 `;
 
@@ -215,5 +199,19 @@ const Write = styled.div`
     outline: none;
     border-radius: 10px;
     resize: none;
+  }
+`;
+
+const ButtonArea = styled.div`
+  width: inherit;
+  margin-bottom: 100px;
+  display: flex;
+  justify-content: space-between;
+  button {
+    width: 170px;
+    height: 50px;
+    margin: 20px 10px;
+    border-radius: 10px;
+    cursor: pointer;
   }
 `;
