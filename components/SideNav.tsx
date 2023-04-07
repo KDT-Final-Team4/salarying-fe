@@ -30,8 +30,6 @@ const companyNav = [
   },
   { title: '공고 리스트', href: '/company/job-posting' },
   { title: '(job-posting/2)', href: '/company/job-posting/2' },
-  { title: '지원자 관리', href: '/company/applicant-management' },
-  { title: '(지원자 관리/category/1)', href: '/company/applicant-management/category/1' },
   {
     title: '이메일 내역',
     href: '/company/notification',
@@ -82,7 +80,7 @@ export default function SideNav() {
   };
   return (
     <Wrapper>
-      <HiddenToken onChange={() => {}} type="text" value={!accessToken ? 'No accessToken' : accessToken} ref={textRef} />
+      <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
       <CopyToken onClick={copyToken}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
       <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
 
