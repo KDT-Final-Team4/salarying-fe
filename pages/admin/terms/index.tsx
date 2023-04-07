@@ -1,83 +1,125 @@
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import Content from '@/components/ui/Content';
+import api from '@/libs/client/axiosClient';
+import { getSNBLayout } from '@/libs/client/getLayout';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import useAccessToken from '@/libs/hooks/useAccessToken';
+import useCookies from '@/libs/hooks/useCookies';
 
 const list = [
-  { title: "서비스 이용 약관", id: 1, status: "공개" },
-  { title: "개인 정보 처리 방침", id: 2, status: "공개" },
-  { title: "제3자 정보 제공", id: 3, status: "비공개" },
-  { title: "개인정보 마케팅 이용", id: 4, status: "비공개" },
+  { title: '서비스 이용 약관', id: 'service', status: '공개' },
+  { title: '개인 정보 처리 방침', id: 'privacy', status: '공개' },
+  { title: '제3자 정보 제공', id: 'information', status: '비공개' },
+  { title: '개인정보 마케팅 이용', id: 'marketing', status: '비공개' },
 ];
 
-const Terms = () => {
+export default function Terms() {
+  const token = useCookies();
+  console.log(token);
+  const fetcher = () => api.getTerms(token, 'service');
+  const { data: terms, isLoading } = useQuery(['terms'], fetcher);
+
+  // if (!token) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  console.log(terms);
   return (
     <Container>
-      <Title>
-        <h1>약관 관리</h1>
-      </Title>
-      <List>
-        {list.map((item) => (
-          <Link href={`/admin/terms/${item.id}`} key={item.id}>
-            <Item>
-              <p>{item.title}</p>
-              <p>{item.status}</p>
+      <Content title="최종 약관">
+        <div></div>
+      </Content>
+      <Inner>
+        <List>
+          {list.map((item) => (
+            <Item key={item.id}>
+              <h3>{item.title}</h3>
+              <div>
+                <Link href={`/admin/terms/${item.id}`}>
+                  <p>관리하기</p>
+                </Link>
+              </div>
             </Item>
-          </Link>
-        ))}
-      </List>
-      <button>
-        <Link href="/admin/terms/new">약관 추가하기</Link>
-      </button>
+          ))}
+        </List>
+      </Inner>
     </Container>
   );
-};
+}
+
+Terms.getLayout = getSNBLayout;
 
 const Container = styled.section`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   width: 100%;
-  align-items: center;
-  padding-top: 50px;
+  height: 100%;
+  align-content: flex-start;
 `;
 
-const Title = styled.section`
-  width: 80%;
-  h1 {
-    color: #0072fd;
-    font-size: 34px;
-    font-weight: 700;
-    padding-bottom: 20px;
-    padding-top: 70px;
-    border-bottom: 2px solid lightgray;
-    margin-bottom: 40px;
-  }
+const Inner = styled.div`
+  width: 100%;
+  margin: 80px 50px 0 50px;
 `;
 
 const List = styled.section`
-  width: 80%;
-  border: 1px solid lightgray;
-  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   padding: 20px;
-  a {
-    color: #0072fd;
-  }
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
 `;
 
 const Item = styled.div`
-  width: 100%;
   display: flex;
-  justify-content: space-between;
-  font-size: 17px;
-  font-weight: 500;
-  padding: 20px 30px;
-  border-bottom: 1px solid lightgray;
+  flex-wrap: wrap;
+  height: 200px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  padding: 30px;
+  align-content: space-between;
   cursor: pointer;
-  :nth-last-child(1) {
-    border: none;
+  color: var(--color-lightgray);
+  p {
+    color: var(--color-lightgray);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--color-lightgray) inset;
   }
   :hover {
-    background-color: #f5f5f5;
-    border-radius: 10px;
+    color: var(--color-primary);
+    background-color: var(--color-point);
+    transition: 0.3s;
+    p {
+      box-sizing: border-box;
+      box-shadow: none;
+      color: var(--color-lightgray);
+      background-color: var(--color-primary);
+    }
+  }
+  h3 {
+    width: 100%;
+    font-size: 28px;
+    font-weight: 500;
+    :after {
+      content: '';
+      border-bottom: solid 3px white;
+    }
+  }
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
   }
 `;
-export default Terms;
+function getTerms(arg0: string[], getTerms: any): { isLoading: any; data: any } {
+  throw new Error('Function not implemented.');
+}

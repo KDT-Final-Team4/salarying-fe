@@ -16,8 +16,9 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "types": ["cypress", "node", "jest"]
   },
-  "include": ["next-env.d.ts", "types.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "types.d.ts", "**/*.ts", "**/*.tsx", "__mock__/fileMock.js"],
+  "exclude": ["node_modules", ".github", ".next", "images", ".github"]
 }

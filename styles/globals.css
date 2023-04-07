@@ -220,6 +220,11 @@
   --color-rose800: #9f1239;
   --color-rose900: #881337;
   --scrollbar-width: calc(100vw - 100%);
+  --color-primary: #201e34;
+  --color-sub: #282541;
+  --color-point: #c8ee44;
+  --color-lightgray: #fafafa;
+  --color-point-sub: #daf768;
 }
 
 * {
@@ -234,4 +239,18 @@ a:hover {
   /* color: #000; */
   text-decoration: none;
   outline: none;
+}
+
+button {
+  border: none;
+  user-select: none;
+}
+
+::selection {
+  background-color: var(--color-point);
+  color: var(--color-primary);
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Noto Sans', sans-serif;
 }
