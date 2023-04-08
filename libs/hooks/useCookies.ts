@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function useCookies() {
   const accessToken = getCookie('accessToken');
-  const isAdmin = getCookie('isAdmin');
+  const isAdmin = getCookie('isAdmin') === 'true';
   return { accessToken, isAdmin };
 }
 

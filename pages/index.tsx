@@ -82,7 +82,6 @@ export default function Login() {
       toast.error(err.message);
     }
   };
-  const handleTest = async () => {};
   return (
     <Wrapper>
       <LoginSection>
