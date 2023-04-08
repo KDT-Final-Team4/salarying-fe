@@ -18,15 +18,15 @@ interface IList {
 
 const list: IList[] = [
   {
-    title: '서비스 이용 약관',
+    title: '서비스 이용약관',
     id: 'service',
   },
   {
-    title: '개인 정보 처리 방침',
+    title: '개인정보 처리방침',
     id: 'privacy',
   },
   {
-    title: '제3자 정보 제공',
+    title: '제3자 정보제공',
     id: 'information',
   },
   {
@@ -47,7 +47,6 @@ interface StyledProps {
   toggle: boolean;
 }
 
-type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
 const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
 
 export default function TermsId() {
@@ -61,17 +60,13 @@ export default function TermsId() {
     queryFn: () => api.getTerms(accessToken, termsId),
   });
 
-  console.log('termsId', termsId);
-  console.log('data', data);
-
   // 페이지네이션
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
-  console.log(pageMembersList);
 
   return (
     <Content title="약관별 관리">
-      {/* <span>{isLoading && '로딩중'}</span> */}
+      <span>{isLoading && '로딩중'}</span>
       <Nav>
         {list.map((item) => (
           <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
@@ -83,9 +78,7 @@ export default function TermsId() {
         <Table>
           <Thead>
             <Tr>
-              <Th>
-                <input type="checkbox" />
-              </Th>
+              <Th>No.</Th>
               {heads.map((title, idx) => (
                 <Th key={idx}>{title}</Th>
               ))}
@@ -94,23 +87,29 @@ export default function TermsId() {
           <Tbody>
             {pageMembersList?.map((term, index) => (
               <Tr key={index}>
-                <Td>
-                  <input type="checkbox" />
-                </Td>
+                <Td>{index + (activePage - 1) * 5 + 1}</Td>
                 <Td>{term.title}</Td>
                 <Td>{term.version}</Td>
                 <Td>{term.name}</Td>
                 <Td>{term.status}</Td>
                 <Td>
-                  <Button_Send text={'view'} height={null} width={100} />
+                  <Button_Send
+                    text={'view'}
+                    height={null}
+                    width={100}
+                    onClick={() => {
+                      router.push({ pathname: `detail/${term.id}` });
+                    }}
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
       </Wrapper>
+
       <ButtonArea>
-        <Button_2 name={'삭제'} />
+        {/* <Button_2 name={'삭제'} /> */}
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
@@ -276,7 +275,8 @@ const ButtonArea = styled.div`
   width: inherit;
   margin-bottom: 100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  position: relative;
   button {
     width: 170px;
     height: 50px;
@@ -285,8 +285,11 @@ const ButtonArea = styled.div`
     cursor: pointer;
   }
   .pagination {
+    position: absolute;
     display: flex;
     justify-content: center;
     margin-top: -10px;
+    left: 0;
+    right: 0;
   }
 `;

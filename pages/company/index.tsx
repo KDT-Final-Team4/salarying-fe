@@ -3,6 +3,8 @@ import Card_1 from '@/components/ui/Card_1';
 import TableUI from '@/components/ui/TableUI';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import useUser from '@/libs/hooks/useUser';
+import { getStatusObj } from '@/libs/utils';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
@@ -74,18 +76,8 @@ const countStatus = (arr, status: string): number => {
   const filtered = arr?.filter((el) => el.status === status);
   return filtered.length;
 };
-function getStatusObj(arr) {
-  const statusCount = {};
-  arr?.forEach((item) => {
-    if (statusCount.hasOwnProperty(item.status)) {
-      statusCount[item.status]++;
-    } else {
-      statusCount[item.status] = 1;
-    }
-  });
-  return statusCount;
-}
-const Company = () => {
+
+export default function Company() {
   const { accessToken } = useCookies();
   const { data, isLoading } = useQuery({
     queryKey: ['recruitList'],
@@ -93,13 +85,7 @@ const Company = () => {
     onSuccess: (data) => toast.success('공고리스트 받아오기 성공'),
     refetchOnWindowFocus: false,
   });
-  const { data: me } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => api.getUserMe(accessToken),
-    onSuccess: (data) => toast.success('유저데이터 가져오기 성공'),
-    onError: (err) => toast.error('유저 데이터 받아오기 실패'),
-    refetchOnWindowFocus: false,
-  });
+  const { data: me } = useUser();
   const statusObj: any = getStatusObj(data?.data);
 
   return (
@@ -125,13 +111,12 @@ const Company = () => {
           <H2>최신 공고</H2>
           <Link href="/company/job-posting">바로가기</Link>
         </div>
-        <TableUI dataList={data?.data?.slice(0, 4)} titles={['id', '이름', 'date', 'progress', 'stats']} />
+        <TableUI dataList={data?.data?.slice(0, 4)} titles={['ID', '이름', 'Date', 'Progress', 'Status']} />
       </RecentNotices>
     </Wrapper>
   );
 };
 
-export default Company;
 
 const Wrapper = styled.section`
   display: flex;

@@ -164,11 +164,14 @@ interface INoticeDetail extends Data {
 }
 
 interface IFAQ {
+  id: number;
   question: string;
   answer: string;
   category: string;
+  status: boolean;
 }
-interface IGetFAQ {
+
+interface IGetFAQ extends Data {
   data: IFAQ[];
 }
 
@@ -182,3 +185,4 @@ interface IRecruiting {
 interface IGetRecruiting extends Data {
   data: IRecruiting[];
 }
+type TermsId = 'service' | 'privacy' | 'information' | 'marketing';

@@ -1,75 +1,59 @@
-import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import styled from 'styled-components';
 import Button_Send from '@/components/ui/Button_Send';
 import Content from '@/components/ui/Content';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import { useQuery } from '@tanstack/react-query';
+import styled from 'styled-components';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { IoChevronBack } from 'react-icons/io5';
 
-interface content {
-  adminEmail: string;
-  adminName: string;
-  content: string;
-  id: number;
-  postDate: string;
-  status: boolean;
-  title: string;
-}
+type Props = {};
 
-export default function NoticeDetail() {
-  const router = useRouter();
-
-  const { noticeId } = router.query;
-  console.log(noticeId);
-
+export default function FaqDetail(props: Props) {
   const { accessToken, isAdmin } = useCookies();
+  const router = useRouter();
+  const { faqId } = router.query;
 
-  const { data, isLoading } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
-    // enabled: !!noticeId,
-    refetchOnWindowFocus: false,
-  });
+  const { data } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId));
 
   const deleteHandler = () => {
-    api.deleteNotice(accessToken, noticeId);
+    api.deleteFAQ(accessToken, faqId);
     router.back();
   };
 
   return (
-    <Content title={'공지사항 상세정보'}>
+    <Content title={'FAQ 상세보기'}>
       <Wrapper>
         <div className="back">
           <IoChevronBack size={40} onClick={() => router.back()} />
         </div>
         <FlexStyle>
-          <Table className="static">
+          <Table>
             <div className="write-info">
               <h3>작성자</h3>
               <div className="write-detail">
-                <span className="admin-name">
-                  {data?.adminName}/{data?.adminEmail}
-                </span>
+                <span>{data?.data?.adminName}</span>
                 <h3>작성날짜</h3>
-                <span>{data?.postDate}</span>
+                <span>{data?.data?.postDate}</span>
               </div>
             </div>
+
             <div className="flex">
-              <h3>제목</h3>
-              <span>{data?.title}</span>
+              <h3>질문</h3>
+              <span className="content">{data?.data?.question}</span>
             </div>
             <div className="flex">
-              <h3>내용</h3>
-              <span className="content">{data?.content}</span>
+              <h3>답변</h3>
+              <span className="content">{data?.data?.answer}</span>
             </div>
           </Table>
           <BtnWrapper>
-            <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
+            <Link href="/community/faq/edit/[faqId]" as={`/community/faq/edit/${faqId}`}>
               <Button_Send text={'수정'} height={50} width={150} />
             </Link>
-            <Button_Send text={'삭제'} height={50} width={150} onClick={deleteHandler} />
+            <Button_Send text={'삭제'} height={50} width={150} />
           </BtnWrapper>
         </FlexStyle>
       </Wrapper>
@@ -80,7 +64,6 @@ export default function NoticeDetail() {
 const Wrapper = styled.div`
   margin: 50px auto;
   width: 100%;
-  height: 600px;
   display: flex;
   justify-content: center;
   h2 {
@@ -134,10 +117,11 @@ const Table = styled.div`
     padding: 10px 20px;
     line-height: 1.8;
     text-overflow: ellipsis;
+    overflow-y: scroll;
 
     &.content {
-      overflow-y: scroll;
-      min-height: 300px;
+      min-height: 180px;
+      margin-bottom: 20px;
     }
   }
 `;
