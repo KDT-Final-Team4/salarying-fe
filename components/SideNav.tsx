@@ -180,9 +180,9 @@ const ProfileCard = styled.div`
   height: 70px;
 
   padding: 0 15px;
-  /* padding-bottom: 20px; */
+  padding-bottom: 20px;
   transition: all 0.2s;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   gap: 10px;
   span {
     color: var(--color-gray400);
