@@ -54,21 +54,15 @@ export default function TermsId() {
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
-  const [modalOn, setModalOn] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['terms', termsId],
     queryFn: () => api.getTerms(accessToken, termsId),
   });
 
-  console.log('termsId', termsId);
-  console.log('data', data);
-
   // 페이지네이션
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
-  console.log(pageMembersList);
-  console.log(pageGroups);
 
   return (
     <Content title="약관별 관리">
@@ -84,10 +78,7 @@ export default function TermsId() {
         <Table>
           <Thead>
             <Tr>
-              <Th>
-                {/* <input type="checkbox" /> */}
-                No.
-              </Th>
+              <Th>No.</Th>
               {heads.map((title, idx) => (
                 <Th key={idx}>{title}</Th>
               ))}
@@ -116,8 +107,9 @@ export default function TermsId() {
           </Tbody>
         </Table>
       </Wrapper>
+
       <ButtonArea>
-        <Button_2 name={'삭제'} />
+        {/* <Button_2 name={'삭제'} /> */}
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
@@ -283,7 +275,8 @@ const ButtonArea = styled.div`
   width: inherit;
   margin-bottom: 100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  position: relative;
   button {
     width: 170px;
     height: 50px;
@@ -292,8 +285,11 @@ const ButtonArea = styled.div`
     cursor: pointer;
   }
   .pagination {
+    position: absolute;
     display: flex;
     justify-content: center;
     margin-top: -10px;
+    left: 0;
+    right: 0;
   }
 `;
