@@ -49,11 +49,11 @@ export default function FaqDetail(props: Props) {
               <span className="content">{data?.data?.answer}</span>
             </div>
           </Table>
-          <BtnWrapper>
+          <BtnWrapper className={isAdmin ? 'admin' : 'user'}>
             <Link href="/community/faq/edit/[faqId]" as={`/community/faq/edit/${faqId}`}>
               <Button_Send text={'수정'} height={50} width={150} />
             </Link>
-            <Button_Send text={'삭제'} height={50} width={150} />
+            <Button_Send text={'삭제'} height={50} width={150} onClick={deleteHandler} />
           </BtnWrapper>
         </FlexStyle>
       </Wrapper>
@@ -72,6 +72,9 @@ const Wrapper = styled.div`
   }
   .back {
     margin-right: 40px;
+  }
+  .user {
+    display: none;
   }
 `;
 

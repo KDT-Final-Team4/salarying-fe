@@ -23,7 +23,7 @@ export default function TermsIdDetail({}: Props) {
   const router = useRouter();
   const [type, setType] = useState('');
   const { accessToken } = useCookies();
-  const { termsId } = router.query as { termsId: TermsId };
+  const { termsId } = router.query as { termsId };
   const { data: termDetail, isLoading } = useQuery(['termDetail', termsId], () => api.getTermsDetail(accessToken, termsId), {
     enabled: !!termsId,
     refetchOnWindowFocus: false,

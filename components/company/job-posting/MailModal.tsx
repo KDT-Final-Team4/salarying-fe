@@ -20,7 +20,12 @@ type TEmailInput = {
 export default function MailModal({ onCancel, recruitingId, applicantEmail, status, progress, refetch }: any) {
   // const recruitingId = 6;
   const { accessToken, isAdmin } = useCookies();
-  const { register, handleSubmit, getValues } = useForm();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
   const [newStatus, setNewStatus] = useState(status);
 
   const toggleStatus = (event) => {
@@ -33,6 +38,14 @@ export default function MailModal({ onCancel, recruitingId, applicantEmail, stat
   };
 
   const onValid = async () => {
+    if (!getValues().title) {
+      toast.error('메일 제목을 넣어주세요');
+      return;
+    }
+    if (!getValues().content) {
+      toast.error('메일 내용을 넣어주세요');
+      return;
+    }
     const payload: any = Object.assign(getValues(), {
       recruitingId,
       applicantEmail,
@@ -41,10 +54,7 @@ export default function MailModal({ onCancel, recruitingId, applicantEmail, stat
     });
 
     // 메일 보내기
-    api
-      .postApplicantsMessage(accessToken, [payload])
-      .then(() => toast.success('메일보내기 성공'))
-      .catch((e) => toast.error(e.message));
+
     // 합격여부 수정
     api
       .putApplicants(accessToken, {
@@ -56,10 +66,19 @@ export default function MailModal({ onCancel, recruitingId, applicantEmail, stat
       .then(() => refetch());
 
     onCancel();
+    toast.promise(
+      api.postApplicantsMessage(accessToken, [payload]).catch((e) => toast.error(e.message)),
+      {
+        pending: '메일을 보내는 중입니다.',
+        success: '메일보내기 성공',
+        error: '메일 보내는데 실패하였습니다.',
+      },
+    );
   };
+
   return (
     <Wrapper>
-      <Modal onSubmit={onValid}>
+      <Modal>
         <H1>이메일 보내기({applicantEmail}) </H1>
         <Form onSubmit={handleSubmit(onValid)}>
           <InputDiv>
@@ -182,6 +201,7 @@ const Btns = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 40px;
 `;
 const Button = styled.button`
   border: none;

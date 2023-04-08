@@ -654,11 +654,11 @@ class Axios {
     }
   }
   /** 약관 status 변경: 최소 1개 공개해야함, (admin) ok*/
-  async postTermsStatus(accessToken, { status, id }: { status: '공개' | '비공개'; id: unknown }) {
+  async postTermsStatus(accessToken, { force, id, status }: IStatusData): Promise<IStatusData> {
     try {
       const res = await this.axiosClient.post(
         `/terms/status`,
-        { status, id, force: true },
+        { status, id, force },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
