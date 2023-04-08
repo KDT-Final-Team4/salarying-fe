@@ -182,3 +182,4 @@ interface IRecruiting {
 interface IGetRecruiting extends Data {
   data: IRecruiting[];
 }
+type TermsId = 'service' | 'privacy' | 'information' | 'marketing';

@@ -18,15 +18,15 @@ interface IList {
 
 const list: IList[] = [
   {
-    title: '서비스 이용 약관',
+    title: '서비스 이용약관',
     id: 'service',
   },
   {
-    title: '개인 정보 처리 방침',
+    title: '개인정보 처리방침',
     id: 'privacy',
   },
   {
-    title: '제3자 정보 제공',
+    title: '제3자 정보제공',
     id: 'information',
   },
   {
@@ -47,7 +47,6 @@ interface StyledProps {
   toggle: boolean;
 }
 
-type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
 const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
 
 export default function TermsId() {
@@ -55,6 +54,7 @@ export default function TermsId() {
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
+  const [modalOn, setModalOn] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['terms', termsId],
@@ -68,10 +68,11 @@ export default function TermsId() {
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
   console.log(pageMembersList);
+  console.log(pageGroups);
 
   return (
     <Content title="약관별 관리">
-      {/* <span>{isLoading && '로딩중'}</span> */}
+      <span>{isLoading && '로딩중'}</span>
       <Nav>
         {list.map((item) => (
           <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
@@ -84,7 +85,8 @@ export default function TermsId() {
           <Thead>
             <Tr>
               <Th>
-                <input type="checkbox" />
+                {/* <input type="checkbox" /> */}
+                No.
               </Th>
               {heads.map((title, idx) => (
                 <Th key={idx}>{title}</Th>
@@ -94,15 +96,20 @@ export default function TermsId() {
           <Tbody>
             {pageMembersList?.map((term, index) => (
               <Tr key={index}>
-                <Td>
-                  <input type="checkbox" />
-                </Td>
+                <Td>{index + (activePage - 1) * 5 + 1}</Td>
                 <Td>{term.title}</Td>
                 <Td>{term.version}</Td>
                 <Td>{term.name}</Td>
                 <Td>{term.status}</Td>
                 <Td>
-                  <Button_Send text={'view'} height={null} width={100} />
+                  <Button_Send
+                    text={'view'}
+                    height={null}
+                    width={100}
+                    onClick={() => {
+                      router.push({ pathname: `detail/${term.id}` });
+                    }}
+                  />
                 </Td>
               </Tr>
             ))}
