@@ -6,6 +6,7 @@ import useCookies from '@/libs/hooks/useCookies';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/libs/client/axiosClient';
 import Button_2 from '@/components/ui/Button_2';
+import { toast } from 'react-toastify';
 
 type Props = {
   termId: any;
@@ -28,6 +29,24 @@ export default function TermsIdDetail({}: Props) {
   });
   const [type, setType] = useState('');
 
+  const handleClickDelete = async () => {
+    try {
+      const res = await api.deleteTerms(accessToken, termsId);
+      if (res.stateCode === 200) {
+        toast.success('약관 삭제가 완료되었습니다.');
+        router.back();
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.errorCode === -203) {
+        toast.error('존재하지 않는 약관입니다.');
+        router.back();
+      }
+      if (error?.errorCode === -207) {
+        toast.error('공개된 약관은 삭제할 수 없습니다.');
+      }
+    }
+  };
   // useEffect(() => {
   //   const getTypeName = (type) => {
   //     const res = typeName.find((item) => item[0] === type);
@@ -65,7 +84,12 @@ export default function TermsIdDetail({}: Props) {
           </div>
         </Write>
         <ButtonArea>
-          <Button_2 name={'삭제'} onClick={() => {}}></Button_2>
+          <Button_2
+            name={'삭제'}
+            onClick={() => {
+              handleClickDelete();
+            }}
+          ></Button_2>
           <div>
             <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
             <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${type}`)}></Button_2>
