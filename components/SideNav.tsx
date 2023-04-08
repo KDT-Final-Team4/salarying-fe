@@ -14,6 +14,8 @@ import { AiFillNotification } from 'react-icons/ai';
 import Image from 'next/image';
 import logoDarkPic from '../public/logo_dark.png';
 import { toast } from 'react-toastify';
+import Button_1 from './ui/Button_1';
+import Button_2 from './ui/Button_2';
 
 const termsNavs = [
   {
@@ -80,35 +82,36 @@ export default function SideNav() {
   };
   return (
     <Wrapper>
-      <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
-      <CopyToken onClick={copyToken}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
-      <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
+      <div>
+        <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
+        <CopyToken onClick={copyToken}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
+        <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
 
-      <NavMenues>
-        <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={termsNavs} />
+        <NavMenues>
+          <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={termsNavs} />
 
-        <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
-          기업 회원관리
-        </CustomLink>
+          <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
+            기업 회원관리
+          </CustomLink>
 
-        <CustomLink Icon={MdOutlineAnnouncement} href="/community/notice">
-          공지사항
-        </CustomLink>
+          <CustomLink Icon={MdOutlineAnnouncement} href="/community/notice">
+            공지사항
+          </CustomLink>
 
-        <CustomLink Icon={MdOutlineQuestionAnswer} href="/community/faq">
-          FAQ
-        </CustomLink>
-        <AccordionMenu Icon={FaUserTie} title={'Company'} activeURL="/company" subNavs={companyNav} />
-        <AccordionMenu Icon={AiFillNotification} title={'Community'} activeURL="/community" subNavs={communityNav} />
-        <AccordionMenu Icon={AiFillNotification} title={'Admin'} activeURL="/admin" subNavs={adminNav} />
-      </NavMenues>
-      <DevLinks>
-        <div>
-          <Link href="/login">/login</Link>
-          <Link href="/signup">/signup</Link>
-        </div>
+          <CustomLink Icon={MdOutlineQuestionAnswer} href="/community/faq">
+            FAQ
+          </CustomLink>
+          <AccordionMenu Icon={FaUserTie} title={'Company'} activeURL="/company" subNavs={companyNav} />
+          <AccordionMenu Icon={AiFillNotification} title={'Community'} activeURL="/community" subNavs={communityNav} />
+          <AccordionMenu Icon={AiFillNotification} title={'Admin'} activeURL="/admin" subNavs={adminNav} />
+        </NavMenues>
+        <DevLinks>
+          <div>
+            <Link href="/login">/login</Link>
+            <Link href="/signup">/signup</Link>
+          </div>
 
-        {/* <div>
+          {/* <div>
           <Link href="/admin">/admin</Link>
           <Link href="/admin/terms">/admin/terms</Link>
           <Link href="/admin/terms/1">/admin/terms/1</Link>
@@ -116,7 +119,7 @@ export default function SideNav() {
           <Link href="/admin/mypage">/admin/mypage</Link>
         </div> */}
 
-        {/* <div>
+          {/* <div>
           <Link href="/company">/company</Link>
           <Link href="/company/job-posting">/company/job-posting</Link>
           <Link href="/company/job-posting/2">/company/job-posting/2</Link>
@@ -125,14 +128,15 @@ export default function SideNav() {
           <Link href="/company/applicant-management/category/1">/company/applicant-management/category/1</Link>
           <Link href="/company/notification">/company/notification</Link>
         </div> */}
-        {/* <div>
+          {/* <div>
           <Link href="/community/faq">/community/faq</Link>
           <Link href="/community/notice">/community/notice</Link>
           <Link href="/community/notice/1">/community/notice/1</Link>
           <Link href="/community/notice/new">/community/notice/new</Link>
           <Link href="/community/notice/edit/1">/community/notice/edit/1</Link>
         </div> */}
-      </DevLinks>
+        </DevLinks>
+      </div>
 
       {/* <Profile>
         <Avatar style={{ width: "8rem", height: "8rem" }} {...config} />
@@ -141,7 +145,10 @@ export default function SideNav() {
           마이페이지
         </Mypage>
       </Profile> */}
-      <button
+      <Button_2
+        style={{ width: '15rem', height: '3rem', margin: '1rem' }}
+        name={'로그아웃'}
+        color={'point'}
         type="button"
         onClick={() => {
           console.log('로그아웃 버튼 클릭');
@@ -149,9 +156,7 @@ export default function SideNav() {
           removeIsAdmin();
           router.push('/login');
         }}
-      >
-        로그아웃
-      </button>
+      ></Button_2>
     </Wrapper>
   );
 }
@@ -162,6 +167,7 @@ const Wrapper = styled.section`
   flex-direction: column;
   /* flex-wrap: wrap; */
   align-content: flex-start;
+  justify-content: space-between;
   width: 270px;
   height: 100vh;
   position: fixed;
