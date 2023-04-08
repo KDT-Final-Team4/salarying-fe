@@ -54,13 +54,13 @@ export default function FAQ() {
             {pageMembersList?.map((data, index) => {
               return (
                 <GridStyle key={index}>
-                  <td>{data.category}</td>
+                  <td>{data?.category}</td>
                   <td className="second">
-                    <span>Q {data.question}</span>
-                    <span>A {data.answer}</span>
+                    <span>Q {data?.question}</span>
+                    <span>A {data?.answer}</span>
                   </td>
                   <td>
-                    <Link href="/community/faq/[faqId]" as={`/community/faq/${data.id}`}>
+                    <Link href="/community/faq/[faqId]" as={`/community/faq/${data?.id}`}>
                       <Button_Send text={'view'} />
                     </Link>
                   </td>

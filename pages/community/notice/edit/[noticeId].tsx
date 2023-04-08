@@ -28,7 +28,7 @@ export default function NoticeEdit(props: Props) {
     enabled: !!noticeId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
-      setTitle(data.title), setContent(data.content);
+      setTitle(data?.title), setContent(data?.content);
     },
   });
 

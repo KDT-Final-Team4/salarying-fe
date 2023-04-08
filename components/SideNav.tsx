@@ -14,7 +14,10 @@ import { AiFillNotification } from 'react-icons/ai';
 import Image from 'next/image';
 import logoDarkPic from '../public/logo_dark.png';
 import { toast } from 'react-toastify';
+import useCookies from '@/libs/hooks/useCookies';
 import Button_2 from './ui/Button_2';
+import { BiLogOut } from 'react-icons/bi';
+import useUser from '@/libs/hooks/useUser';
 
 const termsNavs = [
   {
@@ -66,25 +69,41 @@ const adminNav = [
   { title: '/admin/mypage', href: '/admin/mypage' },
 ];
 export default function SideNav() {
-  const config = genConfig('admin@email.com');
   const router = useRouter();
   const [pathname, setPathname] = useState('');
-  const { isAdmin, accessToken, removeAccessToken, removeIsAdmin } = useAccessToken();
+  const { removeAccessToken, removeIsAdmin } = useAccessToken();
+  const { isAdmin, accessToken } = useCookies();
   const textRef = useRef(null);
   useEffect(() => {
     setPathname(router.pathname);
   }, [router.pathname]);
 
-  const copyToken = () => {
-    textRef.current.select();
-    document.execCommand('copy', false, accessToken);
-  };
+  const { data } = useUser();
+
+  const config = genConfig(isAdmin ? 'admin@email.com' : data?.data?.email);
+
   return (
     <Wrapper>
-      <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
-      <CopyToken onClick={copyToken}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
+      {/* <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
+      <CopyToken onClick={() => {
+    textRef.current.select();
+    document.execCommand('copy', false, accessToken);
+  }}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken> */}
       <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
-
+      <ProfileCard>
+        <span>{!accessToken ? '로그인 필요' : isAdmin ? '관리자 계정' : data?.data?.email}</span>
+        <Logout
+          onClick={() => {
+            console.log('로그아웃 버튼 클릭');
+            removeAccessToken();
+            removeIsAdmin();
+            router.replace('/login');
+          }}
+        >
+          <BiLogOut />
+          <div>로그아웃</div>
+        </Logout>
+      </ProfileCard>
       <NavMenues>
         <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={termsNavs} />
 
@@ -103,57 +122,6 @@ export default function SideNav() {
         <AccordionMenu Icon={AiFillNotification} title={'Community'} activeURL="/community" subNavs={communityNav} />
         <AccordionMenu Icon={AiFillNotification} title={'Admin'} activeURL="/admin" subNavs={adminNav} />
       </NavMenues>
-      <DevLinks>
-        <div>
-          <Link href="/login">/login</Link>
-          <Link href="/signup">/signup</Link>
-        </div>
-
-        {/* <div>
-          <Link href="/admin">/admin</Link>
-          <Link href="/admin/terms">/admin/terms</Link>
-          <Link href="/admin/terms/1">/admin/terms/1</Link>
-          <Link href="/admin/company-membership">/admin/company-membership</Link>
-          <Link href="/admin/mypage">/admin/mypage</Link>
-        </div> */}
-
-        {/* <div>
-          <Link href="/company">/company</Link>
-          <Link href="/company/job-posting">/company/job-posting</Link>
-          <Link href="/company/job-posting/2">/company/job-posting/2</Link>
-          <Link href="/company/job-posting/new">/company/job-posting/new</Link>
-          <Link href="/company/applicant-management">/company/applicant-management</Link>
-          <Link href="/company/applicant-management/category/1">/company/applicant-management/category/1</Link>
-          <Link href="/company/notification">/company/notification</Link>
-        </div> */}
-        {/* <div>
-          <Link href="/community/faq">/community/faq</Link>
-          <Link href="/community/notice">/community/notice</Link>
-          <Link href="/community/notice/1">/community/notice/1</Link>
-          <Link href="/community/notice/new">/community/notice/new</Link>
-          <Link href="/community/notice/edit/1">/community/notice/edit/1</Link>
-        </div> */}
-      </DevLinks>
-
-      {/* <Profile>
-        <Avatar style={{ width: "8rem", height: "8rem" }} {...config} />
-        <Mypage href="/admin/mypage">
-          <CgProfile />
-          마이페이지
-        </Mypage>
-      </Profile> */}
-      <Button_2
-        style={{ width: '15rem', height: '3rem', margin: '1rem' }}
-        name={'로그아웃'}
-        color={'point'}
-        type="button"
-        onClick={() => {
-          console.log('로그아웃 버튼 클릭');
-          removeAccessToken();
-          removeIsAdmin();
-          router.replace('/login');
-        }}
-      ></Button_2>
     </Wrapper>
   );
 }
@@ -178,24 +146,6 @@ const NavMenues = styled.div`
   flex-direction: column;
 `;
 
-const StyledLink = styled(Link)<any>`
-  display: flex;
-  align-items: center;
-  width: 90%;
-  height: 50px;
-  color: ${({ pathname, href }) => (href === pathname ? 'var(--color-gray600)' : 'var(--color-gray300)')};
-  cursor: pointer;
-  border: 1px solid red;
-  border-radius: 10px;
-  margin: 0 10px;
-  padding: 0 10px;
-  font-weight: 700;
-  background-color: ${({ href, pathname }) => (href === pathname ? 'var(--color-point' : 'transparent')};
-  &:hover {
-    background-color: var(--color-orange400);
-  }
-`;
-
 const Logo = styled.div`
   width: 100%;
   display: flex;
@@ -204,38 +154,6 @@ const Logo = styled.div`
     width: 180px;
     height: 115px;
     padding: 40px 0;
-  }
-`;
-
-const Profile = styled.div`
-  width: 100%;
-  height: 200px;
-  background-color: #000c8e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const DevLinks = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 300px;
-  overflow-y: auto;
-  position: absolute;
-  bottom: 0;
-  div {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    &:hover {
-      background-color: var(--color-orange50);
-    }
-    a {
-      color: var(--color-gray600);
-      &:hover {
-        background-color: var(--color-orange200);
-      }
-    }
   }
 `;
 
@@ -250,4 +168,44 @@ const HiddenToken = styled.input`
   opacity: 0;
   position: absolute;
   pointer-events: none;
+`;
+
+const ProfileCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  height: 70px;
+
+  padding: 0 15px;
+  /* padding-bottom: 20px; */
+  transition: all 0.2s;
+  border: 1px solid red;
+  gap: 10px;
+  span {
+    color: var(--color-gray400);
+  }
+
+  & > div:last-child {
+  }
+`;
+
+const Logout = styled.div`
+  /* border: 1px solid orange; */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-emerald500);
+  transition: color 0.1s;
+  & > svg {
+    position: relative;
+    top: 1px;
+  }
+  &:hover {
+    color: var(--color-emerald400);
+  }
 `;

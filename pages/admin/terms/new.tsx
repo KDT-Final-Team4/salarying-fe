@@ -62,7 +62,7 @@ export default function New() {
 
       return res;
     } catch (err) {
-      toast.error(err.response.data.errorMessage);
+      toast.error(err?.response?.data?.errorMessage);
     }
   };
 
