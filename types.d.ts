@@ -185,4 +185,14 @@ interface IRecruiting {
 interface IGetRecruiting extends Data {
   data: IRecruiting[];
 }
-type TermsId = 'service' | 'privacy' | 'information' | 'marketing';
+interface ITermsId {
+  type: 'service' | 'privacy' | 'information' | 'marketing';
+}
+interface IStatus {
+  status: '공개' | '비공개';
+}
+interface IStatusData {
+  force: boolean;
+  status: '공개' | '비공개';
+  id: number;
+}
