@@ -65,7 +65,7 @@ export default function NoticeDetail() {
               <span className="content">{data?.content}</span>
             </div>
           </Table>
-          <BtnWrapper>
+          <BtnWrapper className={isAdmin ? 'admin' : 'user'}>
             <Link href="/community/notice/edit/[noticeId]" as={`/community/notice/edit/${noticeId}`}>
               <Button_Send text={'수정'} height={50} width={150} />
             </Link>
@@ -89,6 +89,9 @@ const Wrapper = styled.div`
   }
   .back {
     margin-right: 40px;
+  }
+  .user {
+    display: none;
   }
 `;
 

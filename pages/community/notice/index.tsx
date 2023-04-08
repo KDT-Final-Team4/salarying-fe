@@ -32,12 +32,11 @@ type NoticeStatusMutationParams = {
 export default function NoticeList() {
   const [activePage, setActivePage] = useState<number>(1);
   const [openModal, setOpenModal] = useState(false);
-  const [status, setStatus] = useState(false);
 
-  const { accessToken } = useCookies();
+  const { accessToken, isAdmin } = useCookies();
   const { data: notices, refetch } = useQuery(['notices'], () => api.getNotice(accessToken));
 
-  const heads = ['제목', '작성자', '상세보기', '게시중'];
+  const heads = ['제목', '작성자', '상세보기'];
 
   let pageGroups = usePagination(notices?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
@@ -63,6 +62,7 @@ export default function NoticeList() {
                 {heads.map((head: string, index: number) => (
                   <th key={index}>{head}</th>
                 ))}
+                <th className={isAdmin ? 'admin' : 'user'}>게시중</th>
               </tr>
             </thead>
             <tbody>
@@ -75,7 +75,7 @@ export default function NoticeList() {
                       <Button_Send text={'view'} />
                     </Link>
                   </td>
-                  <td>
+                  <td className={isAdmin ? 'admin' : 'user'}>
                     <Toggle id="onBoard" name="onBoard" checked={notice?.status} onChange={() => toggleHandler(notice?.id, notice?.status)} />
                   </td>
                 </tr>
@@ -84,12 +84,12 @@ export default function NoticeList() {
           </TableStyle>
           <div className="pagination">
             <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
+            <ButtonStyle className={isAdmin ? 'admin' : 'user'}>
+              {openModal && <NoticeAddModal setOpenModal={setOpenModal} />}
+              <Button_Send text={'등록'} onClick={() => setOpenModal(true)} />
+            </ButtonStyle>
           </div>
         </SectionStyle>
-        <NewButton>
-          {openModal && <NoticeAddModal setOpenModal={setOpenModal} />}
-          <Button_Send text={'등록'} onClick={() => setOpenModal(true)} />
-        </NewButton>
       </Wrapper>
     </Content>
   );
@@ -97,29 +97,37 @@ export default function NoticeList() {
 
 const Wrapper = styled.div`
   margin: auto;
+  .user {
+    display: none;
+  }
 `;
 
 const SectionStyle = styled.div`
-  height: 500px;
+  height: 650px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-top: 25px;
+  position: relative;
   .pagination {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
   }
 `;
 
-const NewButton = styled.div`
+const ButtonStyle = styled.div`
   display: flex;
-  margin-bottom: 3rem;
   justify-content: end;
+  padding: 40px 50px;
 `;
 
 const TableStyle = styled.table`
   width: 100%;
   table-layout: fixed;
+
   thead {
     th {
       color: var(--color-gray400);
@@ -127,11 +135,15 @@ const TableStyle = styled.table`
       height: 80px;
       text-align: left;
     }
+    th:first-child {
+      padding-left: 30px;
+    }
     th + th {
       text-align: center;
     }
     margin-bottom: 40px;
   }
+
   tbody {
     tr {
       font-weight: 700;
@@ -146,6 +158,9 @@ const TableStyle = styled.table`
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    td:first-child {
+      padding-left: 30px;
+    }
     td + td {
       text-align: center;
     }
@@ -153,36 +168,4 @@ const TableStyle = styled.table`
       align-items: center;
     }
   }
-`;
-
-const LinkStyle = styled.div``;
-
-const ToggleBtn = styled.button<StyledProps>`
-  width: 130px;
-  height: 50px;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  background-color: ${(props) => (!props.toggle ? 'none' : 'var(--color-primary)')};
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.5s ease-in-out;
-`;
-
-const Circle = styled.div<StyledProps>`
-  background-color: white;
-  width: 38px;
-  height: 38px;
-  border-radius: 50px;
-  position: absolute;
-  left: 5%;
-  transition: all 0.5s ease-in-out;
-  ${(props) =>
-    props.toggle &&
-    css`
-      transform: translate(80px, 0);
-      transition: all 0.5s ease-in-out;
-    `}
 `;
