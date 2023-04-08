@@ -41,11 +41,11 @@ const companyNav = [
 ];
 const communityNav = [
   {
-    title: 'faq',
+    title: 'FAQ',
     href: '/community/faq',
   },
   {
-    title: 'notice',
+    title: '공지사항',
     href: '/community/notice',
   },
   {
@@ -62,11 +62,9 @@ const communityNav = [
   },
 ];
 const adminNav = [
-  { title: '/admin', href: '/admin' },
   { title: '/admin/terms', href: '/admin/terms' },
   { title: '/admin/terms/1', href: '/admin/terms/1' },
   { title: '/admin/company-membership', href: '/admin/company-membership' },
-  { title: '/admin/mypage', href: '/admin/mypage' },
 ];
 export default function SideNav() {
   const router = useRouter();
@@ -97,7 +95,7 @@ export default function SideNav() {
             console.log('로그아웃 버튼 클릭');
             removeAccessToken();
             removeIsAdmin();
-            router.replace('/login');
+            router.replace('/');
           }}
         >
           <BiLogOut />
