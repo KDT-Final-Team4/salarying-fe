@@ -14,6 +14,7 @@ import { AiFillNotification } from 'react-icons/ai';
 import Image from 'next/image';
 import logoDarkPic from '../public/logo_dark.png';
 import { toast } from 'react-toastify';
+import Button_2 from './ui/Button_2';
 
 const termsNavs = [
   {
@@ -68,7 +69,7 @@ export default function SideNav() {
   const config = genConfig('admin@email.com');
   const router = useRouter();
   const [pathname, setPathname] = useState('');
-  const { isAdmin, accessToken } = useAccessToken();
+  const { isAdmin, accessToken, removeAccessToken, removeIsAdmin } = useAccessToken();
   const textRef = useRef(null);
   useEffect(() => {
     setPathname(router.pathname);
@@ -141,6 +142,18 @@ export default function SideNav() {
           마이페이지
         </Mypage>
       </Profile> */}
+      <Button_2
+        style={{ width: '15rem', height: '3rem', margin: '1rem' }}
+        name={'로그아웃'}
+        color={'point'}
+        type="button"
+        onClick={() => {
+          console.log('로그아웃 버튼 클릭');
+          removeAccessToken();
+          removeIsAdmin();
+          router.replace('/login');
+        }}
+      ></Button_2>
     </Wrapper>
   );
 }
