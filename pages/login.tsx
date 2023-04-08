@@ -27,7 +27,7 @@ export default function Login() {
   } = useForm();
   const [showPW, setShowPW] = useState(false);
   const router = useRouter();
-  const { accessToken: token, isAdmin, saveAccessToken, saveIsAdmin } = useAccessToken();
+  const { accessToken: token, saveAccessToken, saveIsAdmin } = useAccessToken();
   const [isAdminLogin, setIsAdminLogin] = useState(false);
   const onValid = async () => {
     try {
@@ -35,28 +35,30 @@ export default function Login() {
       if (isAdminLogin) {
         // admin 로그인시
         const res = await api.postAdminLogin(getValues());
-        if (res.success) {
-          toast.success(`(admin)${res.message}`);
+        if (res?.success) {
+          toast.success(`(admin)${res?.message}`);
           // router.replace('/admin');
-          newToken = res.data.token;
+          newToken = res?.data?.token;
           console.log('새로운 토큰', newToken);
           saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
+          router.push('/admin/terms');
         } else {
-          toast.error('(Admin)' + res.message);
+          toast.error('(Admin)' + res?.message);
         }
       } else {
         // 로그인시
         const res = await api.postLogin(getValues());
-        if (res.success) {
-          toast.success(res.message);
-          newToken = res.data.token;
+        if (res?.success) {
+          toast.success(res?.message);
+          newToken = res?.data?.token;
           // router.replace('/company');
           saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
           console.log('새로운 토큰', newToken);
+          router.push('/company');
         } else {
-          toast.error('(User)' + res.message);
+          toast.error('(User)' + res?.message);
         }
       }
       // 로그인 하면 클립보드에 토큰 저장
@@ -69,14 +71,6 @@ export default function Login() {
       toast.error(err.message);
     }
   };
-  // const handleTest = async () => {
-  //   console.log(token);
-  //   await api.putFAQStatus(token, {
-  //     id: 36,
-  //     question: 'putfaqstatus',
-  //     answer: 'asdfadfs',
-  //   });
-  // };
   return (
     <Wrapper>
       <LoginSection>

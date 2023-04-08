@@ -6,41 +6,72 @@ import useCookies from '@/libs/hooks/useCookies';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/libs/client/axiosClient';
 import Button_2 from '@/components/ui/Button_2';
+import { toast } from 'react-toastify';
 
 type Props = {
   termId: any;
 };
 
 const typeName = [
-  ['서비스 이용약관', 'service'],
-  ['개인정보 처리방침', 'privacy'],
-  ['제3자 정보제공', 'information'],
-  ['개인정보 마케팅 이용', 'marketing'],
+  { typeName: '서비스 이용약관', typeId: 'service' },
+  { typeName: '개인정보 처리방침', typeId: 'privacy' },
+  { typeName: '제3자 정보제공', typeId: 'information' },
+  { typeName: '개인정보 마케팅 이용', typeId: 'marketing' },
 ];
 
 export default function TermsIdDetail({}: Props) {
   const router = useRouter();
+  const [type, setType] = useState('');
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
-  const { data: termDetail, isLoading } = useQuery({
-    queryKey: ['termDetail', termsId],
-    queryFn: () => api.getTermsDetail(accessToken, termsId),
+  const { data: termDetail, isLoading } = useQuery(['termDetail', termsId], () => api.getTermsDetail(accessToken, termsId), {
+    enabled: !!termsId,
+    refetchOnWindowFocus: false,
+    onSuccess: (termDetail) => {
+      if (termDetail?.data?.type === '서비스 이용약관') {
+        setType('service');
+      }
+      if (termDetail?.data?.type === '개인정보 처리방침') {
+        setType('privacy');
+      }
+      if (termDetail?.data?.type === '제3자 정보제공') {
+        setType('information');
+      }
+      if (termDetail?.data?.type === '개인정보 마케팅 이용') {
+        setType('marketing');
+      }
+    },
   });
-  const [type, setType] = useState('');
 
-  // useEffect(() => {
-  //   const getTypeName = (type) => {
-  //     const res = typeName.find((item) => item[0] === type);
-  //     setType(res[1]);
-  //   };
-  //   getTypeName(termDetail?.data?.type);
-  // }, [termDetail]);
+  const handleClickDelete = async () => {
+    try {
+      const res = await api.deleteTerms(accessToken, termsId);
+      if (res.stateCode === 200) {
+        toast.success('약관 삭제가 완료되었습니다.');
+        router.back();
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.errorCode === -203) {
+        toast.error('존재하지 않는 약관입니다.');
+        router.back();
+      }
+      if (error?.errorCode === -207) {
+        toast.error('공개된 약관은 삭제할 수 없습니다.');
+      }
+    }
+  };
+
+  // const getTypeName = (type) => {
+  //   const res = typeName.find((item) => item.typeName === type);
+  //   console.log(res.typeId);
+  // };
+  // getTypeName(type);
 
   return (
     <Content title={'약관 조회'}>
       <span>{isLoading && '로딩중'}</span>
       <div>약관별 관리 &gt; 서비스 이용약관 &gt; 약관 상세보기</div>
-      <div>작성자 : {termDetail?.data?.name}</div>
       <Inner>
         <Info>
           <Category>
@@ -49,14 +80,22 @@ export default function TermsIdDetail({}: Props) {
               <div>{termDetail?.data?.type}</div>
             </div>
           </Category>
-          <Title>
+          <Input>
             <p>약관 제목</p>
             <input type="text" value={termDetail?.data?.title} readOnly />
-          </Title>
-          <Version>
+          </Input>
+          <Input>
             <p>약관 버전</p>
             <input type="text" value={termDetail?.data?.version} readOnly />
-          </Version>
+          </Input>
+          <Input>
+            <p>작성자</p>
+            <input type="text" value={termDetail?.data?.name} readOnly />
+          </Input>
+          <Input>
+            <p>공개 상태</p>
+            <input type="text" value={termDetail?.data?.status} readOnly />
+          </Input>
         </Info>
         <Write>
           <p>약관 내용</p>
@@ -65,8 +104,16 @@ export default function TermsIdDetail({}: Props) {
           </div>
         </Write>
         <ButtonArea>
-          <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
-          <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${type}`)}></Button_2>
+          <Button_2
+            name={'삭제'}
+            onClick={() => {
+              handleClickDelete();
+            }}
+          ></Button_2>
+          <div>
+            <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
+            <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${type}`)}></Button_2>
+          </div>
         </ButtonArea>
       </Inner>
     </Content>
@@ -121,42 +168,13 @@ const Category = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Input = styled.div`
   width: 100%;
   display: flex;
   box-sizing: border-box;
   padding: 10px 30px;
   align-items: center;
   user-select: none;
-  p {
-    min-width: 100px;
-    padding-right: 10px;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--color-primary);
-    border-right: 2px solid var(--color-gray400);
-  }
-  input {
-    padding: 20px 10px;
-    outline: none;
-    border: none;
-    border-bottom: 2px solid var(--color-gray400);
-    box-sizing: border-box;
-    font-size: 16px;
-    width: 70%;
-    margin: 0 60px;
-    background-color: transparent;
-    width: 100%;
-    user-select: none;
-  }
-`;
-
-const Version = styled.div`
-  width: 100%;
-  display: flex;
-  box-sizing: border-box;
-  padding: 10px 30px;
-  align-items: center;
   p {
     min-width: 100px;
     padding-right: 10px;
@@ -206,7 +224,7 @@ const Write = styled.div`
 `;
 
 const ButtonArea = styled.div`
-  width: inherit;
+  width: 100%;
   margin-bottom: 100px;
   display: flex;
   justify-content: space-between;
@@ -216,5 +234,8 @@ const ButtonArea = styled.div`
     margin: 20px 10px;
     border-radius: 10px;
     cursor: pointer;
+  }
+  div {
+    display: flex;
   }
 `;

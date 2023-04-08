@@ -16,20 +16,6 @@ const list = [
 ];
 
 export default function Terms() {
-  const token = useCookies();
-  console.log(token);
-  const fetcher = () => api.getTerms(token, 'service');
-  const { data: terms, isLoading } = useQuery(['terms'], fetcher);
-
-  // if (!token) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  console.log(terms);
   return (
     <Container>
       <Content title="최종 약관">

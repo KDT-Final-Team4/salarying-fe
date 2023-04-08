@@ -38,7 +38,7 @@ export default function NoticeEdit(props: Props) {
     enabled: !!faqId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
-      setQuestion(data.data.question), setAnswer(data.data.answer);
+      setQuestion(data?.data?.question), setAnswer(data?.data?.answer);
     },
   });
 
