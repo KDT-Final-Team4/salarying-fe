@@ -10,53 +10,51 @@ import useCookies from '@/libs/hooks/useCookies';
 
 type Props = {};
 
-interface noticeDetail {
-  title: string;
-  content: string;
-}
+interface noticeDetail {}
 
-export default function NoticeEdit(props: Props) {
+export default function NoticeAddModal({ setOpenModal }: any) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const { accessToken } = useCookies();
 
-  const router = useRouter();
-  const queryClient = new QueryClient();
-
   const clickHandler = () => {
     api.postNotice(accessToken, { title, content });
+    setOpenModal(false);
   };
 
   return (
-    <Content title={'공지사항 등록하기'}>
-      <Wrapper>
-        <FlexStyle>
-          <Table className="static">
-            <h3>제목</h3>
-            <textarea className="title" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
-            <h3>내용</h3>
-            <textarea className="content" onChange={(e) => setContent(e.target.value)}></textarea>
-          </Table>
-          <BtnWrapper>
-            <div>
-              <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
-            </div>
-            <div onClick={() => router.back()}>
-              <Button_Send text={'취소'} height={50} width={150} />
-            </div>
-          </BtnWrapper>
-        </FlexStyle>
-      </Wrapper>
-    </Content>
+    <Wrapper>
+      <FlexStyle>
+        <Table className="static">
+          <h3>제목</h3>
+          <textarea className="title" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
+          <h3>내용</h3>
+          <textarea className="content" onChange={(e) => setContent(e.target.value)}></textarea>
+        </Table>
+        <BtnWrapper>
+          <div>
+            <Button_Send text={'등록'} height={50} width={150} onClick={clickHandler} />
+          </div>
+          <div onClick={() => setOpenModal(false)}>
+            <Button_Send text={'취소'} height={50} width={150} />
+          </div>
+        </BtnWrapper>
+      </FlexStyle>
+    </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  margin: 50px;
-  width: 90%;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
   display: flex;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+
   h2 {
     font-size: 20px;
     margin-bottom: 20px;
@@ -67,11 +65,15 @@ const FlexStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+  margin: auto;
+  background-color: var(--color-lightgray);
+  padding: 100px 80px;
+  border-radius: 10px;
 `;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 100px 1000px;
+  grid-template-columns: 100px 800px;
   grid-template-rows: 100px 1fr;
   color: var(--color-primary);
   font-weight: 700;
