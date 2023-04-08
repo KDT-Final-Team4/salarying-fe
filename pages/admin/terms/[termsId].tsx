@@ -54,21 +54,15 @@ export default function TermsId() {
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
-  const [modalOn, setModalOn] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['terms', termsId],
     queryFn: () => api.getTerms(accessToken, termsId),
   });
 
-  console.log('termsId', termsId);
-  console.log('data', data);
-
   // 페이지네이션
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
-  console.log(pageMembersList);
-  console.log(pageGroups);
 
   return (
     <Content title="약관별 관리">
