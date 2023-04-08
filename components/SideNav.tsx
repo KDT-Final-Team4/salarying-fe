@@ -118,7 +118,6 @@ export default function SideNav() {
           <Link href="/admin/company-membership">/admin/company-membership</Link>
           <Link href="/admin/mypage">/admin/mypage</Link>
         </div> */}
-
           {/* <div>
           <Link href="/company">/company</Link>
           <Link href="/company/job-posting">/company/job-posting</Link>
@@ -154,7 +153,7 @@ export default function SideNav() {
           console.log('로그아웃 버튼 클릭');
           removeAccessToken();
           removeIsAdmin();
-          router.push('/login');
+          router.replace('/login');
         }}
       ></Button_2>
     </Wrapper>
