@@ -84,10 +84,7 @@ export default function TermsId() {
         <Table>
           <Thead>
             <Tr>
-              <Th>
-                {/* <input type="checkbox" /> */}
-                No.
-              </Th>
+              <Th>No.</Th>
               {heads.map((title, idx) => (
                 <Th key={idx}>{title}</Th>
               ))}
@@ -116,8 +113,9 @@ export default function TermsId() {
           </Tbody>
         </Table>
       </Wrapper>
+
       <ButtonArea>
-        <Button_2 name={'삭제'} />
+        {/* <Button_2 name={'삭제'} /> */}
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
@@ -283,7 +281,8 @@ const ButtonArea = styled.div`
   width: inherit;
   margin-bottom: 100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  position: relative;
   button {
     width: 170px;
     height: 50px;
@@ -292,8 +291,11 @@ const ButtonArea = styled.div`
     cursor: pointer;
   }
   .pagination {
+    position: absolute;
     display: flex;
     justify-content: center;
     margin-top: -10px;
+    left: 0;
+    right: 0;
   }
 `;
