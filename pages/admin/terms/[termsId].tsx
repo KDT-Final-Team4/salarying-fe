@@ -9,7 +9,9 @@ import Button_Send from '@/components/ui/Button_Send';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import Button_2 from '@/components/ui/Button_2';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import Toggle from 'react-toggle';
+import { toast } from 'react-toastify';
 
 interface IList {
   title: string;
@@ -53,8 +55,9 @@ export default function TermsId() {
   const router = useRouter();
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
-  const { termsId } = router.query as { termsId: TermsId };
-
+  const { termsId } = router.query as { termsId };
+  const [confirm, setConfirm] = useState(false);
+  const [idNumber, setIdNumber] = useState();
   const { data, isLoading } = useQuery({
     queryKey: ['terms', termsId],
     queryFn: () => api.getTerms(accessToken, termsId),
@@ -63,6 +66,28 @@ export default function TermsId() {
   // 페이지네이션
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
+
+  const handleClick = (id, status) => {
+    if (status === '비공개') {
+      setConfirm(true);
+      setIdNumber(id);
+    }
+    if (status === '공개') {
+      setIdNumber(id);
+      toast.error('최소 한 개의 약관은 공개상태여야 합니다.');
+    }
+  };
+
+  const postStatus = async () => {
+    try {
+      const data: IStatusData = { force: true, status: '공개', id: idNumber };
+      const res = await api.postTermsStatus(accessToken, data);
+      setConfirm(false);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Content title="약관별 관리">
@@ -91,7 +116,28 @@ export default function TermsId() {
                 <Td>{term.title}</Td>
                 <Td>{term.version}</Td>
                 <Td>{term.name}</Td>
-                <Td>{term.status}</Td>
+                <Td>
+                  {confirm && idNumber === term.id ? (
+                    <ConfirmModal id={term?.id}>
+                      <h4>☑️ 확인 ☑️</h4>
+                      <h6>
+                        해당 약관을 <strong>공개상태</strong>로 변경하시겠습니까?
+                        <br />
+                        다른 공개 약관은 <strong>자동으로 비공개</strong>처리됩니다.
+                      </h6>
+                      <div>
+                        <Button_2 color={'point'} name={'변경'} onClick={postStatus} />
+                        <Button_2
+                          name={'취소'}
+                          onClick={() => {
+                            setConfirm(false);
+                          }}
+                        />
+                      </div>
+                    </ConfirmModal>
+                  ) : null}
+                  <Toggle id={term.id} name="onBoard" checked={term?.status === '공개'} onClick={() => handleClick(term?.id, term?.status)} />
+                </Td>
                 <Td>
                   <Button_Send
                     text={'view'}
@@ -123,6 +169,51 @@ export default function TermsId() {
   );
 }
 
+const ConfirmModal = styled.div`
+  width: 450px;
+  height: 300px;
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  border-radius: 20px;
+  background-color: var(--color-primary);
+  padding: 10px 30px;
+  box-sizing: border-box;
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  h4 {
+    width: inherit;
+    padding-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-gray100);
+  }
+  h6 {
+    color: white;
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  div {
+    width: inherit;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding-bottom: 10px;
+    button {
+      cursor: pointer;
+      box-sizing: border-box;
+      width: 200px;
+      height: 40px;
+    }
+  }
+`;
 const Nav = styled.ul`
   width: 100%;
   display: flex;
