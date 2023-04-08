@@ -14,6 +14,7 @@ import { AiFillNotification } from 'react-icons/ai';
 import Image from 'next/image';
 import logoDarkPic from '../public/logo_dark.png';
 import { toast } from 'react-toastify';
+import useCookies from '@/libs/hooks/useCookies';
 
 const termsNavs = [
   {
@@ -68,7 +69,8 @@ export default function SideNav() {
   const config = genConfig('admin@email.com');
   const router = useRouter();
   const [pathname, setPathname] = useState('');
-  const { isAdmin, accessToken } = useAccessToken();
+  const { removeAccessToken, removeIsAdmin } = useAccessToken();
+  const { isAdmin, accessToken } = useCookies();
   const textRef = useRef(null);
   useEffect(() => {
     setPathname(router.pathname);
@@ -78,10 +80,15 @@ export default function SideNav() {
     textRef.current.select();
     document.execCommand('copy', false, accessToken);
   };
+  const handleIsaacLogout = () => {
+    removeAccessToken();
+    removeIsAdmin();
+    router.push('/');
+  };
   return (
     <Wrapper>
       <HiddenToken onChange={() => {}} type="text" value={accessToken} ref={textRef} />
-      <CopyToken onClick={copyToken}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
+      <CopyToken onClick={handleIsaacLogout}>{!accessToken ? '로그인필요' : isAdmin ? 'Copy관리자토큰' : 'Copy기업회원토큰'}</CopyToken>
       <Logo>{<Image src={logoDarkPic} alt="logo-dark" />}</Logo>
 
       <NavMenues>

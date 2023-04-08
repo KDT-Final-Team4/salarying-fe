@@ -42,6 +42,7 @@ export default function Login() {
           console.log('새로운 토큰', newToken);
           saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
+          router.push('/admin/terms');
         } else {
           toast.error('(Admin)' + res.message);
         }
@@ -55,6 +56,7 @@ export default function Login() {
           saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
           console.log('새로운 토큰', newToken);
+          router.push('/company');
         } else {
           toast.error('(User)' + res.message);
         }
