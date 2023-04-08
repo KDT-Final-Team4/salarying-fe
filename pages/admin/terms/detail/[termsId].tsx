@@ -59,7 +59,6 @@ export default function TermsIdDetail({}: Props) {
     <Content title={'약관 조회'}>
       <span>{isLoading && '로딩중'}</span>
       <div>약관별 관리 &gt; 서비스 이용약관 &gt; 약관 상세보기</div>
-      <div>작성자 : {termDetail?.data?.name}</div>
       <Inner>
         <Info>
           <Category>
@@ -68,14 +67,22 @@ export default function TermsIdDetail({}: Props) {
               <div>{termDetail?.data?.type}</div>
             </div>
           </Category>
-          <Title>
+          <Input>
             <p>약관 제목</p>
             <input type="text" value={termDetail?.data?.title} readOnly />
-          </Title>
-          <Version>
+          </Input>
+          <Input>
             <p>약관 버전</p>
             <input type="text" value={termDetail?.data?.version} readOnly />
-          </Version>
+          </Input>
+          <Input>
+            <p>작성자</p>
+            <input type="text" value={termDetail?.data?.name} readOnly />
+          </Input>
+          <Input>
+            <p>공개 상태</p>
+            <input type="text" value={termDetail?.data?.status} readOnly />
+          </Input>
         </Info>
         <Write>
           <p>약관 내용</p>
@@ -148,42 +155,13 @@ const Category = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Input = styled.div`
   width: 100%;
   display: flex;
   box-sizing: border-box;
   padding: 10px 30px;
   align-items: center;
   user-select: none;
-  p {
-    min-width: 100px;
-    padding-right: 10px;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--color-primary);
-    border-right: 2px solid var(--color-gray400);
-  }
-  input {
-    padding: 20px 10px;
-    outline: none;
-    border: none;
-    border-bottom: 2px solid var(--color-gray400);
-    box-sizing: border-box;
-    font-size: 16px;
-    width: 70%;
-    margin: 0 60px;
-    background-color: transparent;
-    width: 100%;
-    user-select: none;
-  }
-`;
-
-const Version = styled.div`
-  width: 100%;
-  display: flex;
-  box-sizing: border-box;
-  padding: 10px 30px;
-  align-items: center;
   p {
     min-width: 100px;
     padding-right: 10px;
