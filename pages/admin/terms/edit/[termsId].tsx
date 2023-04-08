@@ -32,7 +32,7 @@ export default function TermsIdEdit() {
     enabled: !!termsId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
-      setValue('title', data.data.title), setValue('version', data.data.version), setValue('content', data.data.content);
+      setValue('title', data?.data?.title), setValue('version', data?.data?.version), setValue('content', data?.data?.content);
     },
   });
 

@@ -26,13 +26,13 @@ const StyledLink = styled.span<{ isActive: boolean }>`
   align-items: center;
   width: 90%;
   height: 50px;
+  border-radius: 10px;
+  padding: 0 15px;
+  transition: all 0.2s;
   color: ${({ isActive }) => (isActive ? 'var(--color-gray600)' : 'var(--color-gray300)')};
   cursor: pointer;
-  border-radius: 10px;
   margin: 0 auto;
-  padding: 0 15px;
   font-weight: 700;
-  transition: all 0.2s;
   background-color: ${({ isActive }) => (isActive ? 'var(--color-point)' : 'transparent')};
   &:hover {
     filter: brightness(1.05);

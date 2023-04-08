@@ -33,9 +33,9 @@ export default function Notice() {
         <ContentHeader />
         {listData.map((data) => (
           <>
-            <ChildTitle>{data.title}</ChildTitle>
-            <ChildAuthor>{data.author}</ChildAuthor>
-            <div>{data.createdAt}</div>
+            <ChildTitle>{data?.title}</ChildTitle>
+            <ChildAuthor>{data?.author}</ChildAuthor>
+            <div>{data?.createdAt}</div>
           </>
         ))}
       </Contents>
