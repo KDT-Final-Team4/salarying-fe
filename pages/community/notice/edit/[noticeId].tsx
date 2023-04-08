@@ -51,9 +51,7 @@ export default function NoticeEdit(props: Props) {
             <h3>제목</h3>
             <textarea className="title" value={title} onChange={(event) => setTitle(event.target.value)} required></textarea>
             <h3>내용</h3>
-            <textarea className="content" value={content} onChange={(event) => setContent(event.target.value)} required>
-              {data?.content}
-            </textarea>
+            <textarea className="content" value={content} onChange={(event) => setContent(event.target.value)} required></textarea>
           </Table>
           <BtnWrapper>
             <Button_Send text={'저장'} height={50} width={150} onClick={clickHandler} />

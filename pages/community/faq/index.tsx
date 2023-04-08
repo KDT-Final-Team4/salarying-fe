@@ -11,6 +11,7 @@ import FaqAddModal from '@/components/community/FaqAddModal';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import Toggle from 'react-toggle';
+import { toast } from 'react-toastify';
 
 type FaqMutationParams = {
   accessToken: string;
@@ -19,9 +20,9 @@ type FaqMutationParams = {
 };
 
 export default function FAQ() {
-  const router = useRouter();
   const [activePage, setActivePage] = useState<number>(1);
   const [openModal, setOpenModal] = useState(false);
+
   const { accessToken, isAdmin } = useCookies();
 
   const { data: faqList, isLoading, refetch } = useQuery(['FAQ'], () => api.getFAQ(accessToken));
@@ -32,7 +33,10 @@ export default function FAQ() {
 
   const { mutate } = useMutation<Data, unknown, FaqMutationParams>({
     mutationFn: ({ accessToken, id, status }) => api.putFAQStatus(accessToken, { id, status: !status }),
-    onSuccess: () => refetch(),
+    onSuccess: () => {
+      refetch();
+      toast.success('수정이 완료되었습니다.');
+    },
   });
 
   const toggleHandler = (id, status) => {
@@ -41,42 +45,46 @@ export default function FAQ() {
   return (
     <Content title={'FAQ'}>
       <Wrapper>
-        <TableStyle>
-          <thead>
-            <tr>
-              <th>카테고리</th>
-              <th>질문 / 답변</th>
-              <th>상세보기</th>
-              <th>게시중</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pageMembersList?.map((data, index) => {
-              return (
-                <GridStyle key={index}>
-                  <td>{data.category}</td>
-                  <td className="second">
-                    <span>Q {data.question}</span>
-                    <span>A {data.answer}</span>
-                  </td>
-                  <td>
-                    <Link href="/community/faq/[faqId]" as={`/community/faq/${data.id}`}>
-                      <Button_Send text={'view'} />
-                    </Link>
-                  </td>
-                  <td>
-                    <Toggle id="onBoard" checked={data?.status} onChange={() => toggleHandler(data?.id, data?.status)} />
-                  </td>
-                </GridStyle>
-              );
-            })}
-          </tbody>
-        </TableStyle>
-        <BottomStyle>
-          {openModal && <FaqAddModal setOpenModal={setOpenModal} />}
-          <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
-          <Button_Send text={'등록'} onClick={() => setOpenModal(true)} />
-        </BottomStyle>
+        <SectionStyle>
+          <TableStyle>
+            <thead>
+              <tr>
+                <th>카테고리</th>
+                <th>질문 / 답변</th>
+                <th>상세보기</th>
+                <th className={isAdmin ? 'admin' : 'user'}>게시중</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pageMembersList?.map((data, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{data.category}</td>
+                    <td className="second">
+                      <span>Q {data.question}</span>
+                      <span>A {data.answer}</span>
+                    </td>
+                    <td>
+                      <Link href="/community/faq/[faqId]" as={`/community/faq/${data.id}`}>
+                        <Button_Send text={'view'} />
+                      </Link>
+                    </td>
+                    <td className={isAdmin ? '' : 'user'}>
+                      <Toggle id="onBoard" checked={data?.status} onChange={() => toggleHandler(data?.id, data?.status)} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </TableStyle>
+          <div className="pagination">
+            <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
+            <ButtonStyle className={isAdmin ? '' : 'user'}>
+              {openModal && <FaqAddModal setOpenModal={setOpenModal} />}
+              <Button_Send text={'등록'} onClick={() => setOpenModal(true)} />
+            </ButtonStyle>
+          </div>
+        </SectionStyle>
       </Wrapper>
     </Content>
   );
@@ -88,20 +96,31 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   margin-top: 25px;
+  .user {
+    display: none;
+  }
 `;
 
-const BottomStyle = styled.div`
-  bottom: 0;
-  right: 0;
+const SectionStyle = styled.div`
+  height: 950px;
   display: flex;
-  margin-top: 30px;
-  margin-right: 90px;
-  button {
-    justify-content: end;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 25px;
+  position: relative;
+  .pagination {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
-  button:first-child {
-    height: max-content;
-  }
+`;
+
+const ButtonStyle = styled.div`
+  display: flex;
+  justify-content: end;
+  padding: 40px 50px;
 `;
 
 const TableStyle = styled.table`
@@ -128,13 +147,14 @@ const TableStyle = styled.table`
   th:nth-child(4) {
     text-align: center;
   }
-`;
 
-const GridStyle = styled.tr`
-  margin: 10px;
-  font-weight: 700;
-  color: var(--color-gray600);
-  border-bottom: 1px solid rgba(156, 163, 175, 0.2);
+  tr {
+    margin: 10px;
+    font-weight: 700;
+    color: var(--color-gray600);
+    border-bottom: 1px solid rgba(156, 163, 175, 0.2);
+  }
+
   td {
     max-height: 100px;
     span {
@@ -143,13 +163,16 @@ const GridStyle = styled.tr`
       text-overflow: ellipsis;
     }
   }
+
   td:first-child {
     padding-left: 30px;
     /* text-align: center; */
   }
+
   td:nth-child(3) {
     text-align: center;
   }
+
   td:last-child {
     text-align: center;
   }
