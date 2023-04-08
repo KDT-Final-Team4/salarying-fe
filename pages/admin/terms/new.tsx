@@ -17,15 +17,15 @@ interface IList {
 
 const list: IList[] = [
   {
-    category: '서비스 이용 약관',
+    category: '서비스 이용약관',
     categoryId: 'service',
   },
   {
-    category: '개인 정보 처리 방침',
+    category: '개인정보 처리 방침',
     categoryId: 'privacy',
   },
   {
-    category: '제3자 정보 제공',
+    category: '제3자 정보제공',
     categoryId: 'information',
   },
   {

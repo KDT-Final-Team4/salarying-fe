@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Content from '@/components/ui/Content';
@@ -13,8 +13,8 @@ type Props = {
 
 const typeName = [
   ['서비스 이용약관', 'service'],
-  ['개인 정보 처리 방침', 'privacy'],
-  ['제3자 정보 제공', 'information'],
+  ['개인정보 처리방침', 'privacy'],
+  ['제3자 정보제공', 'information'],
   ['개인정보 마케팅 이용', 'marketing'],
 ];
 
@@ -26,13 +26,16 @@ export default function TermsIdDetail({}: Props) {
     queryKey: ['termDetail', termsId],
     queryFn: () => api.getTermsDetail(accessToken, termsId),
   });
+  const [type, setType] = useState('');
 
-  const getTypeName = (type) => {
-    const res = typeName.find((item) => item[0] === type);
-    return res[1];
-  };
+  useEffect(() => {
+    const getTypeName = (type) => {
+      const res = typeName.find((item) => item[0] === type);
+      setType(res[1]);
+    };
+    getTypeName(termDetail?.data?.type);
+  }, [termDetail]);
 
-  console.log(termDetail?.data);
   return (
     <Content title={'약관 조회'}>
       <span>{isLoading && '로딩중'}</span>
@@ -63,7 +66,7 @@ export default function TermsIdDetail({}: Props) {
         </Write>
         <ButtonArea>
           <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
-          <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${getTypeName(termDetail?.data?.type)}`)}></Button_2>
+          <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${type}`)}></Button_2>
         </ButtonArea>
       </Inner>
     </Content>
