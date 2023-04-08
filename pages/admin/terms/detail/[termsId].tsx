@@ -13,21 +13,35 @@ type Props = {
 };
 
 const typeName = [
-  ['서비스 이용약관', 'service'],
-  ['개인정보 처리방침', 'privacy'],
-  ['제3자 정보제공', 'information'],
-  ['개인정보 마케팅 이용', 'marketing'],
+  { typeName: '서비스 이용약관', typeId: 'service' },
+  { typeName: '개인정보 처리방침', typeId: 'privacy' },
+  { typeName: '제3자 정보제공', typeId: 'information' },
+  { typeName: '개인정보 마케팅 이용', typeId: 'marketing' },
 ];
 
 export default function TermsIdDetail({}: Props) {
   const router = useRouter();
+  const [type, setType] = useState('');
   const { accessToken } = useCookies();
   const { termsId } = router.query as { termsId: TermsId };
-  const { data: termDetail, isLoading } = useQuery({
-    queryKey: ['termDetail', termsId],
-    queryFn: () => api.getTermsDetail(accessToken, termsId),
+  const { data: termDetail, isLoading } = useQuery(['termDetail', termsId], () => api.getTermsDetail(accessToken, termsId), {
+    enabled: !!termsId,
+    refetchOnWindowFocus: false,
+    onSuccess: (termDetail) => {
+      if (termDetail?.data?.type === '서비스 이용약관') {
+        setType('service');
+      }
+      if (termDetail?.data?.type === '개인정보 처리방침') {
+        setType('privacy');
+      }
+      if (termDetail?.data?.type === '제3자 정보제공') {
+        setType('information');
+      }
+      if (termDetail?.data?.type === '개인정보 마케팅 이용') {
+        setType('marketing');
+      }
+    },
   });
-  const [type, setType] = useState('');
 
   const handleClickDelete = async () => {
     try {
@@ -47,13 +61,12 @@ export default function TermsIdDetail({}: Props) {
       }
     }
   };
-  // useEffect(() => {
-  //   const getTypeName = (type) => {
-  //     const res = typeName.find((item) => item[0] === type);
-  //     setType(res[1]);
-  //   };
-  //   getTypeName(termDetail?.data?.type);
-  // }, [termDetail]);
+
+  // const getTypeName = (type) => {
+  //   const res = typeName.find((item) => item.typeName === type);
+  //   console.log(res.typeId);
+  // };
+  // getTypeName(type);
 
   return (
     <Content title={'약관 조회'}>
