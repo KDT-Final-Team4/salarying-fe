@@ -65,8 +65,11 @@ export default function TermsIdDetail({}: Props) {
           </div>
         </Write>
         <ButtonArea>
-          <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
-          <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${type}`)}></Button_2>
+          <Button_2 name={'삭제'} onClick={() => {}}></Button_2>
+          <div>
+            <Button_2 name={'수정'} color={'point'} onClick={() => router.push(`/admin/terms/edit/${termsId}`)}></Button_2>
+            <Button_2 name={'목록으로'} onClick={() => router.push(`/admin/terms/${type}`)}></Button_2>
+          </div>
         </ButtonArea>
       </Inner>
     </Content>
@@ -206,7 +209,7 @@ const Write = styled.div`
 `;
 
 const ButtonArea = styled.div`
-  width: inherit;
+  width: 100%;
   margin-bottom: 100px;
   display: flex;
   justify-content: space-between;
@@ -216,5 +219,8 @@ const ButtonArea = styled.div`
     margin: 20px 10px;
     border-radius: 10px;
     cursor: pointer;
+  }
+  div {
+    display: flex;
   }
 `;
