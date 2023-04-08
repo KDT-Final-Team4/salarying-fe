@@ -8,6 +8,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
 import { IoChevronBack } from 'react-icons/io5';
+import SelectCategory from '@/components/ui/SelectCategory';
 
 type Props = {};
 
@@ -17,43 +18,54 @@ interface noticeDetail {
 }
 
 export default function NoticeEdit(props: Props) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [category, setCategory] = useState('');
 
   const router = useRouter();
   const { accessToken, isAdmin } = useCookies();
-  const { noticeId } = router.query;
+  const { faqId } = router.query;
 
-  const { data, isLoading } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
-    enabled: !!noticeId,
+  const categories = [
+    { categoryId: '로그인', category: '로그인' },
+    { categoryId: '회원가입', category: '회원가입' },
+    { categoryId: '채용공고', category: '채용공고' },
+    { categoryId: '지원자', category: '지원자' },
+    { categoryId: '전형절차', category: '전형절차' },
+  ];
+
+  const { data, isLoading } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId), {
+    enabled: !!faqId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
-      setTitle(data.title), setContent(data.content);
+      setQuestion(data.data.question), setAnswer(data.data.answer);
     },
   });
 
-  const { mutate: putNotice } = useMutation(() => api.putNotice(accessToken, { id: noticeId, title, content }));
+  const { mutate: putFaq } = useMutation(() => api.putFAQ(accessToken, { id: faqId, question, answer, category }));
 
   const clickHandler = () => {
-    putNotice();
+    putFaq();
     router.replace;
     router.back();
   };
 
   return (
-    <Content title={'공지사항 수정하기'}>
+    <Content title={'FAQ 수정하기'}>
       <Wrapper>
         <div className="back">
           <IoChevronBack size={40} onClick={() => router.back()} />
         </div>
         <FlexStyle>
           <Table className="static">
-            <h3>제목</h3>
-            <textarea className="title" value={title} onChange={(event) => setTitle(event.target.value)} required></textarea>
-            <h3>내용</h3>
-            <textarea className="content" value={content} onChange={(event) => setContent(event.target.value)} required>
-              {data?.content}
-            </textarea>
+            <h3>카테고리</h3>
+            <Category>
+              <SelectCategory categories={categories} currentValue={category} setCurrentValue={setCategory} />
+            </Category>
+            <h3>질문</h3>
+            <textarea className="big" value={question} onChange={(event) => setQuestion(event.target.value)} required></textarea>
+            <h3>답변</h3>
+            <textarea className="big" value={answer} onChange={(event) => setAnswer(event.target.value)} required></textarea>
           </Table>
           <BtnWrapper>
             <Button_Send text={'저장'} height={50} width={150} onClick={clickHandler} />
@@ -84,7 +96,7 @@ const Wrapper = styled.div`
 const FlexStyle = styled.div`
   position: relative;
   width: 80%;
-  height: 700px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--color-lightgray);
@@ -94,10 +106,11 @@ const FlexStyle = styled.div`
 
 const Table = styled.div`
   display: grid;
+  gap: 10px;
   grid-template-columns: 1fr 6fr;
-  grid-template-rows: 100px 1fr;
   color: var(--color-primary);
   font-weight: 700;
+  padding-bottom: 80px;
   h3 {
     font-size: 20px;
     padding-top: 20px;
@@ -111,20 +124,34 @@ const Table = styled.div`
     padding: 10px 20px;
     line-height: 1.8;
     overflow-y: scroll;
-    &.title {
-      height: 60px;
-    }
-    &.content {
-      min-height: 300px;
+
+    &.big {
+      min-height: 180px;
+      margin-bottom: 20px;
     }
   }
+`;
+
+const Category = styled.div`
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  /* padding: 10px 30px; */
+  align-items: center;
+  justify-content: center;
+  /* min-width: 100px; */
+  padding-right: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
 `;
 
 const BtnWrapper = styled.div`
   position: absolute;
   display: flex;
   gap: 20px;
-  margin: 50px;
+  /* margin: 50px; */
+  margin: 50px 50px 50px 0;
   bottom: 0;
   right: 0;
 `;
