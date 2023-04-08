@@ -635,6 +635,7 @@ class Axios {
       return res.data;
     } catch (err) {
       console.error(err?.response?.data?.errorMessage);
+      throw err?.response?.data;
     }
   }
   /** 약관 상세보기 (admin) ok*/

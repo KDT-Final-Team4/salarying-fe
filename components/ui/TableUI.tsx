@@ -1,7 +1,8 @@
-import { btnColorFromSeed } from '@/libs/utils';
-import React from 'react';
+import { btnColorFromSeed, formatIsoTime, isIsoDate, sortByProperty } from '@/libs/utils';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button_2 from './Button_2';
+import { property } from 'cypress/types/lodash';
 
 type Props = {
   dataList: any[];
@@ -39,8 +40,29 @@ type Props = {
 // ];
 // const titles = ['id', '이름', '메일', '과정', '상태'];
 
+const SecondRow = styled.span`
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray400);
+`;
+
+function FormatDate(date: string) {
+  const [first, second] = date.split('T');
+  return (
+    <>
+      {first}
+      <br />
+      <SecondRow>{formatIsoTime(date)}</SecondRow>
+    </>
+  );
+}
+type TProperty = 'id' | 'title' | 'postDate' | 'task' | 'status';
 export default function TableUI({ dataList, titles }: Props) {
   const arrLength = dataList?.length;
+  // dataList.map( data => isIsoDate(data) ? )
+  const [property, setProperty] = useState<TProperty>('postDate');
+  const [ascending, setAscending] = useState(true);
+
   return (
     <Wrapper>
       <Table>
@@ -54,10 +76,10 @@ export default function TableUI({ dataList, titles }: Props) {
           </Thead>
         )}
         <Tbody>
-          {dataList?.map((data, index) => (
+          {sortByProperty(dataList, property, ascending)?.map((data, index) => (
             <Tr key={index}>
               {Object.keys(data).map((key, index) => (
-                <Td key={key + index}>{data[key]}</Td>
+                <Td key={key + index}>{isIsoDate(data[key]) ? FormatDate(data[key]) : data[key]}</Td>
               ))}
             </Tr>
           ))}
