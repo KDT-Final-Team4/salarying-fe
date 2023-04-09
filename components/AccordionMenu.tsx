@@ -12,7 +12,7 @@ type Props = {
 
 export default function AccordionMenu({ title, subNavs, activeURL, Icon, ...others }: Props) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggleAccordion = (event) => {
     setIsOpen((prev) => !prev);
   };

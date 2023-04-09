@@ -3,6 +3,7 @@ import Card_1 from '@/components/ui/Card_1';
 import TableUI from '@/components/ui/TableUI';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import useRecruitList from '@/libs/hooks/useRecruitList';
 import useUser from '@/libs/hooks/useUser';
 import { getStatusObj } from '@/libs/utils';
 import { useQuery } from '@tanstack/react-query';
@@ -79,12 +80,7 @@ const countStatus = (arr, status: string): number => {
 
 export default function Company() {
   const { accessToken } = useCookies();
-  const { data, isLoading } = useQuery({
-    queryKey: ['recruitList'],
-    queryFn: () => api.getRecruiting(accessToken),
-    onSuccess: (data) => toast.success('공고리스트 받아오기 성공'),
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading } = useRecruitList();
   const { data: me } = useUser();
   const statusObj: any = getStatusObj(data?.data);
 

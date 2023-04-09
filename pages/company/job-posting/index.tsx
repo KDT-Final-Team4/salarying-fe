@@ -10,6 +10,7 @@ import { GrFormAdd } from 'react-icons/gr';
 import AddModal from '@/components/company/job-posting/AddModal';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
+import useRecruitList from '@/libs/hooks/useRecruitList';
 
 // GEt /recruiting  채용공고리스트
 // const res = {
@@ -81,11 +82,7 @@ const JobPosting = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const { accessToken } = useCookies();
-  const { data, isLoading } = useQuery({
-    queryKey: ['recruitList'],
-    queryFn: () => api.getRecruiting(accessToken),
-    onSuccess: (data) => console.log(data),
-  });
+  const { data, isLoading } = useRecruitList();
 
   return (
     <Wrapper>
