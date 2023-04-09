@@ -9,7 +9,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import Button_2 from '@/components/ui/Button_2';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Toggle from 'react-toggle';
 import { toast } from 'react-toastify';
 
@@ -37,30 +37,22 @@ const list: IList[] = [
   },
 ];
 
-type IObject = {
-  status: '공개' | '비공개';
-  title: string;
-  version: string;
-  name: string;
-  id: number;
-};
+const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '상세보기'];
 
-interface StyledProps {
-  toggle: boolean;
-}
-
-const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
-
-export default function TermsId() {
+export default function Type() {
   const router = useRouter();
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
-  const { termsId } = router.query as { termsId };
+  const { type } = router.query as { type };
   const [confirm, setConfirm] = useState(false);
   const [idNumber, setIdNumber] = useState();
-  const { data, isLoading } = useQuery({
-    queryKey: ['terms', termsId],
-    queryFn: () => api.getTerms(accessToken, termsId),
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['terms', type],
+    queryFn: () => api.getTerms(accessToken, type),
+    onSuccess: () => {
+      setActivePage(1);
+    },
   });
 
   // 페이지네이션
@@ -82,6 +74,7 @@ export default function TermsId() {
     try {
       const data: IStatusData = { force: true, status: '공개', id: idNumber };
       const res = await api.postTermsStatus(accessToken, data);
+      refetch();
       setConfirm(false);
       console.log(res);
     } catch (err) {
@@ -94,7 +87,7 @@ export default function TermsId() {
       <span>{isLoading && '로딩중'}</span>
       <Nav>
         {list.map((item) => (
-          <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
+          <Link key={item.id} href={`${item.id}`} className={type === item.id ? 'active' : null}>
             <li id={item.id}>{item.title}</li>
           </Link>
         ))}
@@ -118,7 +111,7 @@ export default function TermsId() {
                 <Td>{term.name}</Td>
                 <Td>
                   {confirm && idNumber === term.id ? (
-                    <ConfirmModal id={term?.id}>
+                    <ConfirmModal>
                       <h4>☑️ 확인 ☑️</h4>
                       <h6>
                         해당 약관을 <strong>공개상태</strong>로 변경하시겠습니까?
@@ -153,9 +146,7 @@ export default function TermsId() {
           </Tbody>
         </Table>
       </Wrapper>
-
       <ButtonArea>
-        {/* <Button_2 name={'삭제'} /> */}
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
@@ -376,11 +367,13 @@ const ButtonArea = styled.div`
     cursor: pointer;
   }
   .pagination {
+    width: 300px;
     position: absolute;
     display: flex;
     justify-content: center;
-    margin-top: -10px;
     left: 0;
     right: 0;
+    margin: 0 auto;
+    margin-top: -10px;
   }
 `;

@@ -619,7 +619,8 @@ class Axios {
       console.log('postTerms>>', res.data);
       return res.data;
     } catch (err) {
-      console.error(err?.response?.data?.errorMessage);
+      // console.error(err?.response?.data?.errorMessage);
+      throw err?.response?.data;
     }
   }
 
