@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Notification from '../pages/company/notification';
 import { CgProfile } from 'react-icons/cg';
 import Avatar, { genConfig } from 'react-nice-avatar';
@@ -33,39 +33,38 @@ const companyNav = [
     href: '/company',
   },
   { title: '공고 리스트', href: '/company/job-posting' },
-  { title: '(job-posting/2)', href: '/company/job-posting/2' },
   {
     title: '이메일 내역',
     href: '/company/notification',
   },
 ];
-const communityNav = [
-  {
-    title: 'FAQ',
-    href: '/community/faq',
-  },
-  {
-    title: '공지사항',
-    href: '/community/notice',
-  },
-  {
-    title: 'notice/1',
-    href: '/community/notice/1',
-  },
-  {
-    title: 'notice/new',
-    href: '/community/notice/new',
-  },
-  {
-    title: 'notice/edit/1',
-    href: '/community/notice/edit/1',
-  },
-];
-const adminNav = [
-  { title: '/admin/terms', href: '/admin/terms' },
-  { title: '/admin/terms/1', href: '/admin/terms/1' },
-  { title: '/admin/company-membership', href: '/admin/company-membership' },
-];
+// const communityNav = [
+//   {
+//     title: 'FAQ',
+//     href: '/community/faq',
+//   },
+//   {
+//     title: '공지사항',
+//     href: '/community/notice',
+//   },
+//   {
+//     title: 'notice/1',
+//     href: '/community/notice/1',
+//   },
+//   {
+//     title: 'notice/new',
+//     href: '/community/notice/new',
+//   },
+//   {
+//     title: 'notice/edit/1',
+//     href: '/community/notice/edit/1',
+//   },
+// ];
+// const adminNav = [
+//   { title: '/admin/terms', href: '/admin/terms' },
+//   { title: '/admin/terms/1', href: '/admin/terms/1' },
+//   { title: '/admin/company-membership', href: '/admin/company-membership' },
+// ];
 export default function SideNav() {
   const router = useRouter();
   const [pathname, setPathname] = useState('');
@@ -92,10 +91,10 @@ export default function SideNav() {
         <span>{!accessToken ? '로그인 필요' : isAdmin ? '관리자 계정' : data?.data?.email}</span>
         <Logout
           onClick={() => {
+            router.replace('/');
             console.log('로그아웃 버튼 클릭');
             removeAccessToken();
             removeIsAdmin();
-            router.replace('/');
           }}
         >
           <BiLogOut />
@@ -103,11 +102,16 @@ export default function SideNav() {
         </Logout>
       </ProfileCard>
       <NavMenues>
-        <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={termsNavs} />
-
-        <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
-          기업 회원관리
-        </CustomLink>
+        {isAdmin ? (
+          <AccordionMenu Icon={MdChromeReaderMode} title={'약관관리'} activeURL="/admin/terms" subNavs={termsNavs} />
+        ) : (
+          <AccordionMenu Icon={FaUserTie} title={'기업회원'} activeURL="/company" subNavs={companyNav} />
+        )}
+        {isAdmin && (
+          <CustomLink Icon={MdManageAccounts} href="/admin/company-membership">
+            기업 회원 조회
+          </CustomLink>
+        )}
 
         <CustomLink Icon={MdOutlineAnnouncement} href="/community/notice">
           공지사항
@@ -116,9 +120,6 @@ export default function SideNav() {
         <CustomLink Icon={MdOutlineQuestionAnswer} href="/community/faq">
           FAQ
         </CustomLink>
-        <AccordionMenu Icon={FaUserTie} title={'Company'} activeURL="/company" subNavs={companyNav} />
-        <AccordionMenu Icon={AiFillNotification} title={'Community'} activeURL="/community" subNavs={communityNav} />
-        <AccordionMenu Icon={AiFillNotification} title={'Admin'} activeURL="/admin" subNavs={adminNav} />
       </NavMenues>
     </Wrapper>
   );
@@ -205,5 +206,26 @@ const Logout = styled.div`
   }
   &:hover {
     color: var(--color-emerald400);
+  }
+`;
+
+const shakeAnimation = keyframes`
+  0% {
+    transform: translate(0);
+  }
+  10%, 90% {
+    transform: translate(-5px, 0);
+  }
+  20%, 80% {
+    transform: translate(10px, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate(-15px, 0);
+  }
+  40%, 60% {
+    transform: translate(15px, 0);
+  }
+  100% {
+    transform: translate(0);
   }
 `;
