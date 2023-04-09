@@ -55,7 +55,6 @@ export default function Type() {
     },
   });
 
-  // console.log(data);
   // 페이지네이션
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
