@@ -11,82 +11,17 @@ import AddModal from '@/components/company/job-posting/AddModal';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
 import useRecruitList from '@/libs/hooks/useRecruitList';
+import { sortByProperty } from '@/libs/utils';
 
-// GEt /recruiting  채용공고리스트
-// const res = {
-//   stateCode: 200,
-//   success: true,
-//   data: [
-//     {
-//       id: 2,
-//       title: '2023 상반기 신입사원',
-//       postDate: '2023-03-28T06:01:37.166+00:00',
-//       task: '인사',
-//       status: '서류심사',
-//     },
-//     {
-//       id: 4,
-//       title: '2023 상반기 신입사원',
-//       postDate: '2023-03-28T06:01:51.254+00:00',
-//       task: '경영',
-//       status: '서류심사',
-//     },
-//     {
-//       id: 6,
-//       title: '2023 상반기 신입사원',
-//       postDate: '2023-03-28T06:02:13.290+00:00',
-//       task: '전산',
-//       status: '서류심사',
-//     },
-//     {
-//       id: 10,
-//       title: 'stringㄹㄹ',
-//       postDate: '2023-03-30T10:13:05.901+00:00',
-//       task: 'stringㄹㄹ',
-//       status: '서류심사',
-//     },
-//     {
-//       id: 12,
-//       title: 'stringㄹㄹ',
-//       postDate: '2023-03-30T10:16:43.937+00:00',
-//       task: 'stringㄹㄹ',
-//       status: '서류심사',
-//     },
-//     {
-//       id: 14,
-//       title: 'stringㄹㄹ',
-//       postDate: '2023-03-30T10:17:06.408+00:00',
-//       task: 'stringㄹㄹ',
-//       status: '서류심사',
-//     },
-//     {
-//       id: 23,
-//       title: 'testTitle',
-//       postDate: '2023-03-31T17:23:31.613+00:00',
-//       task: 'testTask',
-//       status: '서류전형',
-//     },
-//     {
-//       id: 25,
-//       title: 'testTitle',
-//       postDate: '2023-03-31T17:25:06.514+00:00',
-//       task: 'testTask',
-//       status: '서류전형',
-//     },
-//   ],
-//   message: '정상출력 데이터',
-// };
 
 const JobPosting = () => {
   const handleClick = async () => {};
   const [openModal, setOpenModal] = useState(false);
 
-  const { accessToken } = useCookies();
-  const { data, isLoading } = useRecruitList();
-
+  const { data, isLoading, refetch } = useRecruitList();
   return (
     <Wrapper>
-      {openModal && <AddModal setOpenModal={setOpenModal} />}
+      {openModal && <AddModal setOpenModal={setOpenModal} refetch={refetch} />}
       <Head>
         <Title onClick={handleClick}>공고 리스트</Title>
       </Head>
@@ -94,7 +29,7 @@ const JobPosting = () => {
         <AddCard onClick={() => setOpenModal(true)}>
           <GrFormAdd size="50" />
         </AddCard>
-        {data?.data?.map((post, index) => (
+        {sortByProperty(data?.data, 'postDate', false)?.map((post, index) => (
           <PostCard key={post.title + index} jobPost={post} />
         ))}
       </PostList>
@@ -171,4 +106,5 @@ const PostList = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  padding-bottom: 80px;
 `;
