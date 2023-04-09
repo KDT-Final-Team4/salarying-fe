@@ -131,15 +131,6 @@ export default function New() {
             />
           </div>
           <div>
-            <Link href="edit/termsId">
-              <Button_2
-                name={'미리보기'}
-                color={'point'}
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              />
-            </Link>
             <Button_2 name={'등록'} color={'point'} />
           </div>
         </ButtonArea>
