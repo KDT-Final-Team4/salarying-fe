@@ -61,6 +61,9 @@ export default function TermsId() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['terms', termsId],
     queryFn: () => api.getTerms(accessToken, termsId),
+    onSuccess: () => {
+      setActivePage(1);
+    },
   });
 
   // 페이지네이션
