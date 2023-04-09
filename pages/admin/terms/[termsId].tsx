@@ -49,7 +49,7 @@ interface StyledProps {
   toggle: boolean;
 }
 
-const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '미리보기'];
+const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '상세보기'];
 
 export default function TermsId() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function TermsId() {
   const { termsId } = router.query as { termsId };
   const [confirm, setConfirm] = useState(false);
   const [idNumber, setIdNumber] = useState();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['terms', termsId],
     queryFn: () => api.getTerms(accessToken, termsId),
   });
@@ -82,6 +82,7 @@ export default function TermsId() {
     try {
       const data: IStatusData = { force: true, status: '공개', id: idNumber };
       const res = await api.postTermsStatus(accessToken, data);
+      refetch();
       setConfirm(false);
       console.log(res);
     } catch (err) {
@@ -155,7 +156,6 @@ export default function TermsId() {
       </Wrapper>
 
       <ButtonArea>
-        {/* <Button_2 name={'삭제'} /> */}
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />
         </div>
@@ -376,11 +376,13 @@ const ButtonArea = styled.div`
     cursor: pointer;
   }
   .pagination {
+    width: 300px;
     position: absolute;
     display: flex;
     justify-content: center;
-    margin-top: -10px;
     left: 0;
     right: 0;
+    margin: 0 auto;
+    margin-top: -10px;
   }
 `;

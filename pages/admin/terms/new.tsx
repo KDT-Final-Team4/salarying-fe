@@ -38,8 +38,8 @@ export default function New() {
   const router = useRouter();
   const [select, setSelect] = useState();
   const { accessToken } = useCookies();
-  const [duplicate, setDuplicate] = useState(false);
-  console.log(duplicate);
+  // const [duplicate, setDuplicate] = useState(false);
+  // console.log(duplicate);
   const {
     register,
     getValues,
@@ -59,17 +59,18 @@ export default function New() {
       if (res.stateCode === 200) {
         router.push(`/admin/terms/${getValues().type}`);
       }
-
       return res;
     } catch (err) {
-      toast.error(err?.response?.data?.errorMessage);
+      toast.error(err?.errorMessage);
     }
   };
 
   const inValid = async (a) => {
     console.log(a);
     console.log('inValid');
+    errors.version ? toast.error('숫자와 .을 사용하여 버전을 입력해 주세요.') : null;
   };
+
   return (
     <Content title="약관 등록">
       <Inner onSubmit={handleSubmit(onValid, inValid)}>
@@ -106,7 +107,6 @@ export default function New() {
                 pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){1,2}(?:[0-9]?[0-9][0-9]?)$/,
               })}
             />
-            <Error className={errors.version ? 'show' : 'hide'}>숫자와 .을 사용하여 버전을 입력해 주세요.</Error>
           </Version>
         </Info>
         <Write>
