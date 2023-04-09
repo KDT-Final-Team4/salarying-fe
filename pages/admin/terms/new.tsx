@@ -50,7 +50,7 @@ export default function New() {
 
   useEffect(() => {
     setValue('type', select);
-  }, [select]);
+  }, [select, setValue]);
 
   const onValid = async () => {
     console.log('onValid');

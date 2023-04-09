@@ -11,6 +11,7 @@ import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import NoticeAddModal from '@/components/community/NoticeAddModal';
 import Toggle from 'react-toggle';
+import { toast } from 'react-toastify';
 
 interface Object {
   id: number;
@@ -34,17 +35,21 @@ export default function NoticeList() {
   const [openModal, setOpenModal] = useState(false);
 
   const { accessToken, isAdmin } = useCookies();
-  const { data: notices, refetch } = useQuery(['notices'], () => api.getNotice(accessToken));
+  const { data: notices, refetch } = useQuery(['notices'], () => api.getNotice(accessToken).then((res) => res.data), { notifyOnChangeProps: ['data'] });
 
   const heads = ['제목', '작성자', '상세보기'];
 
-  let pageGroups = usePagination(notices?.data, 5);
+  let pageGroups = usePagination(notices, 5);
   let pageMembersList = pageGroups[activePage - 1];
 
   const { mutate } = useMutation<Data, unknown, NoticeStatusMutationParams>({
     mutationFn: ({ accessToken, id, status }) => api.putNoticeStatus(accessToken, { id, status: !status }),
+    onError: () => {
+      toast.error('게시중 상태변경 실패');
+    },
     onSuccess: () => {
       refetch();
+      toast.success('게시중 상태변경 완료');
     },
   });
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Router, useRouter } from 'next/router';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, dehydrate, hydrate, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Content from '@/components/ui/Content';
@@ -8,15 +8,32 @@ import Button_Send from '@/components/ui/Button_Send';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
 import SelectCategory from '@/components/ui/SelectCategory';
+import { toast } from 'react-toastify';
 
 type Props = {};
 
 interface noticeDetail {}
 
+interface TParams {
+  question: string;
+  answer: string;
+  category: string;
+}
+
+interface TfaqDetail {
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+  status: boolean;
+}
+
 export default function FaqAddModal({ setOpenModal }: any) {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('로그인');
+
+  const router = useRouter();
 
   const { accessToken } = useCookies();
   const categories = [
@@ -25,10 +42,47 @@ export default function FaqAddModal({ setOpenModal }: any) {
     { categoryId: '채용공고', category: '채용공고' },
     { categoryId: '지원자', category: '지원자' },
     { categoryId: '전형절차', category: '전형절차' },
+    { categoryId: '기타', category: '기타' },
   ];
 
+  // const putfaq = useMutation({ mutationFn: () => api.postFAQ(accessToken, { question, answer, category }) });
+
+  const queryClient = useQueryClient();
+
+  const addFaqMutation = useMutation<Data, unknown, TParams>({
+    mutationFn: ({ question, answer, category }) => api.postFAQ(accessToken, { question, answer, category }),
+    onMutate: async (newFaq) => {
+      setQuestion('');
+      setAnswer('');
+      setCategory('');
+      //optimistic update할 때, 데이터를 덮어쓰지 않도록 미리 취소
+      await queryClient.cancelQueries({ queryKey: ['FAQ'] });
+      //이전의 faq에 대한 스냅샷
+      const previousFaq = queryClient.getQueryData<TfaqDetail[]>(['FAQ']);
+      //새로운 값에 대한 Optimistically update
+      if (previousFaq) {
+        queryClient.setQueryData<TfaqDetail[]>(
+          ['FAQ'],
+          [...previousFaq, { id: Math.random(), question: newFaq.question, answer: newFaq.answer, category: newFaq.category, status: true }],
+        );
+      }
+      //return 스냅샷했던 값
+      return { previousFaq };
+    },
+
+    onError: (error, newFaq, { previsousFaq }) => {
+      queryClient.setQueryData(['FAQ'], previsousFaq);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['FAQ'] });
+      toast.success('등록완료');
+      router.replace(router.asPath);
+    },
+  });
+
   const clickHandler = () => {
-    api.postFAQ(accessToken, { question, answer, category });
+    addFaqMutation.mutate({ question, answer, category });
     setOpenModal(false);
   };
 
