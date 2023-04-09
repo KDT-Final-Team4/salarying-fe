@@ -75,7 +75,17 @@ export default function FAQ() {
                       <span>A {data.answer}</span>
                     </td>
                     <td>
-                      <Link href="/community/faq/[faqId]" as={`/community/faq/${data.id}`}>
+                      <Link
+                        href={{
+                          pathname: '/community/faq/[faqId]/[category]',
+                          query: {
+                            faqId: data.id,
+                            category: JSON.stringify(data.category),
+                          },
+                        }}
+                        as={`/community/faq/${data.id}/${data.category}`}
+                        passHref
+                      >
                         <Button_Send text={'view'} />
                       </Link>
                     </td>
@@ -143,13 +153,12 @@ const TableStyle = styled.table`
     color: var(--color-gray400);
     height: 80px;
     font-weight: 600;
-    width: 200px;
   }
   th:first-child {
     padding-left: 30px;
   }
   th:nth-child(2) {
-    width: 800px;
+    width: 50%;
   }
   th:nth-child(3) {
     text-align: center;

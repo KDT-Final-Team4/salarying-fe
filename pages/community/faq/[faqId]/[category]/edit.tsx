@@ -22,13 +22,18 @@ interface FaqMutationParams {
 }
 
 export default function NoticeEdit(props: Props) {
+  const router = useRouter();
+
+  const faqId = router.query.faqId;
+  const category = router.query.category;
+
+  console.log(router.query);
+
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryComponent, setCategory] = useState(category);
 
-  const router = useRouter();
   const { accessToken, isAdmin } = useCookies();
-  const { faqId } = router.query;
 
   const categories = [
     { categoryId: '로그인', category: '로그인' },
@@ -36,6 +41,7 @@ export default function NoticeEdit(props: Props) {
     { categoryId: '채용공고', category: '채용공고' },
     { categoryId: '지원자', category: '지원자' },
     { categoryId: '전형절차', category: '전형절차' },
+    { categoryId: '기타', category: '기타' },
   ];
 
   const { data, isLoading, refetch } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId), {
@@ -73,7 +79,7 @@ export default function NoticeEdit(props: Props) {
           <Table className="static">
             <h3>카테고리</h3>
             <Category>
-              <SelectCategory categories={categories} currentValue={category} setCurrentValue={setCategory} />
+              <SelectCategory categories={categories} currentValue={categoryComponent} setCurrentValue={setCategory} />
             </Category>
             <h3>질문</h3>
             <textarea className="big" value={question} onChange={(event) => setQuestion(event.target.value)} required></textarea>
@@ -106,13 +112,14 @@ const Wrapper = styled.div`
 
 const FlexStyle = styled.div`
   position: relative;
-  width: 80%;
-  height: 100%;
+  width: 85%;
+  height: 750px;
   display: flex;
   flex-direction: column;
   background-color: var(--color-lightgray);
   border-radius: 10px;
   padding: 60px;
+  margin-bottom: 60px;
 `;
 
 const Table = styled.div`
@@ -122,6 +129,9 @@ const Table = styled.div`
   color: var(--color-primary);
   font-weight: 700;
   padding-bottom: 80px;
+  > div {
+    margin: 0;
+  }
   h3 {
     font-size: 20px;
     padding-top: 20px;

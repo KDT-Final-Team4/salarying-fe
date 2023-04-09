@@ -142,6 +142,7 @@ const TableStyle = styled.table`
     }
     th:first-child {
       padding-left: 30px;
+      width: 40%;
     }
     th + th {
       text-align: center;
