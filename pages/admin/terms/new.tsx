@@ -21,7 +21,7 @@ const list: IList[] = [
     categoryId: 'service',
   },
   {
-    category: '개인정보 처리 방침',
+    category: '개인정보 처리방침',
     categoryId: 'privacy',
   },
   {
