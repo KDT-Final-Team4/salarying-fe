@@ -3,17 +3,37 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Toggle from 'react-toggle';
+import { useMutation } from '@tanstack/react-query';
+import api from '@/libs/client/axiosClient';
+import useCookies from '@/libs/hooks/useCookies';
+import { toast } from 'react-toastify';
 
-export default function AddModal({ setOpenModal }: any) {
+export default function AddModal({ setOpenModal, refetch }: any) {
   const router = useRouter();
   const [document, setDocument] = useState(false);
   const [firstRound, setFirstRound] = useState(false);
   const [secondRound, setSecondRound] = useState(false);
   const [finalRound, setFinalRound] = useState(false);
   const { register, handleSubmit, getValues } = useForm();
+  const { accessToken } = useCookies();
+  const { mutateAsync } = useMutation<Data, unknown, any>({
+    mutationFn: ({ accessToken, payload }) => api.postRecruiting(accessToken, payload),
+  });
   const onValid = () => {
     const payload = Object.assign(getValues(), { document, firstRound, secondRound, finalRound });
-    console.log(payload);
+    if (payload.title.length + payload.task.length < 2) {
+      toast.error('양식이 올바르지 않습니다.');
+      return;
+    }
+    
+    setOpenModal(false);
+    toast
+      .promise(mutateAsync({ accessToken, payload }), {
+        pending: '공고를 등록하는 중입니다.',
+        success: '공고가 등록되었습니다.',
+        error: '공고 등록에 실패하였습니다.',
+      })
+      .then(() => refetch());
   };
 
   const onCancel = (event) => {
@@ -31,7 +51,7 @@ export default function AddModal({ setOpenModal }: any) {
             <TextInput type="text" {...register('title')} placeholder="공고명" />
           </InputDiv>
           <InputDiv>
-            <SubTitle>Task</SubTitle>
+            <SubTitle>직무</SubTitle>
             <TextInput type={'text'} {...register('task')} placeholder="Task" />
           </InputDiv>
           <ToggleDiv>

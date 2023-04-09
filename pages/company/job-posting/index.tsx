@@ -11,6 +11,7 @@ import AddModal from '@/components/company/job-posting/AddModal';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
 import useRecruitList from '@/libs/hooks/useRecruitList';
+import { sortByProperty } from '@/libs/utils';
 
 // GEt /recruiting  채용공고리스트
 // const res = {
@@ -82,11 +83,10 @@ const JobPosting = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const { accessToken } = useCookies();
-  const { data, isLoading } = useRecruitList();
-
+  const { data, isLoading, refetch } = useRecruitList();
   return (
     <Wrapper>
-      {openModal && <AddModal setOpenModal={setOpenModal} />}
+      {openModal && <AddModal setOpenModal={setOpenModal} refetch={refetch} />}
       <Head>
         <Title onClick={handleClick}>공고 리스트</Title>
       </Head>
@@ -94,7 +94,7 @@ const JobPosting = () => {
         <AddCard onClick={() => setOpenModal(true)}>
           <GrFormAdd size="50" />
         </AddCard>
-        {data?.data?.map((post, index) => (
+        {sortByProperty(data.data, 'postDate', false).map((post, index) => (
           <PostCard key={post.title + index} jobPost={post} />
         ))}
       </PostList>
@@ -171,4 +171,5 @@ const PostList = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  padding-bottom: 80px;
 `;
