@@ -30,8 +30,8 @@ export default function Login() {
   const router = useRouter();
   const { saveAccessToken, saveIsAdmin } = useAccessToken();
   const { accessToken, isAdmin } = useCookies();
-  const routeProperPage = () => {
-    if (isAdmin) {
+  const routeProperPage = (isAdminLogin) => {
+    if (isAdminLogin) {
       router.push('/admin/terms');
     } else {
       router.push('/company');
@@ -46,13 +46,11 @@ export default function Login() {
         const res = await api.postAdminLogin(getValues());
         if (res.success) {
           toast.success(`(admin)${res.message}`);
-          // router.replace('/admin');
           newToken = res.data.token;
           console.log('새로운 토큰', newToken);
           saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
-          // router.push('/admin/terms');
-          routeProperPage();
+          routeProperPage(isAdminLogin);
         } else {
           toast.error('(Admin)' + res.message);
         }
@@ -62,12 +60,10 @@ export default function Login() {
         if (res.success) {
           toast.success(res.message);
           newToken = res.data.token;
-          // router.replace('/company');
           saveAccessToken(newToken);
           saveIsAdmin(isAdminLogin);
-          console.log('새로운 토큰', newToken);
-          // router.push('/company');
-          routeProperPage();
+          routeProperPage(isAdminLogin);
+          return;
         } else {
           toast.error('(User)' + res.message);
         }
