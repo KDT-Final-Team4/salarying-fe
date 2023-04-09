@@ -21,7 +21,7 @@ const list: IList[] = [
     categoryId: 'service',
   },
   {
-    category: '개인정보 처리 방침',
+    category: '개인정보 처리방침',
     categoryId: 'privacy',
   },
   {
@@ -38,8 +38,7 @@ export default function New() {
   const router = useRouter();
   const [select, setSelect] = useState();
   const { accessToken } = useCookies();
-  const [duplicate, setDuplicate] = useState(false);
-  console.log(duplicate);
+
   const {
     register,
     getValues,
@@ -58,18 +57,20 @@ export default function New() {
       const res = await api.postTerms(accessToken, getValues());
       if (res.stateCode === 200) {
         router.push(`/admin/terms/${getValues().type}`);
+        toast.success('약관 등록이 완료되었습니다. 등록한 약관을 사용하시려면 공개 상태를 변경해 주세요.');
       }
-
       return res;
     } catch (err) {
-      toast.error(err?.response?.data?.errorMessage);
+      toast.error(err?.errorMessage);
     }
   };
 
   const inValid = async (a) => {
     console.log(a);
     console.log('inValid');
+    errors.version ? toast.error('숫자와 .을 사용하여 버전을 입력해 주세요.') : null;
   };
+
   return (
     <Content title="약관 등록">
       <Inner onSubmit={handleSubmit(onValid, inValid)}>
@@ -106,7 +107,6 @@ export default function New() {
                 pattern: /^(?:(?:[0-9]?[0-9][0-9]?)\.){1,2}(?:[0-9]?[0-9][0-9]?)$/,
               })}
             />
-            <Error className={errors.version ? 'show' : 'hide'}>숫자와 .을 사용하여 버전을 입력해 주세요.</Error>
           </Version>
         </Info>
         <Write>
@@ -131,15 +131,6 @@ export default function New() {
             />
           </div>
           <div>
-            <Link href="edit/termsId">
-              <Button_2
-                name={'미리보기'}
-                color={'point'}
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              />
-            </Link>
             <Button_2 name={'등록'} color={'point'} />
           </div>
         </ButtonArea>

@@ -62,16 +62,9 @@ export default function TermsIdDetail({}: Props) {
     }
   };
 
-  // const getTypeName = (type) => {
-  //   const res = typeName.find((item) => item.typeName === type);
-  //   console.log(res.typeId);
-  // };
-  // getTypeName(type);
-
   return (
     <Content title={'약관 조회'}>
       <span>{isLoading && '로딩중'}</span>
-      <div>약관별 관리 &gt; 서비스 이용약관 &gt; 약관 상세보기</div>
       <Inner>
         <Info>
           <Category>

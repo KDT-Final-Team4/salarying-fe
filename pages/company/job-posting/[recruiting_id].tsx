@@ -77,52 +77,58 @@ export default function RecruitingId({ params }) {
         지원자 리스트
         <Button_1 name={recruiting_id as string} />
       </h1>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>이름</Th>
-            <Th>이메일</Th>
-            <Th>전화번호</Th>
-            <Th>진행 상황</Th>
-            <Th>상태</Th>
-            <Th>이메일</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.data?.map((applicant, index) => (
-            <Tr key={index}>
-              <Td>{index}</Td>
-              <Td>{applicant.applicantNm}</Td>
-              <Td>{applicant.applicantEmail}</Td>
-              <Td>{applicant.applicantTel}</Td>
-              <Td>{applicant.progress}</Td>
-              <Td>
-                <Button_2 name={applicant.status} color={applicant.status === '합격' ? 'indigo' : 'pink'} />
-              </Td>
-              <Td>
-                <ClickableBtn
-                  onClick={(event) =>
-                    setPayload(event, {
-                      recruitingId: recruiting_id,
-                      applicantEmail: applicant.applicantEmail,
-                      status: applicant.status,
-                      progress: applicant.progress,
-                    })
-                  }
-                  name={'Send'}
-                >
-                  Send
-                </ClickableBtn>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+      {data?.data?.length > 0 ? (
+        <>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>ID</Th>
+                <Th>이름</Th>
+                <Th>이메일</Th>
+                <Th>전화번호</Th>
+                <Th>진행 상황</Th>
+                <Th>상태</Th>
+                <Th>이메일</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data?.data?.map((applicant, index) => (
+                <Tr key={index}>
+                  <Td>{index}</Td>
+                  <Td>{applicant.applicantNm}</Td>
+                  <Td>{applicant.applicantEmail}</Td>
+                  <Td>{applicant.applicantTel}</Td>
+                  <Td>{applicant.progress}</Td>
+                  <Td>
+                    <Button_2 name={applicant.status} color={applicant.status === '합격' ? 'indigo' : 'pink'} />
+                  </Td>
+                  <Td>
+                    <ClickableBtn
+                      onClick={(event) =>
+                        setPayload(event, {
+                          recruitingId: recruiting_id,
+                          applicantEmail: applicant.applicantEmail,
+                          status: applicant.status,
+                          progress: applicant.progress,
+                        })
+                      }
+                      name={'Send'}
+                    >
+                      Send
+                    </ClickableBtn>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
 
-      <Pages>
-        <Pagination activePage={activePage} setActivePage={setActivePage} pages={1} />
-      </Pages>
+          <Pages>
+            <Pagination activePage={activePage} setActivePage={setActivePage} pages={1} />
+          </Pages>
+        </>
+      ) : (
+        <NoApplicants>지원자가 없습니다.</NoApplicants>
+      )}
     </Wrapper>
   );
 }
@@ -214,4 +220,9 @@ const Pages = styled.ul`
 
 const ClickableBtn = styled(Button_3)`
   cursor: pointer;
+`;
+const NoApplicants = styled.span`
+  font-weight: 700;
+  color: var(--color-pink500);
+  font-size: 25px;
 `;
