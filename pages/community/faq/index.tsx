@@ -33,9 +33,13 @@ export default function FAQ() {
 
   const { mutate } = useMutation<Data, unknown, FaqMutationParams>({
     mutationFn: ({ accessToken, id, status }) => api.putFAQStatus(accessToken, { id, status: !status }),
+    onError: () => {
+      toast.error('등록 실패');
+    },
+
     onSuccess: () => {
       refetch();
-      toast.success('수정이 완료되었습니다.');
+      toast.success('등록 완료');
     },
   });
 

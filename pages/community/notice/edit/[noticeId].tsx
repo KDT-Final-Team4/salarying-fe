@@ -8,6 +8,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
 import { IoChevronBack } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 type Props = {};
 
@@ -32,14 +33,21 @@ export default function NoticeEdit(props: Props) {
     },
   });
 
-  const { mutate: putNotice } = useMutation(() => api.putNotice(accessToken, { id: noticeId, title, content }));
+  const { mutate: putNotice } = useMutation({
+    mutationFn: () => api.putNotice(accessToken, { id: noticeId, title, content }),
+    onError: () => {
+      toast.error('수정 실패');
+    },
+    onSuccess: () => {
+      toast.success('수정 완료');
+    },
+  });
 
   const clickHandler = () => {
     putNotice();
     router.replace;
     router.back();
   };
-
   return (
     <Content title={'공지사항 수정하기'}>
       <Wrapper>

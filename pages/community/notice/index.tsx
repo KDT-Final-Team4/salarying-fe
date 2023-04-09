@@ -11,6 +11,7 @@ import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import NoticeAddModal from '@/components/community/NoticeAddModal';
 import Toggle from 'react-toggle';
+import { toast } from 'react-toastify';
 
 interface Object {
   id: number;
@@ -43,8 +44,12 @@ export default function NoticeList() {
 
   const { mutate } = useMutation<Data, unknown, NoticeStatusMutationParams>({
     mutationFn: ({ accessToken, id, status }) => api.putNoticeStatus(accessToken, { id, status: !status }),
+    onError: () => {
+      toast.error('등록 실패');
+    },
     onSuccess: () => {
       refetch();
+      toast.success('등록 완료');
     },
   });
 
