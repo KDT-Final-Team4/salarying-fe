@@ -9,7 +9,7 @@ import Button_Send from '@/components/ui/Button_Send';
 import usePagination from '@/libs/hooks/usePagination';
 import Pagination from '@/components/ui/Pagination';
 import Button_2 from '@/components/ui/Button_2';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Toggle from 'react-toggle';
 import { toast } from 'react-toastify';
 
@@ -37,35 +37,25 @@ const list: IList[] = [
   },
 ];
 
-type IObject = {
-  status: '공개' | '비공개';
-  title: string;
-  version: string;
-  name: string;
-  id: number;
-};
-
-interface StyledProps {
-  toggle: boolean;
-}
-
 const heads = ['약관 제목', '약관 버전', '약관 작성자', '상태', '상세보기'];
 
-export default function TermsId() {
+export default function Type() {
   const router = useRouter();
   const [activePage, setActivePage] = useState<number>(1);
   const { accessToken } = useCookies();
-  const { termsId } = router.query as { termsId };
+  const { type } = router.query as { type };
   const [confirm, setConfirm] = useState(false);
   const [idNumber, setIdNumber] = useState();
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['terms', termsId],
-    queryFn: () => api.getTerms(accessToken, termsId),
+    queryKey: ['terms', type],
+    queryFn: () => api.getTerms(accessToken, type),
     onSuccess: () => {
       setActivePage(1);
     },
   });
 
+  // console.log(data);
   // 페이지네이션
   let pageGroups = usePagination(data?.data, 5);
   let pageMembersList = pageGroups[activePage - 1];
@@ -98,7 +88,7 @@ export default function TermsId() {
       <span>{isLoading && '로딩중'}</span>
       <Nav>
         {list.map((item) => (
-          <Link key={item.id} href={`${item.id}`} className={termsId === item.id ? 'active' : null}>
+          <Link key={item.id} href={`${item.id}`} className={type === item.id ? 'active' : null}>
             <li id={item.id}>{item.title}</li>
           </Link>
         ))}
@@ -122,7 +112,7 @@ export default function TermsId() {
                 <Td>{term.name}</Td>
                 <Td>
                   {confirm && idNumber === term.id ? (
-                    <ConfirmModal id={term?.id}>
+                    <ConfirmModal>
                       <h4>☑️ 확인 ☑️</h4>
                       <h6>
                         해당 약관을 <strong>공개상태</strong>로 변경하시겠습니까?
