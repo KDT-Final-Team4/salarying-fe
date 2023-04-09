@@ -94,7 +94,7 @@ const JobPosting = () => {
         <AddCard onClick={() => setOpenModal(true)}>
           <GrFormAdd size="50" />
         </AddCard>
-        {sortByProperty(data.data, 'postDate', false).map((post, index) => (
+        {sortByProperty(data?.data, 'postDate', false).map((post, index) => (
           <PostCard key={post.title + index} jobPost={post} />
         ))}
       </PostList>

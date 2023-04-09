@@ -77,7 +77,7 @@ export default function RecruitingId({ params }) {
         지원자 리스트
         <Button_1 name={recruiting_id as string} />
       </h1>
-      {data.data.length > 0 ? (
+      {data?.data?.length > 0 ? (
         <>
           <Table>
             <Thead>
