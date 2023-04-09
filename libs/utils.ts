@@ -55,6 +55,7 @@ export function isIsoDate(str: string): boolean {
 }
 
 export function sortByProperty(arr, property, ascending = true) {
+  if (!arr || arr.length === 0) return;
   // 정렬 함수
   const compareFn = (a, b) => {
     // a와 b의 속성값 비교
