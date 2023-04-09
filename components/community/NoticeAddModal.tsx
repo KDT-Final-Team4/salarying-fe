@@ -1,25 +1,71 @@
 import React, { useState } from 'react';
 import { Router, useRouter } from 'next/router';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Content from '@/components/ui/Content';
 import Button_Send from '@/components/ui/Button_Send';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
+import { toast } from 'react-toastify';
 
 type Props = {};
 
-interface noticeDetail {}
+interface TParams {
+  title: string;
+  content: string;
+  adminName: string;
+}
+
+interface TNoticeDetail {
+  id: number;
+  title: string;
+  adminName: string;
+  status: boolean;
+}
 
 export default function NoticeAddModal({ setOpenModal }: any) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [adminName, setAdminName] = useState('');
 
   const { accessToken } = useCookies();
 
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
+  const addNoticeMutation = useMutation<Data, unknown, TParams>({
+    mutationFn: () => api.postNotice(accessToken, { title, content }),
+    onMutate: async (newNotice) => {
+      setTitle('');
+      setContent('');
+
+      await queryClient.cancelQueries({ queryKey: ['notices'] });
+      const previousNotice = queryClient.getQueryData<TNoticeDetail[]>(['notices']);
+
+      if (previousNotice) {
+        queryClient.setQueryData<TNoticeDetail[]>(
+          ['notices'],
+          [...previousNotice, { id: Math.random(), title: newNotice.title, adminName: newNotice.adminName, status: true }],
+        );
+      }
+      return { previousNotice };
+    },
+
+    onError: (error, newNotice, { previousNotice }) => {
+      queryClient.setQueryData(['notices'], previousNotice);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['notices'] });
+      toast.success('등록완료');
+      router.replace(router.asPath);
+    },
+  });
+
   const clickHandler = () => {
-    api.postNotice(accessToken, { title, content });
+    addNoticeMutation.mutate({ title, content, adminName });
     setOpenModal(false);
   };
 

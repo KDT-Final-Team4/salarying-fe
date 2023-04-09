@@ -9,12 +9,16 @@ import useCookies from '@/libs/hooks/useCookies';
 import api from '@/libs/client/axiosClient';
 import { IoChevronBack } from 'react-icons/io5';
 import SelectCategory from '@/components/ui/SelectCategory';
+import { toast } from 'react-toastify';
 
 type Props = {};
 
-interface noticeDetail {
-  title: string;
-  content: string;
+interface FaqMutationParams {
+  accessToken: string;
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
 }
 
 export default function NoticeEdit(props: Props) {
@@ -34,7 +38,7 @@ export default function NoticeEdit(props: Props) {
     { categoryId: '전형절차', category: '전형절차' },
   ];
 
-  const { data, isLoading } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId), {
+  const { data, isLoading, refetch } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId), {
     enabled: !!faqId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
@@ -42,7 +46,16 @@ export default function NoticeEdit(props: Props) {
     },
   });
 
-  const { mutate: putFaq } = useMutation(() => api.putFAQ(accessToken, { id: faqId, question, answer, category }));
+  const { mutate: putFaq } = useMutation({
+    mutationFn: () => api.putFAQ(accessToken, { id: faqId, question, answer, category }),
+    onError: () => {
+      toast.error('수정 실패');
+    },
+    onSuccess: () => {
+      toast.success('수정 완료');
+      refetch();
+    },
+  });
 
   const clickHandler = () => {
     putFaq();
@@ -69,9 +82,7 @@ export default function NoticeEdit(props: Props) {
           </Table>
           <BtnWrapper>
             <Button_Send text={'저장'} height={50} width={150} onClick={clickHandler} />
-            <div onClick={() => router.back()}>
-              <Button_Send text={'취소'} height={50} width={150} />
-            </div>
+            <Button_Send text={'취소'} height={50} width={150} onClick={() => router.back()} />
           </BtnWrapper>
         </FlexStyle>
       </Wrapper>

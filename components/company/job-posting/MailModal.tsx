@@ -50,7 +50,7 @@ export default function MailModal({ onCancel, recruitingId, applicantEmail, stat
       recruitingId,
       applicantEmail,
       progress,
-      status,
+      status: newStatus,
     });
 
     // 메일 보내기

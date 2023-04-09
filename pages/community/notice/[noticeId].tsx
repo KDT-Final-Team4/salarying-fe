@@ -9,6 +9,7 @@ import Content from '@/components/ui/Content';
 import api from '@/libs/client/axiosClient';
 import useCookies from '@/libs/hooks/useCookies';
 import { IoChevronBack } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 interface content {
   adminEmail: string;
@@ -35,6 +36,7 @@ export default function NoticeDetail() {
 
   const deleteHandler = () => {
     api.deleteNotice(accessToken, noticeId);
+    toast.success('삭제 완료');
     router.back();
   };
 
