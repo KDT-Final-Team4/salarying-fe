@@ -146,7 +146,6 @@ export default function Type() {
           </Tbody>
         </Table>
       </Wrapper>
-
       <ButtonArea>
         <div className="pagination">
           <Pagination activePage={activePage} setActivePage={setActivePage} pages={pageGroups.length} />

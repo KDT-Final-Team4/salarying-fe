@@ -34,7 +34,7 @@ export default function CompanyMembership() {
             </Tr>
           </Thead>
           <Tbody>
-            {pageMembersList.map((corporation, index) => (
+            {pageMembersList?.map((corporation, index) => (
               <Tr key={index}>
                 <Td>{corporation.company_name}</Td>
                 <Td>{`${corporation.name}/${corporation.position}`}</Td>
