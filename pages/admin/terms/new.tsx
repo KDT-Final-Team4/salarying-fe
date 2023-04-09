@@ -38,8 +38,7 @@ export default function New() {
   const router = useRouter();
   const [select, setSelect] = useState();
   const { accessToken } = useCookies();
-  // const [duplicate, setDuplicate] = useState(false);
-  // console.log(duplicate);
+
   const {
     register,
     getValues,
@@ -58,6 +57,7 @@ export default function New() {
       const res = await api.postTerms(accessToken, getValues());
       if (res.stateCode === 200) {
         router.push(`/admin/terms/${getValues().type}`);
+        toast.success('약관 등록이 완료되었습니다. 등록한 약관을 사용하시려면 공개 상태를 변경해 주세요.');
       }
       return res;
     } catch (err) {
