@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { IoChevronBack } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 type Props = {};
 
@@ -20,6 +21,7 @@ export default function FaqDetail(props: Props) {
 
   const deleteHandler = () => {
     api.deleteFAQ(accessToken, faqId);
+    toast.success('삭제 완료');
     router.back();
   };
 

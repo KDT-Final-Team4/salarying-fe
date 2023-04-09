@@ -13,13 +13,13 @@ import { toast } from 'react-toastify';
 
 type Props = {};
 
-type FaqMutationParams = {
+interface FaqMutationParams {
   accessToken: string;
   id: number;
   question: string;
   answer: string;
   category: string;
-};
+}
 
 export default function NoticeEdit(props: Props) {
   const [question, setQuestion] = useState('');
@@ -38,7 +38,7 @@ export default function NoticeEdit(props: Props) {
     { categoryId: '전형절차', category: '전형절차' },
   ];
 
-  const { data, isLoading } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId), {
+  const { data, isLoading, refetch } = useQuery(['faq', faqId], () => api.getFAQDetail(accessToken, faqId), {
     enabled: !!faqId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
@@ -53,6 +53,7 @@ export default function NoticeEdit(props: Props) {
     },
     onSuccess: () => {
       toast.success('수정 완료');
+      refetch();
     },
   });
 

@@ -25,21 +25,27 @@ export default function FAQ() {
 
   const { accessToken, isAdmin } = useCookies();
 
-  const { data: faqList, isLoading, refetch } = useQuery(['FAQ'], () => api.getFAQ(accessToken));
+  const {
+    data: faqList,
+    isLoading,
+    refetch,
+  } = useQuery(['FAQ'], () => api.getFAQ(accessToken).then((res) => res.data), {
+    notifyOnChangeProps: ['data'],
+  });
 
-  let pageGroups = usePagination(faqList?.data, 5);
+  let pageGroups = usePagination(faqList, 5);
 
   let pageMembersList = pageGroups[activePage - 1];
 
   const { mutate } = useMutation<Data, unknown, FaqMutationParams>({
     mutationFn: ({ accessToken, id, status }) => api.putFAQStatus(accessToken, { id, status: !status }),
     onError: () => {
-      toast.error('등록 실패');
+      toast.error('게시중 상태변경 실패');
     },
 
     onSuccess: () => {
       refetch();
-      toast.success('등록 완료');
+      toast.success('게시중 상태변경 완료');
     },
   });
 

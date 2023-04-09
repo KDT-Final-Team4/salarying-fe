@@ -25,7 +25,7 @@ export default function NoticeEdit(props: Props) {
   const { accessToken, isAdmin } = useCookies();
   const { noticeId } = router.query;
 
-  const { data, isLoading } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
+  const { data, isLoading, refetch } = useQuery(['notice', noticeId], () => api.getNoticeDetail(accessToken, noticeId), {
     enabled: !!noticeId,
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
@@ -40,6 +40,7 @@ export default function NoticeEdit(props: Props) {
     },
     onSuccess: () => {
       toast.success('수정 완료');
+      refetch();
     },
   });
 
