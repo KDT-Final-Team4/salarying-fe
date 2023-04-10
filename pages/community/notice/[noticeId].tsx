@@ -55,7 +55,7 @@ export default function NoticeDetail() {
                   {data?.adminName}/{data?.adminEmail}
                 </span>
                 <h3>작성날짜</h3>
-                <span>{data?.postDate}</span>
+                <span>{data?.postDate.slice(0, 10)}</span>
               </div>
             </div>
             <div className="flex">
@@ -82,7 +82,6 @@ export default function NoticeDetail() {
 const Wrapper = styled.div`
   margin: 50px auto;
   width: 100%;
-  height: 600px;
   display: flex;
   justify-content: center;
   h2 {
@@ -99,13 +98,14 @@ const Wrapper = styled.div`
 
 const FlexStyle = styled.div`
   position: relative;
-  width: 80%;
-  height: 700px;
+  width: 85%;
+  height: 650px;
   display: flex;
   flex-direction: column;
   background-color: var(--color-lightgray);
   border-radius: 10px;
   padding: 60px;
+  margin-bottom: 60px;
 `;
 
 const Table = styled.div`

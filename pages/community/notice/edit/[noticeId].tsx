@@ -90,13 +90,14 @@ const Wrapper = styled.div`
 
 const FlexStyle = styled.div`
   position: relative;
-  width: 80%;
-  height: 700px;
+  width: 85%;
+  height: 620px;
   display: flex;
   flex-direction: column;
   background-color: var(--color-lightgray);
   border-radius: 10px;
   padding: 60px;
+  margin-bottom: 60px;
 `;
 
 const Table = styled.div`
