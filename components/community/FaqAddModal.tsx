@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Router, useRouter } from 'next/router';
 import { QueryClient, dehydrate, hydrate, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
@@ -29,7 +29,9 @@ interface TfaqDetail {
 }
 
 export default function FaqAddModal({ setOpenModal }: any) {
-  const [question, setQuestion] = useState('');
+  const questionRef = useRef<HTMLTextAreaElement>(null);
+  const answerRef = useRef<HTMLTextAreaElement>(null);
+  // const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [category, setCategory] = useState('로그인');
 
@@ -52,8 +54,6 @@ export default function FaqAddModal({ setOpenModal }: any) {
   const addFaqMutation = useMutation<Data, unknown, TParams>({
     mutationFn: ({ question, answer, category }) => api.postFAQ(accessToken, { question, answer, category }),
     onMutate: async (newFaq) => {
-      setQuestion('');
-      setAnswer('');
       setCategory('');
       //optimistic update할 때, 데이터를 덮어쓰지 않도록 미리 취소
       await queryClient.cancelQueries({ queryKey: ['FAQ'] });
@@ -82,7 +82,7 @@ export default function FaqAddModal({ setOpenModal }: any) {
   });
 
   const clickHandler = () => {
-    addFaqMutation.mutate({ question, answer, category });
+    addFaqMutation.mutate({ question: questionRef.current.value, answer: answerRef.current.value, category });
     setOpenModal(false);
   };
 
@@ -95,9 +95,9 @@ export default function FaqAddModal({ setOpenModal }: any) {
             <SelectCategory categories={categories} currentValue={category} setCurrentValue={setCategory} />
           </Category>
           <h3>질문</h3>
-          <textarea className="title" value={question} onChange={(e) => setQuestion(e.target.value)}></textarea>
+          <textarea className="title" name="question" ref={questionRef} required />
           <h3>답변</h3>
-          <textarea className="content" value={answer} onChange={(e) => setAnswer(e.target.value)}></textarea>
+          <textarea className="content" name="answer" ref={answerRef} required />
         </Table>
         <BtnWrapper>
           <div>
