@@ -14,7 +14,7 @@ type ICategory = {
 
 type ICategoryComponent = {
   categories: Array<ICategory>;
-  currentValue: string | number;
+  currentValue: string | number | string[];
   setCurrentValue?: (newValue: any) => void;
   onClick?: React.MouseEventHandler<HTMLLIElement>;
 };
