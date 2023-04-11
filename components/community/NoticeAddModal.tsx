@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { Router, useRouter } from 'next/router';
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
@@ -25,9 +25,8 @@ interface TNoticeDetail {
 }
 
 export default function NoticeAddModal({ setOpenModal }: any) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [adminName, setAdminName] = useState('');
+  const titleRef = useRef<HTMLTextAreaElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const { accessToken } = useCookies();
 
@@ -36,11 +35,8 @@ export default function NoticeAddModal({ setOpenModal }: any) {
   const router = useRouter();
 
   const addNoticeMutation = useMutation<Data, unknown, TParams>({
-    mutationFn: () => api.postNotice(accessToken, { title, content }),
+    mutationFn: ({ title, content }) => api.postNotice(accessToken, { title, content }),
     onMutate: async (newNotice) => {
-      setTitle('');
-      setContent('');
-
       await queryClient.cancelQueries({ queryKey: ['notices'] });
       const previousNotice = queryClient.getQueryData<TNoticeDetail[]>(['notices']);
 
@@ -65,7 +61,7 @@ export default function NoticeAddModal({ setOpenModal }: any) {
   });
 
   const clickHandler = () => {
-    addNoticeMutation.mutate({ title, content, adminName });
+    addNoticeMutation.mutate({ title: titleRef.current.value, content: contentRef.current.value, adminName: '관리자' });
     setOpenModal(false);
   };
 
@@ -74,9 +70,9 @@ export default function NoticeAddModal({ setOpenModal }: any) {
       <FlexStyle>
         <Table className="static">
           <h3>제목</h3>
-          <textarea className="title" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
+          <textarea className="title" name="title" ref={titleRef} required />
           <h3>내용</h3>
-          <textarea className="content" onChange={(e) => setContent(e.target.value)}></textarea>
+          <textarea className="content" name="content" ref={contentRef} required />
         </Table>
         <BtnWrapper>
           <div>
