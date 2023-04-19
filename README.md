@@ -22,7 +22,9 @@
 <img src="https://img.shields.io/badge/discord-5865F2?style=flat&logo=discord&logoColor=white"/>
 <img src="https://img.shields.io/badge/notion-000000?style=flat&logo=notion&logoColor=white"/>
   </div>
+  
 # 구현 내용
+
 >슈퍼관리자<br>
 👉신규 약관 등록 및 약관관리, 수정<br>
 👉기업별 회원관리<br>
